@@ -431,10 +431,11 @@
 
     f.reset.addEventListener('click', function () {
       if (cur < 0) return;
-      apply(cur, cards[cur].__defaults);
+      apply(cur, { name: '', alias: '', desc: '', traits: [], quote: '', img: '' });
+      deleteServerImage(cards[cur]);   /* 서버에 저장된 그림도 지움 */
       close();
-      /* 초기화는 실수로 누를 수 있으니 서버에는 자동 저장하지 않는다 */
-      screenOnly('↺ 이 카드를 기본값으로 되돌렸어요. 저장하려면 💾 저장(Ctrl+S)을 누르세요.');
+      /* 비우기는 실수로 누를 수 있으니 서버에는 자동 저장하지 않는다 */
+      screenOnly('🗑 이 카드를 비웠어요. 저장하려면 💾 저장(Ctrl+S)을 누르세요.');
     });
     f.cancel.addEventListener('click', close);
     modal.querySelector('.editor-backdrop').addEventListener('click', close);
