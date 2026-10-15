@@ -435,7 +435,7 @@
     display:block;
     white-space: normal;             /* 영문 부제는 줄바꿈 허용 */
     font-family: var(--gothic);      /* 영문 부제 → 고딕 */
-    font-weight:700; font-size:.9rem; letter-spacing:.18em;
+    font-weight:700; font-size:.9rem; letter-spacing:.5em; line-height:1.3;
     text-transform:uppercase;
     color:#7d2618; margin-top:4px;
   }
