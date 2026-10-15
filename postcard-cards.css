@@ -448,7 +448,7 @@
   .info .desc{
     font-family: var(--myeongjo);
     font-weight:400;
-    font-size:1.14rem; line-height:1.7;
+    font-size:1.27rem; line-height:1.7;   /* 본문 폰트 */
     color:#1b1409;
     letter-spacing:-0.01em;
     flex:1 1 auto;        /* 남는 공간 차지 → 특징·한마디는 항상 아래에 붙음 */
