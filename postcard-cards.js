@@ -766,9 +766,10 @@
       scheduleFit();   /* 장수에 따라 액자 높이가 달라지므로 화면에 맞춰 다시 축소 */
     }
     if (cntRange) cntRange.max = String(cards.length);
-    if (cntMinus) cntMinus.addEventListener('click', function () { setCount(parseInt(cntVal.textContent, 10) - 1, true); });
-    if (cntPlus)  cntPlus.addEventListener('click',  function () { setCount(parseInt(cntVal.textContent, 10) + 1, true); });
-    if (cntRange) cntRange.addEventListener('input',  function () { setCount(cntRange.value, true); });
+    function countChanged() { setCount.apply(null, arguments); notifyApplied(); }
+    if (cntMinus) cntMinus.addEventListener('click', function () { countChanged(parseInt(cntVal.textContent, 10) - 1, true); });
+    if (cntPlus)  cntPlus.addEventListener('click',  function () { countChanged(parseInt(cntVal.textContent, 10) + 1, true); });
+    if (cntRange) cntRange.addEventListener('input',  function () { countChanged(cntRange.value, true); });
 
     /* 개수 숫자를 더블클릭하면 직접 입력 */
     function commitCountEdit() {
@@ -777,6 +778,7 @@
       cntVal.classList.remove('editing');
       var v = parseInt((cntVal.textContent || '').replace(/[^0-9]/g, ''), 10);
       setCount(isNaN(v) ? currentN : v, true);
+      notifyApplied();
     }
     if (cntVal) {
       cntVal.addEventListener('dblclick', function () {
@@ -801,7 +803,8 @@
       });
     }
 
-    setCount(Math.min(PER_FRAME, cards.length));   /* 기본 9장 */
+    var savedCount = parseInt(document.body.getAttribute('data-count') || '', 10);
+    setCount(isNaN(savedCount) ? Math.min(PER_FRAME, cards.length) : savedCount);   /* 저장된 장수 없으면 기본 9장 */
     hasInit = true;
     updateFrameNav();
     scheduleFit();   /* 첫 화면도 뷰포트 높이에 맞춰 축소 */
@@ -964,7 +967,11 @@
       var prevPrev = f.preview.getAttribute('src');
       f.preview.removeAttribute('src');        /* 미리보기(임시 그림)는 저장하지 않음 */
       var frameState = normalizeForSave();     /* 여러 프레임을 한 덱으로 합쳐 저장 */
+      var prevCount = document.body.getAttribute('data-count');
+      document.body.setAttribute('data-count', String(currentN));   /* 펼쳐 놓은 장수 저장 */
       var html = '<!doctype html>\n' + document.documentElement.outerHTML;
+      if (prevCount === null) document.body.removeAttribute('data-count');
+      else document.body.setAttribute('data-count', prevCount);
       restoreFromSave(frameState);             /* 다시 프레임으로 펼침 */
       if (verListEl && verSaved !== null) verListEl.innerHTML = verSaved;
       if (hadPrev) f.preview.setAttribute('src', prevPrev);
