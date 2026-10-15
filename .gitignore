@@ -1,0 +1,14 @@
+# 생성된 저장 데이터
+save/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+
+# OS / Editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
