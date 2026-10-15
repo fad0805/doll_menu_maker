@@ -32,6 +32,18 @@
       return '#cdbb98';
     }
 
+    /* 한마디(quote)에는 따옴표를 직접 입력하지 않아도 되게 한다.
+       - 저장된 값·기본값 어느 쪽으로 들어와도 바깥쪽 따옴표는 걷어내고,
+         화면에 그릴 때 “ ” 를 자동으로 붙인다. (따옴표 중복 방지) */
+    function bareQuote(s) {
+      var t = String(s == null ? '' : s);
+      return t.replace(/^[\s"'“”‘’「」『』]+/, '').replace(/[\s"'“”‘’「」『』]+$/, '');
+    }
+    function wrapQuote(s) {
+      var t = bareQuote(s);
+      return t ? '“' + t + '”' : '';
+    }
+
     function readCard(i) {
       var c = cards[i], nameEl = c.querySelector('.name'), small = c.querySelector('.name small');
       return {
@@ -39,7 +51,7 @@
         alias: small ? small.textContent.trim() : '',
         desc: c.querySelector('.desc').textContent,
         traits: Array.prototype.map.call(c.querySelectorAll('.traits li'), function (li) { return li.textContent.trim(); }),
-        quote: c.querySelector('.quote').textContent,
+        quote: bareQuote(c.querySelector('.quote').textContent),
         img: c.querySelector('.art-img').getAttribute('src') || '',
         color: sceneColor(c)
       };
@@ -267,7 +279,7 @@
       c.querySelector('.traits').innerHTML = traits.map(function (t) {
         return '<li>' + esc(t.trim()) + '</li>';
       }).join('');
-      c.querySelector('.quote').textContent = data.quote;
+      c.querySelector('.quote').textContent = wrapQuote(data.quote);
       var im = c.querySelector('.art-img');
       if (data.img !== undefined) {              /* undefined = 그림은 그대로 둠 */
         if (data.img) {
