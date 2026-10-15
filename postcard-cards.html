@@ -828,7 +828,7 @@
     <h3>머리말 편집</h3>
 
     <label>윗줄<input type="text" id="hOverline" autocomplete="off"></label>
-    <label>날짜<input type="text" id="hDate" autocomplete="off"></label>
+    <label>날짜<span class="field-now" id="hDateNow"></span><input type="date" id="hDate" inputmode="none"></label>
     <label>제목<input type="text" id="hTitle" autocomplete="off"></label>
     <label>한 줄 소개<textarea id="hTagline"></textarea></label>
     <label>바닥글<input type="text" id="hFoot" autocomplete="off"></label>
@@ -851,6 +851,7 @@
     <p class="ver-hint">고친 내용은 저장할 때마다 서버 <b>save/slotN 폴더</b>에 html과 그림이 함께 쌓여요. 슬롯의 <b>불러오기</b>로 그때 화면으로 되돌아가고, <b>이 슬롯에 저장</b>으로 지금 화면을 그 슬롯에 담을 수 있어요. 별칭은 고친 뒤 다른 곳을 클릭하면 저장돼요. <b>삭제</b> 버튼으로 그 버전(html+그림)을 지울 수 있어요.</p>
     <ul class="ver-list" id="verList"></ul>
     <div class="editor-actions">
+      <button type="button" id="verTemplate" title="저장된 슬롯을 벗어나 기본 템플릿(새 화면)으로 갑니다">기본 템플릿 열기</button>
       <button type="button" id="verSaveNew">새 슬롯에 저장</button>
       <button type="button" id="verClose">닫기</button>
     </div>

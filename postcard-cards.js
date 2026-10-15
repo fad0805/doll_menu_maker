@@ -475,6 +475,7 @@
       var hf = {
         overline: document.getElementById('hOverline'),
         date: document.getElementById('hDate'),
+        dateNow: document.getElementById('hDateNow'),
         title: document.getElementById('hTitle'),
         tagline: document.getElementById('hTagline'),
         foot: document.getElementById('hFoot'),
@@ -482,6 +483,24 @@
         cancel: document.getElementById('hCancel'),
         save: document.getElementById('hSave')
       };
+      var WEEKDAYS = ['일', '월', '화', '수', '목', '금', '토'];
+      /* 화면에 보이는 날짜 문구 → 날짜 선택창 값(YYYY-MM-DD) */
+      function dateToISO(text) {
+        var s = String(text || '');
+        var m = s.match(/(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+        if (m) return m[1] + '-' + pad2(m[2]) + '-' + pad2(m[3]);
+        var iso = s.match(/(\d{4})-(\d{1,2})-(\d{1,2})/);
+        if (iso) return iso[1] + '-' + pad2(iso[2]) + '-' + pad2(iso[3]);
+        return '';
+      }
+      /* 날짜 선택창 값(YYYY-MM-DD) → 화면에 보이는 날짜 문구 */
+      function isoToDate(iso) {
+        var m = String(iso || '').match(/^(\d{4})-(\d{1,2})-(\d{1,2})$/);
+        if (!m) return '';
+        var d = new Date(+m[1], +m[2] - 1, +m[3]);
+        if (isNaN(d.getTime())) return '';
+        return m[1] + '년 ' + (+m[2]) + '월 ' + (+m[3]) + '일 · ' + WEEKDAYS[d.getDay()] + '요일';
+      }
       var headDefaults = {
         overline: headEls.overline[0] ? headEls.overline[0].textContent : '',
         date: headEls.date[0] ? headEls.date[0].textContent : '',
@@ -511,7 +530,9 @@
         /* 지금 값을 플레이스홀더로: 비워 두면 그대로 유지 */
         var c = headCurrent();
         hf.overline.value = ''; hf.overline.placeholder = c.overline;
-        hf.date.value = ''; hf.date.placeholder = c.date;
+        /* 날짜는 글씨 대신 날짜 선택창 → 지금 날짜를 미리 골라 둔다 */
+        hf.date.value = dateToISO(c.date);
+        if (hf.dateNow) hf.dateNow.textContent = c.date ? ('지금: ' + c.date) : '지금: (없음)';
         hf.title.value = ''; hf.title.placeholder = c.title;
         hf.tagline.value = ''; hf.tagline.placeholder = c.tagline;
         if (hf.foot) { hf.foot.value = ''; hf.foot.placeholder = c.foot; }
@@ -522,6 +543,23 @@
       function closeHead() {
         headModal.classList.remove('open');
         headModal.setAttribute('aria-hidden', 'true');
+      }
+
+      /* 날짜 입력칸: 숫자를 직접 타이핑하지 않고 클릭하면 달력이 뜨게 한다 */
+      function showDatePicker() {
+        if (!hf.date || typeof hf.date.showPicker !== 'function') return;
+        try { hf.date.showPicker(); } catch (e) {}   /* 사용자 동작 없이 부르면 브라우저가 거부 → 무시 */
+      }
+      if (hf.date) {
+        hf.date.addEventListener('click', showDatePicker);
+        hf.date.addEventListener('focus', showDatePicker);
+        /* 숫자·문자 키는 막고(직접 입력 방지), 달력 조작 키만 허용.
+           달력 기능이 없는 브라우저에서는 직접 입력을 그대로 허용한다. */
+        hf.date.addEventListener('keydown', function (e) {
+          if (e.ctrlKey || e.metaKey || e.altKey) return;
+          if (typeof hf.date.showPicker !== 'function') return;
+          if (e.key.length === 1) { e.preventDefault(); showDatePicker(); }
+        });
       }
 
       var headKeys = ['overline', 'date', 'title', 'tagline', 'foot'];
@@ -546,7 +584,7 @@
         applyHead({
           /* 비워 둔 칸은 '지금 값'을 그대로 유지 */
           overline: hf.overline.value.trim() || c.overline,
-          date: hf.date.value.trim() || c.date,
+          date: hf.date.value ? (isoToDate(hf.date.value) || c.date) : c.date,
           title: hf.title.value.trim() || c.title,
           tagline: hf.tagline.value.trim() || c.tagline,
           foot: hf.foot ? (hf.foot.value.trim() || c.foot) : c.foot
@@ -1251,6 +1289,26 @@
 
     if (versionsBtn) versionsBtn.addEventListener('click', openVersions);
     if (verCloseBtn) verCloseBtn.addEventListener('click', closeVersions);
+
+    /* 저장된 슬롯(save/slotN/)에서 '기본 템플릿(새 화면)'으로 나가는 길.
+       루트(/)는 항상 최신 슬롯으로 보내므로, 슬롯 안에서 템플릿으로 빠져나올 때 쓴다. */
+    var verTemplateBtn = document.getElementById('verTemplate');
+    if (verTemplateBtn) {
+      if (!pageSlot) {
+        /* 이미 기본 템플릿이면 안내만 */
+        verTemplateBtn.title = '지금 화면이 기본 템플릿이에요.';
+        verTemplateBtn.addEventListener('click', function () {
+          setStatus('지금 화면이 기본 템플릿이에요.', true);
+        });
+      } else {
+        verTemplateBtn.addEventListener('click', function () {
+          /* save/slotN/ → 두 단계 위가 템플릿(루트).
+             슬롯 파일 이름은 index.html 이라 템플릿 이름으로 쓸 수 없다. */
+          var name = (FILE_NAME && !/^index\.html?$/i.test(FILE_NAME)) ? FILE_NAME : 'postcard-cards.html';
+          location.href = '../../' + name;
+        });
+      }
+    }
     if (verSaveNew) verSaveNew.addEventListener('click', function () {
       Promise.resolve(commitHTML()).then(function () { renderVersions(); });
     });

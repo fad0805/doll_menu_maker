@@ -475,7 +475,7 @@
   .info .quote{
     font-family: var(--myeongjo);
     font-style:italic;
-    font-size:1.02rem; line-height:1.5; color:#7d2618;
+    font-size:1.3rem; line-height:1.5; color:#7d2618;
     margin-top:8px;
     overflow:hidden;
     flex:0 0 auto;
@@ -701,12 +701,19 @@
   }
   .copy-ph:hover{ transform:translateY(-1px); }
   body.capturing .copy-ph{ display:none; }
-  .editor-panel input[type=text], .editor-panel textarea{
+  .editor-panel input[type=text], .editor-panel input[type=date], .editor-panel textarea{
     display:block; width:100%; margin-top:5px;
     font-family:var(--myeongjo); font-size:1.02rem; color:#1b1409;
     background:#fbf5e6; border:1px solid rgba(96,66,32,.5);
     border-radius:8px; padding:9px 11px; resize:vertical;
     line-height:1.6;
+  }
+  /* 날짜 선택창(input[type=date]) */
+  .editor-panel input[type=date]{ cursor:pointer; }
+  /* placeholder가 없는 입력칸(날짜)의 '지금 값' 안내 */
+  .editor-panel .field-now{
+    display:block; margin-top:4px;
+    font-family:var(--myeongjo); font-size:.86rem; color:#7a6647; font-style:italic;
   }
   .editor-panel textarea{ min-height:86px; line-height:1.45; }
   .editor-img{ display:flex; gap:14px; align-items:center; margin:6px 0 14px; }
@@ -734,6 +741,7 @@
   .editor-actions button.primary{ background:linear-gradient(#e9c98a,#cda85f); }
   .editor-actions button#fReset{ margin-right:auto; background:linear-gradient(#efe6d2,#dfd3ba); }
   .editor-actions button#hReset{ margin-right:auto; background:linear-gradient(#efe6d2,#dfd3ba); }
+  .editor-actions button#verTemplate{ margin-right:auto; background:linear-gradient(#efe6d2,#dfd3ba); }
   .editor-note{ font-family:var(--myeongjo); font-size:.86rem; color:#6a5636; margin-top:12px; line-height:1.5; }
 
   /* 입력창을 비워 두면 '지금 값'이 그대로 유지되도록 (플레이스홀더로 안내) */
