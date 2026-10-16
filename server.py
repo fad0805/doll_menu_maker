@@ -97,6 +97,40 @@ def remove_slot(slot):
     shutil.rmtree(slot_dir(slot), ignore_errors=True)
 
 
+def prune_versions(vers):
+    """index.html 이 없는 슬롯은 목록에서 지우고, 파일 없는 빈 슬롯 폴더도 정리한다.
+       (그림만 올려 폴더가 생겼거나, 파일을 직접 지운 뒤 versions.csv 에
+        유령 슬롯이 계속 남지 않게)"""
+    removed = []
+    for slot in list(vers):
+        if not os.path.isfile(slot_index(slot)):
+            vers.pop(slot, None)
+            removed.append(slot)
+    # 행(row) 유무와 상관없이, 파일이 하나도 없는 빈 slot* 폴더는 정리
+    try:
+        names = os.listdir(SAVE_DIR)
+    except OSError:
+        names = []
+    for name in names:
+        if not re.match(r"^slot\d+$", name):
+            continue
+        d = os.path.join(SAVE_DIR, name)
+        try:
+            if os.path.isdir(d) and not os.listdir(d):
+                os.rmdir(d)
+        except OSError:
+            pass
+    return removed
+
+
+def read_versions_clean():
+    """읽으면서 유령 슬롯(폴더 없음/빈 폴더)을 자동 정리한다."""
+    vers = read_versions()
+    if prune_versions(vers):
+        write_versions(vers)
+    return vers
+
+
 def delete_numbered(slot, num):
     """slot 폴더에서 그 프로필 번호의 그림을 (확장자 무관) 모두 지운다."""
     d = slot_dir(slot)
@@ -181,6 +215,7 @@ def normalize_root_form(html):
     """루트 기준 경로로 통일 (여러 저장 경로에서 읽어도 동일하게)."""
     html = re.sub(r'href="(?:\.\./)*postcard-cards\.css"', 'href="postcard-cards.css"', html)
     html = re.sub(r'src="(?:\.\./)*postcard-cards\.js"', 'src="postcard-cards.js"', html)
+    html = re.sub(r'href="(?:\.\./)*themes/', 'href="themes/', html)
     html = re.sub(r'src="(?:\.\./)*assets/', 'src="assets/', html)
     return html
 
@@ -189,6 +224,7 @@ def normalize_for_slot(html):
     """save/slotN/index.html 은 루트에서 두 단계 아래 → ../.. 로 바꾼다."""
     html = re.sub(r'href="(?:\.\./)*postcard-cards\.css"', 'href="../../postcard-cards.css"', html)
     html = re.sub(r'src="(?:\.\./)*postcard-cards\.js"', 'src="../../postcard-cards.js"', html)
+    html = re.sub(r'href="(?:\.\./)*themes/', 'href="../../themes/', html)
     html = re.sub(r'src="(?:\.\./)*assets/', 'src="../../assets/', html)
     return html
 
@@ -375,7 +411,7 @@ class Handler(SimpleHTTPRequestHandler):
         return None, False
 
     def _versions_json(self):
-        vers = read_versions()
+        vers = read_versions_clean()
         return {
             "ok": True,
             "max": MAX_VERSIONS,
@@ -389,7 +425,7 @@ class Handler(SimpleHTTPRequestHandler):
     def do_GET(self):
         path = self.path.split("?")[0]
         if path == "/api/ping":
-            vers = read_versions()
+            vers = read_versions_clean()
             return self._json({
                 "ok": True, "dir": ROOT, "html": HTML_BASENAME,
                 "newest": newest_slot(vers) or 0, "count": len(vers),
@@ -399,7 +435,7 @@ class Handler(SimpleHTTPRequestHandler):
 
         # 첫 화면(/) 은 '가장 최근 슬롯'으로 안내한다.
         if path in ("/", "/index.html"):
-            slot = newest_slot(read_versions())
+            slot = newest_slot(read_versions_clean())
             if slot is not None and os.path.isfile(slot_index(slot)):
                 return self._redirect("/save/slot%d/" % slot)
             self.path = "/" + HTML_BASENAME

@@ -1107,6 +1107,25 @@
       });
     }
 
+    /* html2canvas가 배경 이미지를 패턴으로 만들 때, 브라우저가 그 이미지의 고유 크기를
+       0으로 보고하면(일부 Safari·특정 SVG 등) 0×0 캔버스로 createPattern을 호출해
+       이미지 저장이 통째로 실패한다. 그런 경우에만 1×1 투명 패턴으로 대체해
+       저장이 끝까지 진행되도록 한다. (정상 크기 배경은 그대로 그린다) */
+    function installPatternGuard() {
+      var proto = window.CanvasRenderingContext2D && CanvasRenderingContext2D.prototype;
+      if (!proto || typeof proto.createPattern !== 'function') return null;
+      var orig = proto.createPattern;
+      var blank = null;
+      proto.createPattern = function (img, rep) {
+        if (img && (img.width === 0 || img.height === 0)) {
+          if (!blank) { blank = document.createElement('canvas'); blank.width = 1; blank.height = 1; }
+          try { return orig.call(this, blank, rep); } catch (e) { return null; }
+        }
+        return orig.apply(this, arguments);
+      };
+      return function restore() { proto.createPattern = orig; };
+    }
+
     if (saveBtn) {
       saveBtn.addEventListener('click', function () {
         if (typeof html2canvas !== 'function') {
@@ -1121,6 +1140,7 @@
         saveBtn.disabled = true;
         setStatus('🖼️ 프레임 ' + boards.length + '장을 각각 이미지로 저장하는 중…', false);
         document.body.classList.add('capturing');
+        var restorePatternGuard = installPatternGuard();
 
         var opts = {
           backgroundColor: '#20241d',
@@ -1152,6 +1172,7 @@
         }).catch(function (e) {
           setStatus('이미지 저장 실패 (' + ((e && e.message) || e) + ')', false);
         }).then(function () {
+          if (restorePatternGuard) restorePatternGuard();
           saveBtn.disabled = false;
           document.body.classList.remove('capturing');
         });
@@ -1338,6 +1359,177 @@
         var inp = (e.target && e.target.closest) ? e.target.closest('.ver-alias') : null;
         if (!inp || inp.disabled) return;
         setAlias(parseInt(inp.getAttribute('data-slot'), 10), inp.value);
+      });
+    }
+
+    /* ============ 테마 (프리셋 전환) ============
+       기본 틀(큰 액자에 엽서를 넣는 배치)은 그대로 두고 색·질감·글자만 바꾼다.
+       - 테마별 스타일은 themes/ 폴더에 파일로 나눠 둔다 (themes/classic.css, themes/modern.css …)
+       - 새 테마를 추가하려면: themes/새이름.css 파일 + <head>에 <link> 한 줄 + 아래 THEMES 목록에 한 줄
+       - 고른 테마는 <html data-theme="..."> 로 남아 저장한 버전에 함께 담긴다 */
+    var THEMES = [
+      { id: 'classic', name: '기본 (클래식)', desc: '지금의 나무 액자 · 캔버스 마운트 디자인' },
+      { id: 'modern',  name: '모던 시크', desc: '블랙앤화이트 · 회색 사진 · 검은 특징 버블 · 올고딕' }
+    ];
+    var DEFAULT_THEME = 'classic';
+
+    function hasTheme(id) {
+      for (var ti = 0; ti < THEMES.length; ti++) { if (THEMES[ti].id === id) return true; }
+      return false;
+    }
+    function currentTheme() {
+      var id = document.documentElement.getAttribute('data-theme') || '';
+      return hasTheme(id) ? id : DEFAULT_THEME;
+    }
+    function applyTheme(id) {
+      if (!hasTheme(id)) id = DEFAULT_THEME;
+      document.documentElement.setAttribute('data-theme', id);
+    }
+    applyTheme(currentTheme());   /* 저장된 값이 없으면 기본 테마로 확정(저장에도 함께 반영) */
+
+    /* ---- 예전에 저장한 슬롯 HTML도 테마를 바꿀 수 있게 자동 보정 ----
+       저장된 슬롯에는 테마 <link>·🎨 버튼·테마 선택창이 없을 수 있다(테마 기능 이전 저장본).
+       그럴 때 이 스크립트가 페이지에 없으면 만들어 넣는다. (한 번 저장하면 파일에도 함께 담긴다) */
+    (function ensureThemeInfra() {
+      /* 이 스크립트의 src에서 페이지 기준 상대 경로 접두어를 구한다 ('' 또는 '../../' 등) */
+      var prefix = '';
+      var scripts = document.getElementsByTagName('script');
+      for (var si = scripts.length - 1; si >= 0; si--) {
+        var ssrc = scripts[si].getAttribute('src') || '';
+        if (/postcard-cards\.js(\?.*)?$/.test(ssrc)) {
+          prefix = ssrc.replace(/postcard-cards\.js(\?.*)?$/, '');
+          break;
+        }
+      }
+
+      /* 1) 테마 CSS <link>가 없으면 추가 */
+      THEMES.forEach(function (t) {
+        var tail = 'themes/' + t.id + '.css';
+        var links = document.getElementsByTagName('link');
+        var exists = false;
+        for (var li = 0; li < links.length; li++) {
+          var href = links[li].getAttribute('href') || '';
+          if (href === tail || href.slice(-tail.length) === tail) { exists = true; break; }
+        }
+        if (!exists) {
+          var l = document.createElement('link');
+          l.rel = 'stylesheet';
+          l.href = prefix + tail;
+          document.head.appendChild(l);
+        }
+      });
+
+      /* 2) 🎨 테마 버튼이 없으면 툴바에 추가 */
+      if (!document.getElementById('themeBtn')) {
+        var bar = document.querySelector('.toolbar');
+        if (bar) {
+          var btn = document.createElement('button');
+          btn.type = 'button';
+          btn.id = 'themeBtn';
+          btn.title = '테마 바꾸기';
+          btn.setAttribute('aria-label', '테마 바꾸기');
+          btn.textContent = '🎨';
+          var anchor = document.getElementById('versionsBtn');
+          if (anchor && anchor.parentNode === bar) bar.insertBefore(btn, anchor);
+          else bar.appendChild(btn);
+        }
+      }
+
+      /* 3) 테마 선택창이 없으면 추가 */
+      if (!document.getElementById('themePicker')) {
+        var wrap = document.createElement('div');
+        wrap.className = 'editor';
+        wrap.id = 'themePicker';
+        wrap.setAttribute('data-html2canvas-ignore', 'true');
+        wrap.setAttribute('aria-hidden', 'true');
+        wrap.innerHTML =
+          '<div class="editor-backdrop"></div>' +
+          '<div class="editor-panel theme-panel" role="dialog" aria-modal="true" aria-label="테마">' +
+            '<h3>테마</h3>' +
+            '<p class="ver-hint">기본 틀(큰 액자에 엽서를 넣는 배치)은 그대로 두고, <b>색·질감·글자</b>만 테마로 바꿔요. 고른 테마는 <b>화면에 미리 보기</b>로만 적용되고, 저장(<b>💾</b>)할 때 지금 버전에 함께 담겨요.</p>' +
+            '<ul class="theme-list" id="themeList"></ul>' +
+            '<div class="editor-actions"><button type="button" id="themeClose">닫기</button></div>' +
+          '</div>';
+        document.body.appendChild(wrap);
+      }
+    })();
+
+    var themeModal = document.getElementById('themePicker');
+    var themeList = document.getElementById('themeList');
+    var themeBtn = document.getElementById('themeBtn');
+    var themeCloseBtn = document.getElementById('themeClose');
+
+    function renderThemes() {
+      if (!themeList) return;
+      var cur = currentTheme();
+      themeList.innerHTML = '';
+      THEMES.forEach(function (t) {
+        var li = document.createElement('li');
+        li.className = 'theme-row' + (t.id === cur ? ' current' : '');
+        li.setAttribute('data-theme-id', t.id);
+        li.setAttribute('role', 'button');
+        li.setAttribute('tabindex', '0');
+
+        var radio = document.createElement('span');
+        radio.className = 't-radio';
+        radio.textContent = (t.id === cur ? '●' : '○');
+
+        var mid = document.createElement('div');
+        var nm = document.createElement('span');
+        nm.className = 't-name';
+        nm.textContent = t.name;
+        var ds = document.createElement('span');
+        ds.className = 't-desc';
+        ds.textContent = t.desc || '';
+        mid.appendChild(nm);
+        mid.appendChild(ds);
+
+        var badge = document.createElement('span');
+        badge.className = 't-badge';
+        badge.textContent = (t.id === cur ? '사용 중' : '전환');
+
+        li.appendChild(radio);
+        li.appendChild(mid);
+        li.appendChild(badge);
+        themeList.appendChild(li);
+      });
+    }
+    function openThemes() {
+      if (!themeModal) return;
+      renderThemes();
+      themeModal.classList.add('open');
+      themeModal.setAttribute('aria-hidden', 'false');
+    }
+    function closeThemes() {
+      if (!themeModal) return;
+      themeModal.classList.remove('open');
+      themeModal.setAttribute('aria-hidden', 'true');
+    }
+    function pickTheme(id) {
+      if (!hasTheme(id) || id === currentTheme()) return;
+      applyTheme(id);
+      renderThemes();
+      /* 테마는 '보기'만 하는 경우가 많으니 자동 저장하지 않는다.
+         실제로 버전에 담으려면 💾(Ctrl+S) 저장을 누른다. */
+      screenOnly('🎨 테마를 화면에 적용했어요. 저장하려면 💾(Ctrl+S)를 누르세요.');
+    }
+    if (themeBtn) themeBtn.addEventListener('click', openThemes);
+    if (themeCloseBtn) themeCloseBtn.addEventListener('click', closeThemes);
+    if (themeModal) themeModal.querySelector('.editor-backdrop').addEventListener('click', closeThemes);
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && themeModal && themeModal.classList.contains('open')) closeThemes();
+    });
+    if (themeList) {
+      themeList.addEventListener('click', function (e) {
+        var row = (e.target && e.target.closest) ? e.target.closest('.theme-row') : null;
+        if (row) pickTheme(row.getAttribute('data-theme-id'));
+      });
+      themeList.addEventListener('keydown', function (e) {
+        if (e.key !== 'Enter' && e.key !== ' ') return;
+        var row = (e.target && e.target.closest) ? e.target.closest('.theme-row') : null;
+        if (!row) return;
+        e.preventDefault();
+        pickTheme(row.getAttribute('data-theme-id'));
       });
     }
 

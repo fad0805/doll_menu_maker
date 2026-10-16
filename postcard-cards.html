@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="ko"><head>
+<html lang="ko" data-theme="classic"><head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>잃어버린 섬 — 엽서 카드 템플릿</title>
@@ -9,6 +9,10 @@
 <link href="https://fonts.googleapis.com/css2?family=Nanum+Pen+Script&amp;family=Nanum+Myeongjo:wght@400;700;800&amp;family=Gaegu:wght@300;400;700&amp;family=Caveat:wght@400;600;700&amp;display=swap" rel="stylesheet">
 
 <link rel="stylesheet" href="postcard-cards.css">
+
+<!-- 테마별 스타일 (themes/ 폴더) — 새 테마는 파일을 만들고 여기에 <link> 한 줄 추가 -->
+<link rel="stylesheet" href="themes/classic.css">
+<link rel="stylesheet" href="themes/modern.css">
 </head>
 <body>
 
@@ -759,6 +763,7 @@
 <!-- 이미지 저장 컨트롤 -->
 <div class="toolbar" data-html2canvas-ignore="true">
   <span class="status" id="saveStatus" style="background: rgba(28, 74, 32, 0.85);"></span>
+  <button id="themeBtn" type="button" title="테마 바꾸기" aria-label="테마 바꾸기">🎨</button>
   <button id="versionsBtn" type="button" title="저장 버전 (불러오기/별칭)" aria-label="저장 버전 (불러오기/별칭)">🕘</button>
   <button id="htmlSaveBtn" type="button" title="현재 슬롯에 저장 (Ctrl+S)" aria-label="현재 슬롯에 저장 (Ctrl+S)">💾</button>
   <button id="resetAllBtn" type="button" title="처음 상태로 되돌리기" aria-label="처음 상태로 되돌리기">↺</button>
@@ -856,6 +861,20 @@
       <button type="button" id="verClose">닫기</button>
     </div>
     <p class="editor-note">※ 버전 정보는 <b>save/versions.csv</b> 에 기록되고, 슬롯마다 <b>save/slotN 폴더</b>에 html과 그림이 함께 저장돼요.</p>
+  </div>
+</div>
+
+<!-- 테마 전환 창 -->
+<div class="editor" id="themePicker" data-html2canvas-ignore="true" aria-hidden="true">
+  <div class="editor-backdrop"></div>
+  <div class="editor-panel theme-panel" role="dialog" aria-modal="true" aria-label="테마">
+    <h3>테마</h3>
+    <p class="ver-hint">기본 틀(큰 액자에 엽서를 넣는 배치)은 그대로 두고, <b>색·질감·글자</b>만 테마로 바꿔요. 고른 테마는 <b>화면에 미리 보기</b>로만 적용되고, 저장(<b>💾</b>)할 때 지금 버전에 함께 담겨요.</p>
+    <ul class="theme-list" id="themeList"></ul>
+    <div class="editor-actions">
+      <button type="button" id="themeClose">닫기</button>
+    </div>
+    <p class="editor-note">※ 테마별 스타일은 <b>themes/ 폴더</b>에 파일로 있어요. 새 테마는 <b>themes/새이름.css</b> 에 <b>html[data-theme="테마ID"]{ … }</b> 를 쓰고, 이 페이지 <b>&lt;head&gt;</b> 에 <b>&lt;link&gt;</b> 한 줄 + <b>postcard-cards.js</b> 의 <b>THEMES</b> 목록에 한 줄을 추가하면 돼요.</p>
   </div>
 </div>
 
