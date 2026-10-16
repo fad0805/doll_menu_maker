@@ -93,17 +93,18 @@ html[data-theme="halloween"] .patina{
     radial-gradient(ellipse 70% 30% at 50% 4%, rgba(255,214,255,.16), transparent 70%);
 }
 
-/* 엽서: 빈티지 텍스처 — 종이 섬유 + 갈색 얼룩(반점) + 구김 결 + 바랜 가운데/어두운 가장자리 */
+/* 엽서: 종이 섬유 + 옅은 얼룩 + 바랜 가운데/어두운 가장자리
+   (구김 결은 html2canvas 가 background-blend-mode 를 지원하지 않아
+    저장본과 화면 색이 달라지므로 뺐다 — 화면과 저장본을 같게 유지) */
 html[data-theme="halloween"] .postcard{
   background-image:
     var(--paper-tex),                                                              /* 종이 섬유 노이즈 */
     var(--foxing-card),                                                            /* 빈티지 얼룩 */
-    var(--crumple),                                                                /* 구겨진 종이 결 */
     radial-gradient(ellipse at 50% 42%, rgba(255,214,150,.20), transparent 64%),   /* 바랜 가운데 */
-    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 60%, rgba(78,42,12,.20) 100%); /* 어두운 가장자리(검은 글씨 가독성 위해 옅게) */
-  background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%, 100% 100%;
-  background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
-  background-blend-mode: multiply, multiply, soft-light, soft-light, multiply;
+    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 60%, rgba(78,42,12,.20) 100%); /* 어두운 가장자리 */
+  background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-blend-mode: normal;
 }
 
 /* 액자 바닥 빈 곳에 할로윈 소품(호박 · 잭오랜턴 · 타고 있는 양초)을 흩뿌림 */
@@ -218,21 +219,3 @@ html[data-theme="halloween"] .head h1{ font-family:var(--board-font); font-size:
 html[data-theme="halloween"] .info .name{ font-family:var(--board-font); font-size:2.25rem; }
 html[data-theme="halloween"] .info .quote{ font-family:var(--board-font); font-size:1.5rem; }
 html[data-theme="halloween"] .foot{ font-family:var(--board-font); font-size:1.16rem; letter-spacing:.12em; }
-
-/* ============================================================
-   PNG 저장(html2canvas) 보정
-   html2canvas 는 background-blend-mode 를 지원하지 않아,
-   구김(crumple) 텍스처가 불투명하게 엽서 위를 덮어 엽서가 하얗게 저장된다.
-   → 저장하는 동안(body.capturing)에는 블렌딩이 필요 없는 레이어만 남겨
-     엽서 색(주황)이 그대로 나오게 한다.
-   ============================================================ */
-html[data-theme="halloween"] body.capturing .postcard{
-  background-image:
-    var(--paper-tex),
-    var(--foxing-card),
-    radial-gradient(ellipse at 50% 42%, rgba(255,214,150,.20), transparent 64%),
-    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 60%, rgba(78,42,12,.20) 100%);
-  background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%;
-  background-repeat: repeat, repeat, no-repeat, no-repeat;
-  background-blend-mode: normal;
-}
