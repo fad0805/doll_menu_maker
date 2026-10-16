@@ -99,11 +99,11 @@ html[data-theme="halloween"] .postcard{
     var(--paper-tex),                                                              /* 종이 섬유 노이즈 */
     var(--foxing-card),                                                            /* 빈티지 얼룩 */
     var(--crumple),                                                                /* 구겨진 종이 결 */
-    radial-gradient(ellipse at 50% 42%, rgba(255,214,150,.20), transparent 64%),   /* 바랜 가운데 */
-    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 60%, rgba(78,42,12,.20) 100%); /* 어두운 가장자리(검은 글씨 가독성 위해 옅게) */
+    radial-gradient(ellipse at 50% 42%, rgba(255,196,110,.06), transparent 62%),   /* 바랜 가운데(옅게) */
+    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 58%, rgba(70,36,8,.28) 100%); /* 어두운 가장자리 */
   background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%, 100% 100%;
   background-repeat: repeat, repeat, no-repeat, no-repeat, no-repeat;
-  background-blend-mode: multiply, multiply, soft-light, soft-light, multiply;
+  background-blend-mode: multiply, multiply, multiply, soft-light, multiply;
 }
 
 /* 액자 바닥 빈 곳에 할로윈 소품(호박 · 잭오랜턴 · 타고 있는 양초)을 흩뿌림 */
