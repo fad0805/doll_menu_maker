@@ -29,6 +29,9 @@
     --myeongjo: "Nanum Myeongjo", "Batang", "바탕", "Apple SD Gothic Neo", Georgia, serif;
     /* 고딕(산세리프) — 영문 부제·특징 칩 전용 */
     --gothic: "Pretendard", "Apple SD Gothic Neo", "Malgun Gothic", "맑은 고딕", "Noto Sans KR", "Nanum Gothic", system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+    /* 엽서(작품) 글씨 — 필기감 도는 고풍스러운 붓글씨체.
+       (머릿말·제목·날짜·본문·한마디·꼬릿말에 적용, 영문 부제·특징 칩은 --gothic 유지) */
+    --board-font: "Nanum Brush Script", "Nanum Pen Script", "Nanum Myeongjo", "Batang", "바탕", "Apple SD Gothic Neo", Georgia, serif;
 
     /* ===== 테마 표면 (테마별로 바뀌는 값) =====
        기본 테마(classic)는 아래 값 그대로예요.
@@ -270,20 +273,20 @@
   /* ================= 헤더 ================= */
   .head{ position:relative; z-index:2; text-align:center; }
   .head .overline{
-    font-family: var(--myeongjo);
-    font-size:.94rem; letter-spacing:.6em; text-indent:.6em;
+    font-family: var(--board-font);
+    font-size:1.1rem; letter-spacing:.5em; text-indent:.5em;
     text-transform:uppercase; color: var(--sepia);
     display:block; margin-bottom:8px;
   }
   .head .date{
-    font-family: var(--myeongjo);
-    font-size:1.5rem; color: var(--pen);
+    font-family: var(--board-font);
+    font-size:1.74rem; color: var(--pen);
     display:inline-block; margin-top:4px;
   }
   .head h1{
-    font-family: var(--myeongjo);
+    font-family: var(--board-font);
     font-weight:800;
-    font-size:3.4rem; letter-spacing:-0.01em;
+    font-size:3.95rem; letter-spacing:-0.01em;
     color: var(--head-title); margin:8px 0 10px;
     text-shadow: 0 1px 0 rgba(248,245,238,.6), 1px 2px 4px rgba(40,28,16,.22);
   }
@@ -466,9 +469,9 @@
     box-shadow: 1px 0 0 rgba(255,250,235,.45);
   }
   .info .name{
-    font-family: var(--hand-t);
+    font-family: var(--board-font);
     font-weight:800;
-    font-size:1.72rem; line-height:1.08;
+    font-size:2.25rem; line-height:1.14;
     color: var(--name-ink);
     letter-spacing:-0.01em;
     flex:0 0 auto;
@@ -518,9 +521,9 @@
     letter-spacing:.01em;
   }
   .info .quote{
-    font-family: var(--myeongjo);
+    font-family: var(--board-font);
     font-style:italic;
-    font-size:1.3rem; line-height:1.5; color: var(--accent-red);
+    font-size:1.5rem; line-height:1.5; color: var(--accent-red);
     margin-top:8px;
     overflow:hidden;
     flex:0 0 auto;
@@ -558,7 +561,8 @@
     border-top:1px solid var(--foot-line);
     box-shadow: 0 -1px 0 rgba(255,250,232,.35);
     padding-top:16px; margin-top:2px;
-    font-size:1rem; letter-spacing:.14em; text-transform:uppercase;
+    font-family: var(--board-font);
+    font-size:1.16rem; letter-spacing:.12em; text-transform:uppercase;
     color: var(--sepia);
   }
   .foot::before, .foot::after{ content:"·"; }
