@@ -84,8 +84,9 @@
   /* ================= 테마 (프리셋) =================
      기본 틀(큰 액자에 엽서를 넣는 배치)은 그대로 두고,
      색·질감·글자만 테마로 바꿔요. 테마별 스타일은 themes/ 폴더에 파일로 나눠 두었어요.
-       - themes/classic.css : 기본 테마(현재 디자인, 위 :root 값 그대로)
-       - themes/modern.css  : 모던 시크
+        - themes/classic.css   : 기본 테마(현재 디자인, 위 :root 값 그대로)
+        - themes/modern.css    : 모던 시크
+        - themes/halloween.css : 할로윈
      새 테마를 추가하려면:
        1) themes/새이름.css 파일을 만들고  html[data-theme="새ID"]{ ...바꿀 값... } 을 써요.
           (색·질감은 변수만 바꾸면 되고, 필요하면 html[data-theme="새ID"] .선택자{...} 도 가능)

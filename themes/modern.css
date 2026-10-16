@@ -102,8 +102,12 @@ html[data-theme="modern"] .postcard .tape{ display:none; }   /* 테이프 없음
 /* 사진칸: 붙인 사진 느낌 유지 — 흰 인화지 테두리(기본 두께) + 옅은 그림자,
    색면은 엽서에 랜덤 배정된 색 대신 회색 하나로 */
 html[data-theme="modern"] .photo{
-  --scene:#cccccc !important;                   /* 랜덤 배정색 → 회색 */
   box-shadow: 0 1px 2px rgba(0,0,0,.14), 0 7px 16px rgba(0,0,0,.12);
+}
+/* 색면: 기본 랜덤 배정색은 회색으로 통일하되,
+   사용자가 직접 고른 색(.is-user-color)은 그대로 보이게 둔다. */
+html[data-theme="modern"] .photo:not(.is-user-color){
+  --scene:#cccccc !important;                   /* 랜덤 배정색 → 회색 */
 }
 html[data-theme="modern"] .photo .stamp{ display:none; }     /* 우표 없음 */
 

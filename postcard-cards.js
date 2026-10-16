@@ -290,9 +290,16 @@
           im.classList.remove('is-user');
         }
       }
-      /* 그림 없이 색만 지정 (그라데이션 없이 단색) */
+      /* 그림 없이 색만 지정 (그라데이션 없이 단색)
+         - 기본 배정색과 다른 색을 고르면 .is-user-color 를 붙여,
+           모던 테마의 회색 덮어쓰기에서 제외한다 (고른 색이 그대로 보이게). */
       var photo = c.querySelector('.photo');
-      if (photo && data.color) photo.style.setProperty('--scene', data.color);
+      if (photo && data.color) {
+        photo.style.setProperty('--scene', data.color);
+        var base = (cards[i].__defaults && cards[i].__defaults.color) || '';
+        var changed = String(data.color).toLowerCase() !== String(base).toLowerCase();
+        photo.classList.toggle('is-user-color', changed || photo.classList.contains('is-user-color'));
+      }
       fitName(nameEl);   /* 이름이 길면 글씨를 줄여 가로폭에 맞춤 */
     }
 
@@ -1146,7 +1153,11 @@
         var restorePatternGuard = installPatternGuard();
 
         var opts = {
-          backgroundColor: '#20241d',
+          backgroundColor: (function () {
+            /* 저장 이미지 배경도 지금 테마의 벽 색을 따른다 (예전엔 항상 기본 나무 테마 색) */
+            var wall = getComputedStyle(document.documentElement).getPropertyValue('--wall-base').trim();
+            return wall || '#20241d';
+          })(),
           scale: (function () {
             var s = Math.max(1.5, Math.min(2, window.devicePixelRatio || 1.5));
             if (1754 * s > 8000) s = Math.max(1, 8000 / 1754);   /* 프레임 한 장이 너무 커지지 않게 */
@@ -1372,7 +1383,8 @@
        - 고른 테마는 <html data-theme="..."> 로 남아 저장한 버전에 함께 담긴다 */
     var THEMES = [
       { id: 'classic', name: '기본 (클래식)', desc: '지금의 나무 액자 · 캔버스 마운트 디자인' },
-      { id: 'modern',  name: '모던 시크', desc: '블랙앤화이트 · 회색 사진 · 검은 특징 버블 · 올고딕' }
+      { id: 'modern',  name: '모던 시크', desc: '블랙앤화이트 · 회색 사진 · 검은 특징 버블 · 올고딕' },
+      { id: 'halloween', name: '할로윈', desc: '보라 벽 · 녹색 도는 늙은 나무 액자 · 주황빛 빈티지 엽서' }
     ];
     var DEFAULT_THEME = 'classic';
 
