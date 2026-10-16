@@ -26,7 +26,7 @@
   python3 server.py --no-browser
   (Windows exe 는 창 없이 뜨고 자동으로 브라우저가 열립니다.
    이미 켜져 있으면 새로 띄우지 않고 브라우저만 다시 엽니다.
-   종료: 페이지 오른쪽 위 ⏻ 버튼, 또는 Ctrl+C)
+   종료: 페이지 오른쪽 아래 ⏻ 버튼, 또는 Ctrl+C)
 """
 
 import base64
