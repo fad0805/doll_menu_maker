@@ -1401,7 +1401,8 @@
     var THEMES = [
       { id: 'classic', name: '기본 (클래식)', desc: '지금의 나무 액자 · 캔버스 마운트 디자인' },
       { id: 'modern',  name: '모던 시크', desc: '블랙앤화이트 · 회색 사진 · 검은 특징 버블 · 올고딕' },
-      { id: 'halloween', name: '할로윈', desc: '보라 벽 · 녹색 도는 늙은 나무 액자 · 주황빛 빈티지 엽서' }
+      { id: 'halloween', name: '할로윈', desc: '보라 벽 · 녹색 도는 늙은 나무 액자 · 주황빛 빈티지 엽서' },
+      { id: 'christmas', name: '크리스마스', desc: '짙은 남색 밤하늘 액자 속 · 클래식 나무 액자(홀리 덩굴·전구줄) · 짙은 초록 엽서(흰 글씨·금색) · 눈/선물' }
     ];
     var DEFAULT_THEME = 'classic';
 

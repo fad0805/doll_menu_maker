@@ -72,7 +72,7 @@ exe 를 직접 만들려면 **[BUILD_WINDOWS.md](BUILD_WINDOWS.md)** 를 참고�
 
 | 버튼 | 하는 일 |
 |---|---|
-| 🎨 | **테마** 바꾸기 (클래식 / 모던시크 / 할로윈) — 화면 미리보기 |
+| 🎨 | **테마** 바꾸기 (클래식 / 모던시크 / 할로윈 / 크리스마스) — 화면 미리보기 |
 | 🕘 | **저장 버전** (불러오기 · 별칭 · 삭제, 최대 5개) |
 | 💾 | 지금 슬롯에 **저장** (단축키 **Ctrl+S**) |
 | ↺ | 처음 상태로 되돌리기 |
@@ -107,6 +107,7 @@ exe 를 직접 만들려면 **[BUILD_WINDOWS.md](BUILD_WINDOWS.md)** 를 참고�
 - **classic** — 나무 액자 + 캔버스 마운트 + 아이보리 엽서 (기본)
 - **modern** — 블랙앤화이트 · 올고딕 · 장식 없는 단순한 엽서
 - **halloween** — 어두운 보라 벽 · 늦은 나무 액자 · 진한 주황 종이, 호박/양초/압정/전구줄 장식
+- **christmas** — 눈 내리는 전나무숲 벽 · 액자 속은 **짙은 남색 밤하늘**(별·달빛) · 클래식 나무 액자 + 홀리 덩굴(붉은 열매·빨간 리본) · 짙은 초록 엽서(흰 글씨·금색 부제/한마디) · 전구줄 · 액자 아래 눈·선물
 
 고른 테마는 **화면에만** 미리 적용되고, **💾 저장**할 때 그 버전에 함께 담깁니다.
 
@@ -156,7 +157,7 @@ postcard-cards.html   화면(템플릿) — 기본 레이아웃과 편집 창들
 postcard-cards.css    스타일 — 레이아웃/엽서/액자/툴바 + 테마 변수
 postcard-cards.js     동작 — 편집 · 저장 · 테마 · 이미지 저장
 themes/
-  classic.css · modern.css · halloween.css
+  classic.css · modern.css · halloween.css · christmas.css
 assets/
   fonts/    내장 글꼴 (woff2) + fonts.css   ← 나눔명조·나눔펜·나눔붓글씨·Caveat
   vendor/   html2canvas.min.js, modern-screenshot.js
