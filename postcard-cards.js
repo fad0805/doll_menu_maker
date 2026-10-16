@@ -1055,6 +1055,19 @@
     /* 액자는 #sheets(가로 스크롤 영역) 안에 있어서 화면 밖 프레임은 그대로 그리면 잘려 나온다.
        → 복제본을 문서 원점에 잠깐 두고 그리면 모든 프레임이 같은 나무 배경으로 나온다. */
     function captureBoard(board, opts) {
+      /* modern-screenshot(SVG foreignObject): 브라우저가 실제로 그리는 그대로 그려서
+         그림자·drop-shadow 필터·배경 블렌드까지 화면과 똑같이 저장된다. */
+      var MS = window.modernScreenshot;
+      if (MS && typeof MS.domToCanvas === 'function') {
+        var nw = board.offsetWidth || 1754;
+        var nh = board.offsetHeight || 1700;
+        return MS.domToCanvas(board, {
+          width: nw,
+          height: nh,
+          scale: (opts && opts.scale) || 1,
+          backgroundColor: (opts && opts.backgroundColor) || '#20241d'
+        });
+      }
       var host = document.createElement('div');
       host.setAttribute('data-capture-host', '1');
       host.style.cssText = 'position:absolute;left:0;top:0;z-index:-1;pointer-events:none;';
@@ -1138,7 +1151,7 @@
 
     if (saveBtn) {
       saveBtn.addEventListener('click', function () {
-        if (typeof html2canvas !== 'function') {
+        if (typeof html2canvas !== 'function' && !(window.modernScreenshot && window.modernScreenshot.domToCanvas)) {
           setStatus('이미지 저장 도구를 불러오지 못했어요. 새로고침 후 다시 시도해 주세요.', false);
           return;
         }
@@ -1401,6 +1414,26 @@
       document.documentElement.setAttribute('data-theme', id);
     }
     applyTheme(currentTheme());   /* 저장된 값이 없으면 기본 테마로 확정(저장에도 함께 반영) */
+
+    /* ---- 이미지 저장기(modern-screenshot) 준비 ----
+       브라우저가 실제로 그리는 그대로(SVG foreignObject) 저장해 그림자·필터·블렌드가
+       화면과 같아진다. 저장 슬롯 HTML엔 아직 <script>가 없을 수 있어 여기서 넣어준다. */
+    (function ensureScreenshotLib() {
+      if (window.modernScreenshot) return;
+      var prefix = '';
+      var scripts = document.getElementsByTagName('script');
+      for (var si = scripts.length - 1; si >= 0; si--) {
+        var ssrc = scripts[si].getAttribute('src') || '';
+        if (/postcard-cards\.js(\?.*)?$/.test(ssrc)) {
+          prefix = ssrc.replace(/postcard-cards\.js(\?.*)?$/, '');
+          break;
+        }
+      }
+      var el = document.createElement('script');
+      el.src = prefix + 'assets/vendor/modern-screenshot.js';
+      el.async = true;
+      document.head.appendChild(el);
+    })();
 
     /* ---- 예전에 저장한 슬롯 HTML도 테마를 바꿀 수 있게 자동 보정 ----
        저장된 슬롯에는 테마 <link>·🎨 버튼·테마 선택창이 없을 수 있다(테마 기능 이전 저장본).
