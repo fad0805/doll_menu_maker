@@ -42,13 +42,13 @@ html[data-theme="christmas"]{
 
   /* 엽서: 짙은 전나무 초록 종이 + 흰 글씨 (영문 부제·한마디는 금색) */
   --card-bg:#123a25;
-  --card-line:rgba(214,178,96,.45);
-  --card-edge:rgba(206,168,92,.55);
-  --photo-border:#f6efda;
+  --card-line:rgba(158,128,66,.50);  /* 엽서 안쪽 테두리: 명도 낮춘 금색 */
+  --card-edge:rgba(146,118,58,.62);  /* 엽서 바깥 테두리: 명도 낮춘 금색 */
+  --photo-border:#ffffff;            /* 사진(인화지) 테두리: 흰색 */
 
-  --name-ink:#b21c1c;               /* 엽서 이름: 차분한 딥 레드 */
+  --name-ink:#941a1a;               /* 엽서 이름: 명도 낮춘 딥 레드 */
   --desc-ink:#d9ded7;               /* 엽서 소개 본문: 흰색에서 살짝 낮춘 톤 */
-  --accent-red:#e6c56a;             /* 영문 부제·한마디: 금색 */
+  --accent-red:#c6a24e;             /* 영문 부제·한마디: 명도 낮춘 금색 */
   --xmas-red:#8f1f24;               /* 공통 붉은색 (우표·특징 버블) */
   --chip-border:rgba(214,178,96,.60);
   --chip-ink:#ecd79c;
@@ -76,8 +76,24 @@ html[data-theme="christmas"] .head .rule span{ font-size:0; }
 html[data-theme="christmas"] .head .rule span::before{ content:"❄"; font-size:1.15rem; }
 
 /* ============================================================
-   액자 안쪽 마운트: 짙은 남색 밤하늘 (은은한 별 + 달빛)
-   클래식의 캔버스 직조 대신 별이 뿌려진 밤하늘로 바꿔요.
+   엽서: 어두운 전나무 초록 종이에 종이 질감
+   (섬유 노이즈 + 빈티지 얼룩 + 구김 결 + 가장자리 어둡게)
+   ※ 모두 multiply 로만 겹쳐, 바탕색이 밝아지지 않고 결만 배게 합니다.
+   ============================================================ */
+html[data-theme="christmas"] .postcard{
+  background-image:
+    var(--paper-tex),                                                                      /* 종이 섬유 노이즈 */
+    var(--foxing-card),                                                                    /* 빈티지 얼룩 */
+    var(--crumple),                                                                        /* 구겨진 종이 결 */
+    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 55%, rgba(0,0,0,.40) 100%);  /* 가장자리 어둡게 */
+  background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-blend-mode: multiply, multiply, multiply, multiply;
+}
+
+/* ============================================================
+   액자 안쪽 마운트: 채도를 낮춘 짙은 남회색(슬레이트) 밤하늘 (은은한 별 + 달빛)
+   클래식의 캔버스 직조를 남색 위에 옅게 남겨요.
    ============================================================ */
 html[data-theme="christmas"] .board::before{
   background-color: var(--mount-bg);
