@@ -21,6 +21,8 @@
 사용법
   python3 server.py            # http://localhost:8899/
   python3 server.py 8000       # 포트 지정
+  python3 server.py --open     # 실행 후 브라우저 자동 열기
+  (Windows exe 로 실행하면 자동으로 브라우저가 열립니다)
 """
 
 import base64
@@ -30,11 +32,22 @@ import os
 import re
 import shutil
 import sys
+import threading
 import time
+import webbrowser
 from http.server import SimpleHTTPRequestHandler, ThreadingHTTPServer
+from urllib.parse import unquote
 
-ROOT = os.path.dirname(os.path.abspath(__file__))
-SAVE_DIR = os.path.join(ROOT, "save")
+# 실행 방식에 따라 '읽기 전용 자원'과 '쓰기 가능한 저장 폴더'를 나눈다.
+#  - 소스로 실행  (python server.py) : 둘 다 이 파일이 있는 폴더
+#  - exe 로 실행  (PyInstaller)      : 자원은 번들(_MEIPASS), 저장은 exe 옆 폴더
+FROZEN = bool(getattr(sys, "frozen", False))
+BUNDLE_DIR = getattr(sys, "_MEIPASS", None) or os.path.dirname(os.path.abspath(__file__))
+DATA_DIR = (os.path.dirname(os.path.abspath(sys.executable)) if FROZEN
+            else os.path.dirname(os.path.abspath(__file__)))
+
+ROOT = BUNDLE_DIR                              # 정적 자원(html/css/js/themes/assets)
+SAVE_DIR = os.path.join(DATA_DIR, "save")      # 저장 데이터(쓰기 가능)
 CSV_FILE = os.path.join(SAVE_DIR, "versions.csv")
 HTML_FILE = os.path.join(ROOT, "postcard-cards.html")
 HTML_BASENAME = os.path.basename(HTML_FILE)
@@ -241,8 +254,12 @@ def rewrite_images(html, target_slot, from_slot=None):
         base = os.path.basename(s)
         cands = []
         if s.startswith("/"):
-            cands.append(os.path.join(ROOT, s.lstrip("/")))
+            rel = s.lstrip("/")
+            if rel.startswith("save/"):
+                cands.append(os.path.join(DATA_DIR, rel))
+            cands.append(os.path.join(ROOT, rel))
         elif s.startswith("save/"):
+            cands.append(os.path.join(DATA_DIR, s))
             cands.append(os.path.join(ROOT, s))
         else:
             if from_slot:
@@ -367,6 +384,18 @@ class Handler(SimpleHTTPRequestHandler):
     def log_message(self, fmt, *args):
         sys.stderr.write("[server] " + (fmt % args) + "\n")
 
+    def translate_path(self, path):
+        """정적 자원은 번들(ROOT)에서, /save/... 는 쓰기 가능한 저장 폴더에서 준다.
+        exe 로 실행하면 두 폴더가 서로 다르기 때문에 필요하다."""
+        raw = path.split("?", 1)[0].split("#", 1)[0]
+        if raw == "/save" or raw.startswith("/save/"):
+            rel = unquote(raw[len("/save"):]).lstrip("/")
+            parts = [p for p in rel.split("/") if p not in ("", ".")]
+            if any(p == ".." for p in parts):
+                return os.path.join(SAVE_DIR, "__invalid__")
+            return os.path.join(SAVE_DIR, *parts) if parts else SAVE_DIR
+        return super().translate_path(path)
+
     # ---- 공통 ----
     def _json(self, obj, code=200):
         body = json.dumps(obj, ensure_ascii=False).encode("utf-8")
@@ -427,7 +456,7 @@ class Handler(SimpleHTTPRequestHandler):
         if path == "/api/ping":
             vers = read_versions_clean()
             return self._json({
-                "ok": True, "dir": ROOT, "html": HTML_BASENAME,
+                "ok": True, "dir": DATA_DIR, "bundle": ROOT, "html": HTML_BASENAME,
                 "newest": newest_slot(vers) or 0, "count": len(vers),
             })
         if path == "/api/versions":
@@ -618,25 +647,65 @@ class Handler(SimpleHTTPRequestHandler):
         return self._json(out)
 
 
-def main():
-    port = DEFAULT_PORT
-    if len(sys.argv) > 1:
+def bind_server(start_port, tries=20):
+    """start_port 부터 빈 포트를 찾아 서버를 만든다. 이미 쓰이면 다음 포트로."""
+    last_err = None
+    for p in range(start_port, start_port + tries):
         try:
-            port = int(sys.argv[1])
-        except ValueError:
-            print("포트 번호가 올바르지 않습니다:", sys.argv[1])
-            return 1
+            return ThreadingHTTPServer(("127.0.0.1", p), Handler), p
+        except OSError as exc:
+            last_err = exc
+    # 그래도 안 되면 운영체제가 비어 있는 포트를 골라 준다.
+    httpd = ThreadingHTTPServer(("127.0.0.1", 0), Handler)
+    return httpd, httpd.server_address[1]
+
+
+def main():
+    args = sys.argv[1:]
+    port = DEFAULT_PORT
+    open_browser = FROZEN          # exe 로 실행하면 기본으로 브라우저를 연다
+    i = 0
+    while i < len(args):
+        a = args[i]
+        if a in ("--open", "-o"):
+            open_browser = True
+        elif a in ("--no-browser", "--no-open"):
+            open_browser = False
+        elif a in ("--port", "-p") and i + 1 < len(args):
+            i += 1
+            try:
+                port = int(args[i])
+            except ValueError:
+                print("포트 번호가 올바르지 않습니다:", args[i])
+                return 1
+        elif a in ("-h", "--help"):
+            print(__doc__)
+            return 0
+        else:
+            try:
+                port = int(a)
+            except ValueError:
+                print("알 수 없는 인자:", a)
+                return 1
+        i += 1
+
     ensure_dirs()
     migrate_old_layout()
-    httpd = ThreadingHTTPServer(("127.0.0.1", port), Handler)
+    httpd, port = bind_server(port)
+    url = "http://localhost:%d/" % port
     print("=" * 60)
     print(" 엽서 카드 서버 실행 중")
-    print("   http://localhost:%d/" % port)
-    print("   버전 폴더 : %s  (슬롯 1~%d, 슬롯마다 html+그림)" % (SAVE_DIR, MAX_VERSIONS))
-    print("   버전 정보 : %s" % CSV_FILE)
+    print("   주소       : %s" % url)
+    print("   저장 폴더  : %s  (슬롯 1~%d)" % (SAVE_DIR, MAX_VERSIONS))
+    print("   버전 정보  : %s" % CSV_FILE)
     print("   기본 템플릿: %s  (덮어쓰지 않음)" % HTML_FILE)
-    print("   (종료: Ctrl+C)")
+    print("   (종료: 이 창을 닫거나 Ctrl+C)")
     print("=" * 60)
+
+    if open_browser:
+        # 서버가 뜨는 사이 약간 기다렸다가 기본 브라우저로 연다.
+        threading.Timer(0.7, lambda: webbrowser.open(url)).start()
+
     try:
         httpd.serve_forever()
     except KeyboardInterrupt:

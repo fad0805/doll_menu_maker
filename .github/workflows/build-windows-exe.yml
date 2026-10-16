@@ -1,0 +1,56 @@
+name: Build Windows EXE
+
+# 실행 방법:
+#  - GitHub 저장소 → Actions 탭 → "Build Windows EXE" → Run workflow
+#  - 또는 v1.0.0 같은 태그를 push 하면 Release 에 exe 가 첨부됩니다.
+on:
+  workflow_dispatch:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: windows-latest
+    steps:
+      - name: 코드 받기
+        uses: actions/checkout@v4
+
+      - name: 파이썬 설치
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: PyInstaller 설치
+        run: python -m pip install --upgrade pip pyinstaller
+
+      - name: exe 빌드
+        run: >
+          python -m PyInstaller --noconfirm --clean --onefile
+          --name doll_menu_maker --console
+          --add-data "postcard-cards.html;."
+          --add-data "postcard-cards.css;."
+          --add-data "postcard-cards.js;."
+          --add-data "themes;themes"
+          --add-data "assets;assets"
+          server.py
+
+      - name: 결과 파일 확인
+        shell: pwsh
+        run: Get-ChildItem dist
+
+      - name: exe 업로드 (Artifacts)
+        uses: actions/upload-artifact@v4
+        with:
+          name: doll_menu_maker-windows
+          path: dist/doll_menu_maker.exe
+          if-no-files-found: error
+
+      - name: 태그면 Release 에도 첨부
+        if: startsWith(github.ref, 'refs/tags/')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/doll_menu_maker.exe
