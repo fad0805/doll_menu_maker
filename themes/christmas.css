@@ -44,7 +44,7 @@ html[data-theme="christmas"]{
   --card-bg:#123a25;
   --card-line:rgba(158,128,66,.50);  /* 엽서 안쪽 테두리: 명도 낮춘 금색 */
   --card-edge:rgba(146,118,58,.62);  /* 엽서 바깥 테두리: 명도 낮춘 금색 */
-  --photo-border:#ffffff;            /* 사진(인화지) 테두리: 흰색 */
+  --photo-border:#dcd7ca;            /* 사진(인화지) 테두리: 명도 낮춘 톤 */
 
   --name-ink:#941a1a;               /* 엽서 이름: 명도 낮춘 딥 레드 */
   --desc-ink:#d9ded7;               /* 엽서 소개 본문: 흰색에서 살짝 낮춘 톤 */
@@ -81,6 +81,7 @@ html[data-theme="christmas"] .head .rule span::before{ content:"❄"; font-size:
    ※ 모두 multiply 로만 겹쳐, 바탕색이 밝아지지 않고 결만 배게 합니다.
    ============================================================ */
 html[data-theme="christmas"] .postcard{
+  --punch:#d9d3c4;                  /* 우표 둘레 펀치 구멍: 명도 낮춤 */
   background-image:
     var(--paper-tex),                                                                      /* 종이 섬유 노이즈 */
     var(--foxing-card),                                                                    /* 빈티지 얼룩 */
@@ -157,11 +158,11 @@ html[data-theme="christmas"] .board::after{
 /* 우표: 어두운 붉은 우표 (특징 버블과 같은 색) */
 html[data-theme="christmas"] .photo .stamp{
   background-color:var(--xmas-red) !important;
-  border-color:rgba(255,238,220,.60);
+  border-color:rgba(206,188,160,.85);   /* 우표 테두리: 명도 낮춤 */
 }
 /* 우표 안: 번호(숫자) 대신 조그만 트리 아이콘 */
 html[data-theme="christmas"] .photo .stamp .face{
-  border-color:rgba(255,238,220,.50);
+  border-color:rgba(196,178,150,.70);   /* 우표 안쪽 점선: 명도 낮춤 */
   font-size:0;                 /* 번호 숨김 */
 }
 html[data-theme="christmas"] .photo .stamp .face::before{
