@@ -218,3 +218,21 @@ html[data-theme="halloween"] .head h1{ font-family:var(--board-font); font-size:
 html[data-theme="halloween"] .info .name{ font-family:var(--board-font); font-size:2.25rem; }
 html[data-theme="halloween"] .info .quote{ font-family:var(--board-font); font-size:1.5rem; }
 html[data-theme="halloween"] .foot{ font-family:var(--board-font); font-size:1.16rem; letter-spacing:.12em; }
+
+/* ============================================================
+   PNG 저장(html2canvas) 보정
+   html2canvas 는 background-blend-mode 를 지원하지 않아,
+   구김(crumple) 텍스처가 불투명하게 엽서 위를 덮어 엽서가 하얗게 저장된다.
+   → 저장하는 동안(body.capturing)에는 블렌딩이 필요 없는 레이어만 남겨
+     엽서 색(주황)이 그대로 나오게 한다.
+   ============================================================ */
+html[data-theme="halloween"] body.capturing .postcard{
+  background-image:
+    var(--paper-tex),
+    var(--foxing-card),
+    radial-gradient(ellipse at 50% 42%, rgba(255,214,150,.20), transparent 64%),
+    radial-gradient(ellipse 135% 125% at 50% 50%, transparent 60%, rgba(78,42,12,.20) 100%);
+  background-size: 240px 240px, 170px 170px, 100% 100%, 100% 100%;
+  background-repeat: repeat, repeat, no-repeat, no-repeat;
+  background-blend-mode: normal;
+}
