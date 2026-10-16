@@ -234,7 +234,9 @@
   }
   .frame > span{
     position:absolute; background-repeat:repeat;
-    filter: drop-shadow(0 2px 3px rgba(15,12,6,.55));
+    /* drop-shadow 필터는 html2canvas(이미지 저장)가 그리지 못해 저장본에서 그림자가 사라진다
+       → 화면·저장본이 같도록 box-shadow 로 대체 */
+    box-shadow: 0 2px 3px rgba(15,12,6,.55);
     opacity: var(--vine-opacity);
   }
   .frame .vine-t{
@@ -411,7 +413,7 @@
     max-height:88%;
     object-fit:contain;
     z-index:1;
-    filter: drop-shadow(2px 3px 3px rgba(30,18,6,.6));
+    box-shadow: 2px 3px 3px rgba(30,18,6,.6);
   }
   /* 사용자가 넣은 사진: 세로 높이 기준으로 이미지칸을 꽉 채움 */
   .photo .art-img.is-user{
@@ -425,7 +427,7 @@
   .photo .art-img:not([src]){ display:none; }
   .photo .glyph{
     font-size:3.7rem;
-    filter: drop-shadow(2px 3px 3px rgba(30,18,6,.65));
+    box-shadow: 2px 3px 3px rgba(30,18,6,.65);
   }
   .photo .stamp-img{ width:100%; height:100%; object-fit:contain; }
   .photo .stamp{
