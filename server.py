@@ -276,6 +276,52 @@ def normalize_for_slot(html):
     return html
 
 
+# ------------------------------------------------------------------ 자동 틀 갱신
+_HTML_OPEN_RE = re.compile(r'<html\b[^>]*>', re.I)
+_BODY_OPEN_RE = re.compile(r'<body\b[^>]*>', re.I)
+_SHEETS_OPEN_RE = re.compile(r'<div\s+class="sheets"[^>]*>', re.I)
+_DIV_TOKEN_RE = re.compile(r'<div\b|</div\s*>', re.I)
+
+
+def _sheets_region(html):
+    m = _SHEETS_OPEN_RE.search(html)
+    if not m:
+        return None
+    depth = 1
+    for t in _DIV_TOKEN_RE.finditer(html, m.end()):
+        if t.group(0).startswith('</'):
+            depth -= 1
+            if depth == 0:
+                return (m.start(), t.end())
+        else:
+            depth += 1
+    return None
+
+
+def upgrade_slot_html(saved):
+    try:
+        with open(HTML_FILE, encoding='utf-8') as fp:
+            template = fp.read()
+    except OSError:
+        return saved
+    sreg = _sheets_region(saved)
+    treg = _sheets_region(template)
+    if not sreg or not treg:
+        return saved
+    content = saved[sreg[0]:sreg[1]]
+    merged = template[:treg[0]] + content + template[treg[1]:]
+    mh = _HTML_OPEN_RE.search(saved)
+    if mh:
+        merged = _HTML_OPEN_RE.sub(lambda _m: mh.group(0), merged, count=1)
+    mb = _BODY_OPEN_RE.search(saved)
+    if mb:
+        merged = _BODY_OPEN_RE.sub(lambda _m: mb.group(0), merged, count=1)
+    merged = normalize_for_slot(merged)
+    if 'class="sheets"' not in merged or 'postcard-cards.js' not in merged:
+        return saved
+    return merged
+
+
 def rewrite_images(html, target_slot, from_slot=None):
     """카드 그림을 target 슬롯 폴더로 모으고 경로를 NN.ext 로 바꾼다.
     (바뀐 html, 이 슬롯에서 실제로 쓰는 파일 이름 집합) 을 돌려준다."""
