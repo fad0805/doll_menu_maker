@@ -1539,6 +1539,10 @@
       if (!hasTheme(id) || id === currentTheme()) return;
       applyTheme(id);
       renderThemes();
+      /* 테마마다 이름의 기준 글씨 크기가 다르므로(예: 할로윈은 크게) 다시 맞춘다.
+         (안 하면 처음 로드한 테마 기준 인라인 크기가 그대로 남아 다른 테마에서 어긋난다) */
+      fitNames();
+      scheduleFit();
       /* 테마는 '보기'만 하는 경우가 많으니 자동 저장하지 않는다.
          실제로 버전에 담으려면 💾(Ctrl+S) 저장을 누른다. */
       screenOnly('🎨 테마를 화면에 적용했어요. 저장하려면 💾(Ctrl+S)를 누르세요.');
