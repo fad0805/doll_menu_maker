@@ -25,7 +25,7 @@ if errorlevel 1 ( echo [오류] PyInstaller 설치 실패 & pause & exit /b 1 )
 echo.
 echo [2/2] exe 빌드 중... (1~2분 걸립니다)
 rem 아이콘을 쓰고 싶으면 assets\icon.ico 를 넣고 아래 줄 끝에  --icon "assets\icon.ico"  를 추가하세요.
-python -m PyInstaller --noconfirm --clean --onefile --name doll_menu_maker --console ^
+python -m PyInstaller --noconfirm --clean --onefile --name doll_menu_maker --windowed ^
   --add-data "postcard-cards.html;." ^
   --add-data "postcard-cards.css;." ^
   --add-data "postcard-cards.js;." ^

@@ -847,6 +847,9 @@
       } else {
         setStatus('오프라인 모드 · 💾 버튼으로 파일에 저장하세요.', false);
       }
+      /* ⏻ 서버 종료 버튼은 서버가 있을 때만 보인다 */
+      var qb = document.getElementById('quitBtn');
+      if (qb) qb.style.display = SERVER.ok ? '' : 'none';
     }
     function pingServer() {
       fetch('/api/ping', { cache: 'no-store' })
@@ -1454,6 +1457,21 @@
       }
     })();
 
+    /* ⏻ 서버 종료 버튼 — 창 없는 exe 에서 앱을 닫을 수 있게 한다 (서버가 있을 때만 보임) */
+    (function ensureQuitButton() {
+      if (document.getElementById('quitBtn')) return;
+      var bar = document.querySelector('.toolbar');
+      if (!bar) return;
+      var btn = document.createElement('button');
+      btn.type = 'button';
+      btn.id = 'quitBtn';
+      btn.title = '서버 종료 (앱 닫기)';
+      btn.setAttribute('aria-label', '서버 종료');
+      btn.textContent = '⏻';
+      btn.style.display = 'none';
+      bar.appendChild(btn);
+    })();
+
     var themeModal = document.getElementById('themePicker');
     var themeList = document.getElementById('themeList');
     var themeBtn = document.getElementById('themeBtn');
@@ -1515,6 +1533,19 @@
     }
     if (themeBtn) themeBtn.addEventListener('click', openThemes);
     if (themeCloseBtn) themeCloseBtn.addEventListener('click', closeThemes);
+    var quitBtn = document.getElementById('quitBtn');
+    if (quitBtn) {
+      quitBtn.addEventListener('click', function () {
+        if (!window.confirm('서버를 종료할까요?\n(저장하지 않은 내용은 사라져요)')) return;
+        quitBtn.disabled = true;
+        fetch('/api/quit', { method: 'POST' }).then(function () {
+          setStatus('서버를 종료했어요. 이 창을 닫아도 됩니다.', true);
+        }).catch(function () {
+          setStatus('종료하지 못했어요. 창을 닫아 주세요.', false);
+          quitBtn.disabled = false;
+        });
+      });
+    }
     if (themeModal) themeModal.querySelector('.editor-backdrop').addEventListener('click', closeThemes);
     document.addEventListener('keydown', function (e) {
       if (e.key === 'Escape' && themeModal && themeModal.classList.contains('open')) closeThemes();

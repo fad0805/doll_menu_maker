@@ -30,7 +30,7 @@ jobs:
       - name: exe 빌드
         run: >
           python -m PyInstaller --noconfirm --clean --onefile
-          --name doll_menu_maker --console
+          --name doll_menu_maker --windowed
           --add-data "postcard-cards.html;."
           --add-data "postcard-cards.css;."
           --add-data "postcard-cards.js;."

@@ -22,7 +22,11 @@
   python3 server.py            # http://localhost:8899/
   python3 server.py 8000       # 포트 지정
   python3 server.py --open     # 실행 후 브라우저 자동 열기
-  (Windows exe 로 실행하면 자동으로 브라우저가 열립니다)
+  python3 server.py --new      # 이미 켜져 있어도 새로 띄우기
+  python3 server.py --no-browser
+  (Windows exe 는 창 없이 뜨고 자동으로 브라우저가 열립니다.
+   이미 켜져 있으면 새로 띄우지 않고 브라우저만 다시 엽니다.
+   종료: 페이지 오른쪽 위 ⏻ 버튼, 또는 Ctrl+C)
 """
 
 import base64
@@ -55,6 +59,11 @@ DEFAULT_PORT = 8899
 MAX_VERSIONS = 5
 CSV_FIELDS = ["slot", "alias", "file", "created"]
 
+APP_ID = "doll_menu_maker"     # '우리 서버'인지 확인하는 표식 (/api/ping)
+REUSE_TRIES = 20               # 이미 떠 있는 서버를 찾을 때 훑어볼 포트 수
+QUIET = FROZEN                 # 창 없는 exe 에서는 요청 로그를 남기지 않는다
+SERVER = None                  # 실행 중인 서버 객체 (종료 버튼용)
+
 EXT_BY_MIME = {
     "jpeg": ".jpg", "jpg": ".jpg", "png": ".png",
     "webp": ".webp", "gif": ".gif", "bmp": ".bmp",
@@ -72,6 +81,29 @@ OLD_SLOT_IMG_FILE_RE = re.compile(r'^slot(\d+)-(\d+)\.([A-Za-z]+)$')
 
 def ensure_dirs():
     os.makedirs(SAVE_DIR, exist_ok=True)
+
+
+def setup_streams():
+    """창 없는 exe(--windowed)에서는 stdout/stderr 가 None 이 된다.
+    그대로 두면 print/로그에서 오류가 나므로 파일(또는 devnull)로 돌려준다."""
+    if sys.stdout is not None and sys.stderr is not None:
+        return
+    stream = None
+    try:
+        os.makedirs(DATA_DIR, exist_ok=True)
+        logpath = os.path.join(DATA_DIR, "doll_menu_maker.log")
+        try:                                  # 로그가 너무 커지면 새로 시작
+            if os.path.isfile(logpath) and os.path.getsize(logpath) > 1_000_000:
+                os.remove(logpath)
+        except OSError:
+            pass
+        stream = open(logpath, "a", encoding="utf-8", buffering=1)
+    except OSError:
+        stream = open(os.devnull, "w")
+    if sys.stdout is None:
+        sys.stdout = stream
+    if sys.stderr is None:
+        sys.stderr = stream
 
 
 def now_str():
@@ -230,6 +262,7 @@ def normalize_root_form(html):
     html = re.sub(r'src="(?:\.\./)*postcard-cards\.js"', 'src="postcard-cards.js"', html)
     html = re.sub(r'href="(?:\.\./)*themes/', 'href="themes/', html)
     html = re.sub(r'src="(?:\.\./)*assets/', 'src="assets/', html)
+    html = re.sub(r'href="(?:\.\./)*assets/', 'href="assets/', html)
     return html
 
 
@@ -239,6 +272,7 @@ def normalize_for_slot(html):
     html = re.sub(r'src="(?:\.\./)*postcard-cards\.js"', 'src="../../postcard-cards.js"', html)
     html = re.sub(r'href="(?:\.\./)*themes/', 'href="../../themes/', html)
     html = re.sub(r'src="(?:\.\./)*assets/', 'src="../../assets/', html)
+    html = re.sub(r'href="(?:\.\./)*assets/', 'href="../../assets/', html)
     return html
 
 
@@ -382,6 +416,8 @@ class Handler(SimpleHTTPRequestHandler):
         super().__init__(*args, directory=ROOT, **kwargs)
 
     def log_message(self, fmt, *args):
+        if QUIET:
+            return
         sys.stderr.write("[server] " + (fmt % args) + "\n")
 
     def translate_path(self, path):
@@ -411,6 +447,14 @@ class Handler(SimpleHTTPRequestHandler):
         self.send_header("Location", location)
         self.send_header("Content-Length", "0")
         self.end_headers()
+
+    def _quit(self):
+        """서버를 종료한다. (창 없는 exe 에서 페이지의 '종료' 버튼이 부른다)"""
+        self._json({"ok": True})
+        srv = SERVER
+        if srv is not None:
+            # serve_forever 는 다른 스레드에서 멈춰야 하므로 스레드로 돌린다.
+            threading.Thread(target=srv.shutdown, daemon=True).start()
 
     def _read_json(self):
         length = int(self.headers.get("Content-Length") or 0)
@@ -456,11 +500,14 @@ class Handler(SimpleHTTPRequestHandler):
         if path == "/api/ping":
             vers = read_versions_clean()
             return self._json({
-                "ok": True, "dir": DATA_DIR, "bundle": ROOT, "html": HTML_BASENAME,
+                "ok": True, "app": APP_ID, "dir": DATA_DIR, "bundle": ROOT,
+                "html": HTML_BASENAME,
                 "newest": newest_slot(vers) or 0, "count": len(vers),
             })
         if path == "/api/versions":
             return self._json(self._versions_json())
+        if path == "/api/quit":          # 브라우저 주소창/링크로도 종료 가능
+            return self._quit()
 
         # 첫 화면(/) 은 '가장 최근 슬롯'으로 안내한다.
         if path in ("/", "/index.html"):
@@ -493,6 +540,8 @@ class Handler(SimpleHTTPRequestHandler):
                 return self._delete_slot()
             if path in ("/api/save", "/api/html"):
                 return self._save_version()
+            if path == "/api/quit":
+                return self._quit()
             return self._json({"ok": False, "error": "not found"}, 404)
         except Exception as exc:  # noqa: BLE001
             return self._json({"ok": False, "error": "%s: %s" % (type(exc).__name__, exc)}, 500)
@@ -660,10 +709,29 @@ def bind_server(start_port, tries=20):
     return httpd, httpd.server_address[1]
 
 
+def find_running(start_port, tries=REUSE_TRIES, timeout=0.5):
+    """start_port 부터 훑어서 '이미 떠 있는 우리 서버'의 포트를 찾는다. 없으면 None."""
+    import urllib.request
+    for p in range(start_port, start_port + tries):
+        try:
+            with urllib.request.urlopen(
+                    "http://127.0.0.1:%d/api/ping" % p, timeout=timeout) as r:
+                data = json.loads(r.read().decode("utf-8"))
+            if isinstance(data, dict) and data.get("app") == APP_ID:
+                return p
+        except Exception:  # noqa: BLE001
+            continue
+    return None
+
+
 def main():
+    global SERVER
+    setup_streams()                # 창 없는 exe 대비 (stdout/stderr 가 None)
+
     args = sys.argv[1:]
     port = DEFAULT_PORT
     open_browser = FROZEN          # exe 로 실행하면 기본으로 브라우저를 연다
+    force_new = False              # 이미 떠 있어도 새로 띄우기
     i = 0
     while i < len(args):
         a = args[i]
@@ -671,6 +739,8 @@ def main():
             open_browser = True
         elif a in ("--no-browser", "--no-open"):
             open_browser = False
+        elif a in ("--new", "--force"):
+            force_new = True
         elif a in ("--port", "-p") and i + 1 < len(args):
             i += 1
             try:
@@ -691,7 +761,20 @@ def main():
 
     ensure_dirs()
     migrate_old_layout()
+
+    # 이미 켜져 있으면 새로 띄우지 않고 브라우저만 열어 준다.
+    # (창 없는 exe 를 또 더블클릭했을 때 서버가 여러 개 생기는 것을 막는다)
+    if not force_new:
+        running = find_running(port)
+        if running is not None:
+            url = "http://localhost:%d/" % running
+            print("이미 실행 중인 서버를 엽니다: %s" % url)
+            if open_browser:
+                webbrowser.open(url)
+            return 0
+
     httpd, port = bind_server(port)
+    SERVER = httpd
     url = "http://localhost:%d/" % port
     print("=" * 60)
     print(" 엽서 카드 서버 실행 중")
@@ -699,7 +782,7 @@ def main():
     print("   저장 폴더  : %s  (슬롯 1~%d)" % (SAVE_DIR, MAX_VERSIONS))
     print("   버전 정보  : %s" % CSV_FILE)
     print("   기본 템플릿: %s  (덮어쓰지 않음)" % HTML_FILE)
-    print("   (종료: 이 창을 닫거나 Ctrl+C)")
+    print("   (종료: 이 창을 닫거나 Ctrl+C, 또는 페이지의 '종료' 버튼)")
     print("=" * 60)
 
     if open_browser:
