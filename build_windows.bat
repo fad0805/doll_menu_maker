@@ -19,8 +19,19 @@ if errorlevel 1 (
 )
 
 echo [1/2] PyInstaller 설치 중...
-python -m pip install --upgrade pip pyinstaller
-if errorlevel 1 ( echo [오류] PyInstaller 설치 실패 & pause & exit /b 1 )
+rem 다운로드가 가끔 끊겨(IncompleteRead) 실패하므로 몇 번 다시 시도합니다.
+set PIP_TRY=0
+:install
+set /a PIP_TRY+=1
+python -m pip install --upgrade pip pyinstaller --timeout 60 --retries 10
+if errorlevel 1 (
+  if %PIP_TRY% lss 5 (
+    echo   설치가 끊겼습니다. 다시 시도합니다... (%PIP_TRY%/5)
+    timeout /t 5 >nul
+    goto install
+  )
+  echo [오류] PyInstaller 설치 실패 & pause & exit /b 1
+)
 
 echo.
 echo [2/2] exe 빌드 중... (1~2분 걸립니다)

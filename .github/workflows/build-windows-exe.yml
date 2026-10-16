@@ -24,8 +24,21 @@ jobs:
         with:
           python-version: "3.12"
 
-      - name: PyInstaller 설치
-        run: python -m pip install --upgrade pip pyinstaller
+      # pip 다운로드가 가끔 끊겨(IncompleteRead) 실패하므로:
+      #  - 넉넉한 타임아웃/재시도 옵션을 주고
+      #  - 실패하면 몇 번 다시 시도한다.
+      - name: PyInstaller 설치 (재시도 포함)
+        shell: pwsh
+        env:
+          PIP_DISABLE_PIP_VERSION_CHECK: "1"
+        run: |
+          for ($i = 1; $i -le 6; $i++) {
+            python -m pip install --upgrade pip pyinstaller --timeout 60 --retries 10
+            if ($LASTEXITCODE -eq 0) { break }
+            Write-Host "::warning::pip 설치 실패 → 다시 시도합니다 ($i/6)"
+            Start-Sleep -Seconds 8
+          }
+          if ($LASTEXITCODE -ne 0) { throw "PyInstaller 설치에 실패했습니다. (네트워크 오류면 다시 Run workflow)" }
 
       - name: exe 빌드
         run: >
