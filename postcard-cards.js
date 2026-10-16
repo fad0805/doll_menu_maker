@@ -970,6 +970,9 @@
       });
       var wasCapturing = document.body.classList.contains('capturing');
       if (wasCapturing) document.body.classList.remove('capturing');
+      /* 플로팅 UI 숨김 상태는 화면 전용 → 저장물에는 담지 않는다 */
+      var wasUIHidden = document.body.classList.contains('hide-ui');
+      if (wasUIHidden) document.body.classList.remove('hide-ui');
       if (statusEl) statusEl.textContent = '';
       var verListEl = document.getElementById('verList');          /* 버전 목록은 저장하지 않음 */
       var verSaved = verListEl ? verListEl.innerHTML : null;
@@ -988,6 +991,7 @@
       if (hadPrev) f.preview.setAttribute('src', prevPrev);
       openModals.forEach(function (m, i) { m.classList.add('open'); if (modalAria[i] != null) m.setAttribute('aria-hidden', modalAria[i]); });
       if (wasCapturing) document.body.classList.add('capturing');
+      if (wasUIHidden) document.body.classList.add('hide-ui');
       cards.forEach(function (c, i) {
         var im = c.querySelector('.art-img');
         setImg(im, savedSrc[i], savedUser[i]);
@@ -1515,6 +1519,57 @@
       btn.textContent = '⏻';
       btn.style.display = 'none';
       bar.appendChild(btn);
+    })();
+
+    /* ============ 플로팅 메뉴 숨김/표시 ============
+       화면의 플로팅 UI(왼쪽 위 안내·개수상자, 하단 프레임 이동, 오른쪽 툴바)를
+       👁 버튼이나 H 키로 한 번에 감춘다. 감춘 상태에서도 오른쪽 아래 👁 버튼으로
+       다시 꺼내올 수 있고, 이 상태는 저장물(html)에 담기지 않는다(화면 전용). */
+    (function setupUIToggle() {
+      /* 예전에 저장한 슬롯에는 버튼이 없을 수 있으니 없으면 만들어 넣는다. */
+      var bar = document.querySelector('.toolbar');
+      if (bar && !document.getElementById('uiToggleBtn')) {
+        var b = document.createElement('button');
+        b.type = 'button'; b.id = 'uiToggleBtn';
+        b.title = '플로팅 메뉴 숨기기 (H)';
+        b.setAttribute('aria-label', '플로팅 메뉴 숨기기');
+        b.textContent = '👁';
+        bar.appendChild(b);
+      }
+      if (!document.getElementById('uiReveal')) {
+        var r = document.createElement('button');
+        r.type = 'button'; r.id = 'uiReveal'; r.className = 'ui-reveal';
+        r.setAttribute('data-html2canvas-ignore', 'true');
+        r.title = '플로팅 메뉴 보이기 (H)';
+        r.setAttribute('aria-label', '플로팅 메뉴 보이기');
+        r.textContent = '👁';
+        document.body.appendChild(r);
+      }
+
+      function uiHidden() { return document.body.classList.contains('hide-ui'); }
+      function setUIHidden(on) {
+        document.body.classList.toggle('hide-ui', !!on);
+      }
+      function toggleUI() { setUIHidden(!uiHidden()); }
+
+      var toggleBtn = document.getElementById('uiToggleBtn');
+      var revealBtn = document.getElementById('uiReveal');
+      if (toggleBtn) toggleBtn.addEventListener('click', function () { setUIHidden(true); });
+      if (revealBtn) revealBtn.addEventListener('click', function () { setUIHidden(false); });
+
+      /* H 키로 토글 — 입력칸에 글을 쓰는 중이거나 창(모달)이 열려 있으면 무시 */
+      document.addEventListener('keydown', function (e) {
+        if (e.ctrlKey || e.metaKey || e.altKey) return;
+        /* 한글 입력모드에서도 동작하도록 물리 키(code)를 우선 본다 */
+        if (!(e.code === 'KeyH' || e.key === 'h' || e.key === 'H' || e.key === 'ㅗ')) return;
+        if (e.repeat) return;
+        var t = e.target;
+        var tag = (t && t.tagName) ? t.tagName.toUpperCase() : '';
+        if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT' || (t && t.isContentEditable)) return;
+        if (document.querySelector('.editor.open')) return;
+        e.preventDefault();
+        toggleUI();
+      });
     })();
 
     var themeModal = document.getElementById('themePicker');

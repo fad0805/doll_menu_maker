@@ -893,3 +893,31 @@
   .theme-row .t-name{ font-family:var(--myeongjo); font-weight:800; font-size:1rem; color:#3a2c18; }
   .theme-row .t-desc{ display:block; font-family:var(--myeongjo); font-size:.82rem; color:#7a6647; margin-top:3px; }
   .theme-row .t-badge{ font-family:var(--myeongjo); font-size:.78rem; color:#6a5636; white-space:nowrap; }
+
+  /* ================= 플로팅 메뉴 숨김/표시 =================
+     👁 버튼이나 H 키로 화면의 모든 플로팅 UI(안내·개수상자,
+     프레임 이동, 오른쪽 툴바)를 한 번에 감춘다. 감춘 상태에서도
+     오른쪽 아래 👁 버튼(uiReveal)으로 다시 꺼내올 수 있다. */
+  body.hide-ui .topleft,
+  body.hide-ui .frame-nav,
+  body.hide-ui .toolbar{ display:none !important; }
+
+  /* 감춘 상태에서만 나타나는 되돌림 버튼 (툴바와 같은 자리) */
+  .ui-reveal{
+    position:fixed; right:26px; bottom:26px; z-index:99;
+    width:44px; height:44px; padding:0; cursor:pointer;
+    display:none; align-items:center; justify-content:center;
+    font-family:var(--myeongjo); font-size:1.25rem; line-height:1;
+    color:#2c1c0c; border:none; border-radius:50%;
+    background:linear-gradient(#efdcb2,#d3b57c);
+    box-shadow:0 6px 16px rgba(0,0,0,.45), 0 1px 0 #fff8ea inset;
+    opacity:.42; transition:opacity .15s ease, transform .15s ease;
+  }
+  .ui-reveal:hover{ opacity:1; transform:translateY(-2px); }
+  .ui-reveal:focus-visible{ opacity:1; outline:2px dashed rgba(124,93,56,.85); outline-offset:2px; }
+  body.hide-ui .ui-reveal{ display:inline-flex; }
+  body.capturing .ui-reveal{ display:none !important; }
+
+  @media print{
+    .frame-nav, .ui-reveal{ display:none !important; }
+  }
