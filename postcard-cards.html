@@ -739,9 +739,10 @@
 </main>
 </div>
 
-<!-- 왼쪽 위 플로팅: 파일 설명 + 엽서 개수 -->
+<!-- 왼쪽 위 플로팅: 슬롯 배지 + 엽서 개수 (도움말은 CSS 로 화면 맨 아래 왼쪽에 고정) -->
 <div class="topleft" data-html2canvas-ignore="true">
-  <span class="hint">엽서·제목을 클릭해 고치고 · 바꾼 내용은 서버 <b>save 폴더</b>에 버전으로 저장 · 그림은 <b>images 폴더</b>에 저장 · <b>🕘</b> 버튼으로 버전 불러오기</span>
+  <!-- 지금 켜둔 슬롯(번호 + 별칭) 표시 · 누르면 버전 창 -->
+  <button class="slot-badge" id="slotBadge" type="button" style="display:none" title="지금 켜둔 슬롯">🏷️ 슬롯 —</button>
   <div class="counter">
     <span class="clabel">엽서 개수</span>
     <div class="crow">
@@ -752,6 +753,7 @@
     <input type="range" id="cntRange" min="1" max="36" step="1" value="9" aria-label="엽서 개수">
     <span class="cnote">1~36장 · 한 장(프레임)에 9장, 넘으면 오른쪽으로</span>
   </div>
+  <span class="hint">엽서·제목을 클릭해 고치고 · 바꾼 내용은 서버 <b>save 폴더</b>에 버전으로 저장 · 그림은 <b>images 폴더</b>에 저장 · <b>🕘</b> 버튼으로 버전 불러오기</span>
 </div>
 
 <!-- 프레임 이동 표시 (프레임이 2개 이상일 때만 보임) -->

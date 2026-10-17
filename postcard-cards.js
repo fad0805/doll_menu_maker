@@ -857,6 +857,7 @@
       /* ⏻ 서버 종료 버튼은 서버가 있을 때만 보인다 */
       var qb = document.getElementById('quitBtn');
       if (qb) qb.style.display = SERVER.ok ? '' : 'none';
+      refreshSlotBadge();   /* 지금 켜둔 슬롯 배지 갱신 */
     }
     function pingServer() {
       fetch('/api/ping', { cache: 'no-store' })
@@ -930,7 +931,9 @@
         .then(function (j) {
           if (j && j.ok) {
             if (!pageSlot && j.slot) pageSlot = j.slot;   /* 처음 만든 슬롯을 기억 */
+            if (j.alias) slotAlias = j.alias;
             setStatus('✅ 저장했어요 · 슬롯 ' + j.slot + (j.alias ? ' (' + j.alias + ')' : ''), true);
+            refreshSlotBadge();   /* 지금 켜둔 슬롯 배지 갱신 */
             reconcileImages();   /* 파일에서 지운 그림은 서버에서도 삭제 */
           } else {
             setStatus('저장 실패: ' + ((j && j.error) || '알 수 없음'), false);
@@ -1313,6 +1316,55 @@
       verModal.setAttribute('aria-hidden', 'false');
       renderVersions();
     }
+
+    /* ---- 지금 켜둔 슬롯(번호 + 별칭)을 화면 왼쪽 위에 띄운다 ---- */
+    var slotBadge = document.getElementById('slotBadge');
+    if (!slotBadge) {
+      /* 예전에 저장한 슬롯에는 배지가 없을 수 있으니 만들어 넣는다 */
+      var topLeft = document.querySelector('.topleft');
+      if (topLeft) {
+        slotBadge = document.createElement('button');
+        slotBadge.type = 'button';
+        slotBadge.id = 'slotBadge';
+        slotBadge.className = 'slot-badge';
+        slotBadge.setAttribute('data-html2canvas-ignore', 'true');
+        slotBadge.style.display = 'none';
+        slotBadge.textContent = '🏷️ 슬롯 —';
+        topLeft.insertBefore(slotBadge, topLeft.firstChild);
+      }
+    }
+    var slotAlias = '';   /* 지금 슬롯의 별칭 캐시 */
+    function paintSlotBadge() {
+      if (!slotBadge) return;
+      if (!SERVER.ok) { slotBadge.style.display = 'none'; return; }
+      slotBadge.style.display = '';
+      if (pageSlot) {
+        slotBadge.textContent = '🏷️ 슬롯 ' + pageSlot + (slotAlias ? ' · ' + slotAlias : ' · 별칭 없음');
+        slotBadge.title = '지금 켜둔 슬롯 ' + pageSlot + (slotAlias ? ' (' + slotAlias + ')' : '') + ' · 눌러서 버전 창 열기';
+        slotBadge.classList.remove('is-template');
+      } else {
+        slotBadge.textContent = '🏷️ 기본 템플릿 · 아직 슬롯 없음';
+        slotBadge.title = '아직 저장된 슬롯이 없어요(기본 템플릿) · 눌러서 버전 창 열기';
+        slotBadge.classList.add('is-template');
+      }
+    }
+    /* 지금 슬롯의 별칭을 서버에서 다시 읽어 배지에 반영 */
+    function refreshSlotBadge() {
+      if (!slotBadge) return;
+      if (!SERVER.ok || !pageSlot) { slotAlias = ''; paintSlotBadge(); return; }
+      fetch('/api/versions', { cache: 'no-store' })
+        .then(function (r) { return r.json(); })
+        .then(function (j) {
+          if (j && j.ok) {
+            var v = null;
+            (j.versions || []).forEach(function (x) { if (x.slot === pageSlot) v = x; });
+            slotAlias = (v && v.alias) ? v.alias : '';
+          }
+          paintSlotBadge();
+        })
+        .catch(function () { paintSlotBadge(); });
+    }
+    if (slotBadge) slotBadge.addEventListener('click', openVersions);
     /* 지금 화면을 특정 슬롯에 저장 */
     function saveIntoSlot(slot) {
       if (!SERVER.ok) { setStatus('서버에 연결되어야 슬롯에 저장할 수 있어요.', false); return; }
@@ -1328,6 +1380,7 @@
             if (slot === pageSlot) pageSlot = null;   /* 지금 슬롯을 지웠으면 기억을 비운다 */
             setStatus('🗑️ ' + (j.message || ('슬롯 ' + slot + '을(를) 삭제했어요.')), true);
             renderVersionRows(j.versions || []);
+            refreshSlotBadge();   /* 지금 슬롯을 지웠으면 배지도 갱신 */
           } else {
             setStatus('삭제 실패: ' + ((j && j.error) || '알 수 없음'), false);
           }
@@ -1340,7 +1393,9 @@
           if (j && j.ok) {
             if (j.message) setStatus('🏷️ ' + j.message, true);
             if (verMaxNote && j.max) { verMax = j.max; verMaxNote.textContent = '(최대 ' + j.max + '개)'; }
+            slotAlias = (String(slot) === String(pageSlot)) ? (alias || '') : slotAlias;
             renderVersionRows(j.versions || []);
+            paintSlotBadge();   /* 지금 슬롯의 별칭이 바뀌었으면 배지도 갱신 */
           } else {
             setStatus('별칭 저장 실패: ' + ((j && j.error) || '알 수 없음'), false);
           }

@@ -582,6 +582,21 @@
   /* 실제로 누를 수 있는 것은 개수 조절 상자뿐 */
   .topleft .counter{ pointer-events:auto; }
 
+  /* 지금 켜둔 슬롯(번호 + 별칭) 배지 · 누르면 버전 창 */
+  .topleft .slot-badge{
+    pointer-events:auto;
+    display:inline-flex; align-items:center; gap:7px;
+    max-width:min(100%, 460px);
+    padding:8px 15px; border-radius:999px; cursor:pointer;
+    font-family:var(--myeongjo); font-size:.98rem; line-height:1.2; color:#f3e6cd;
+    background:rgba(20,16,10,.82); border:none;
+    box-shadow:0 6px 16px rgba(0,0,0,.45), inset 0 0 0 1px rgba(243,230,205,.22);
+    transition:transform .12s ease;
+    white-space:nowrap; overflow:hidden; text-overflow:ellipsis;
+  }
+  .topleft .slot-badge:hover{ transform:translateY(-1px); }
+  .topleft .slot-badge.is-template{ opacity:.82; }
+
   /* 프레임 이동 표시 (프레임이 2개 이상일 때만 하단 가운데) */
   .frame-nav{
     position:fixed; left:50%; bottom:26px; transform:translateX(-50%);
@@ -605,12 +620,15 @@
   .frame-nav button:disabled{ opacity:.32; cursor:default; transform:none; }
   .frame-nav .frame-ind{ min-width:66px; text-align:center; letter-spacing:.06em; font-size:1rem; }
 
+  /* 도움말 안내: 화면 맨 아래 왼쪽에 고정 (아래 가운데 프레임 이동·오른쪽 툴바와 겹치지 않게 폭 제한) */
   .hint{
+    position:fixed; left:18px; bottom:26px; z-index:99;
     font-family: var(--myeongjo);
     font-size:1rem; color:#f3e6cd;
     background:rgba(0,0,0,.5);
     padding:8px 13px; border-radius:6px;
-    white-space:nowrap; line-height:1.4;
+    line-height:1.4;
+    max-width:min(680px, calc(50vw - 130px));
   }
   .toolbar .status{
     position:absolute; right:0; bottom:calc(100% + 10px);   /* 버튼 줄 위쪽에 뜨는 알림 */
