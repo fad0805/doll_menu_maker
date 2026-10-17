@@ -1177,6 +1177,7 @@
           })(),
           scale: (function () {
             var s = Math.max(1.5, Math.min(2, window.devicePixelRatio || 1.5));
+            s = s / 2;                                            /* 해상도를 절반으로 → 용량 절감 */
             if (1754 * s > 8000) s = Math.max(1, 8000 / 1754);   /* 프레임 한 장이 너무 커지지 않게 */
             return s;
           })(),
