@@ -117,9 +117,11 @@
       var natW = baseBoard.offsetWidth || 1754;
       var natH = baseBoard.offsetHeight || 1700;
       var cs = getComputedStyle(sheetsEl);
-      var padX = (parseFloat(cs.paddingLeft) || 0) + (parseFloat(cs.paddingRight) || 0);
       var padY = (parseFloat(cs.paddingTop) || 0) + (parseFloat(cs.paddingBottom) || 0);
-      var availW = sheetsEl.clientWidth - padX;
+      /* 기준 좌우 여백은 34px 로 고정해 두고 계산한다(실제 여백은 아래에서 다시 잡음)
+         → 여백을 바꿔도 배율 계산이 흔들리지 않는다 */
+      var BASE_PAD = 34;
+      var availW = sheetsEl.clientWidth - BASE_PAD * 2;
       var availH = sheetsEl.clientHeight - padY;
       if (availW <= 0 || availH <= 0) return;
       var z = Math.min(availW / natW, availH / natH, 1);   /* 1을 넘겨 확대하진 않음 */
@@ -127,6 +129,13 @@
       /* 내림: 딱 맞을 때 미세한 넘침으로 스크롤바가 뜨는 것을 막는다 */
       z = Math.floor(z * 1000) / 1000;
       frameBoards.forEach(function (b) { b.style.zoom = String(z); });
+      /* 좌우 '끝' 프레임도 포커스 시 화면 가운데로 올 수 있도록
+         양옆에 (남는 폭의 절반)만큼 여백을 준다.
+         프레임이 화면에 꽉 차면 예전처럼 34px 그대로. */
+      var shownW = natW * z;
+      var side = Math.max(BASE_PAD, Math.round((sheetsEl.clientWidth - shownW) / 2));
+      sheetsEl.style.paddingLeft = side + 'px';
+      sheetsEl.style.paddingRight = side + 'px';
       /* 화면에 맞을 땐 스크롤이 없고, 브라우저 확대 등으로 넘칠 때만 스크롤되게 */
       sheetsEl.style.overflowY = 'auto';
     }
@@ -746,6 +755,34 @@
     if (framePrev) framePrev.addEventListener('click', function () { scrollFrameTo(curFrame - 1); });
     if (frameNext) frameNext.addEventListener('click', function () { scrollFrameTo(curFrame + 1); });
 
+    /* ===== 포커스(키보드 탭)로 들어온 프레임을 화면 가운데로 =====
+       좌우 '끝' 프레임도 중앙에 올 수 있게 fitBoard 가 양옆 여백을 절반씩 잡아 준다.
+       (마우스 클릭/드래그로 생긴 포커스는 화면이 튀지 않게 건너뛴다) */
+    var pointerFocusAt = 0;
+    document.addEventListener('pointerdown', function () { pointerFocusAt = Date.now(); }, true);
+    if (sheetsEl) {
+      sheetsEl.addEventListener('focusin', function (e) {
+        if (Date.now() - pointerFocusAt < 250) return;
+        var t = e.target;
+        if (!t || !t.closest) return;
+        var board = t.closest('.board');
+        if (!board || !sheetsEl.contains(board)) return;
+        var cr = sheetsEl.getBoundingClientRect();
+        var br = board.getBoundingClientRect();
+        if (br.width >= cr.width - 1) {
+          /* 프레임이 화면보다 넓을 때(브라우저 확대 등)는 포커스된 엽서를 가운데로 */
+          var card = t.closest('.postcard') || t;
+          var r = card.getBoundingClientRect();
+          var target = sheetsEl.scrollLeft + (r.left - cr.left) - (cr.width - r.width) / 2;
+          var maxS = sheetsEl.scrollWidth - sheetsEl.clientWidth;
+          sheetsEl.scrollLeft = Math.max(0, Math.min(maxS, target));
+          return;
+        }
+        var idx = frameBoards.indexOf(board);
+        if (idx >= 0) scrollFrameTo(idx);
+      });
+    }
+
     function setCount(n, focusLast) {
       n = Math.max(1, Math.min(cards.length, parseInt(n, 10) || 1));
       currentN = n;
@@ -850,7 +887,7 @@
     }
     function setServerMode() {
       if (SERVER.ok) {
-        setStatus('서버 연결됨 · 고친 내용은 save 폴더에 버전으로 저장돼요. (🕘 버전 / 💾 저장)', true);
+        setStatus('서버 연결됨 · 고친 내용은 save 폴더에 버전으로 저장돼요. (버전 / 저장 버튼)', true);
       } else {
         setStatus('오프라인 모드 · 💾 버튼으로 파일에 저장하세요.', false);
       }
@@ -1459,7 +1496,7 @@
       { id: 'modern',  name: '모던 시크', desc: '블랙앤화이트 · 회색 사진 · 검은 특징 버블 · 올고딕' },
       { id: 'halloween', name: '할로윈', desc: '보라 벽 · 녹색 도는 늙은 나무 액자 · 주황빛 빈티지 엽서' },
       { id: 'christmas', name: '크리스마스', desc: '짙은 남색 밤하늘 액자 속 · 클래식 나무 액자(홀리 덩굴·전구줄) · 짙은 초록 엽서(흰 글씨·금색) · 눈/선물' },
-      { id: 'queerpride', name: '퀴어프라이드', desc: '은은한 레인보우 바이올린 톤 · 딥 바이올렛 엽서 · 무광 차콜 액자' }
+      { id: 'queerpride', name: '퀴어프라이드', desc: '무지개 프라이드 · 연한 회색 액자 · 왼쪽 기둥에 끈으로 묶인 연한 프라이드 깃발(엽서 뒤 배경) · 핑크 엽서' }
     ];
     var DEFAULT_THEME = 'classic';
 

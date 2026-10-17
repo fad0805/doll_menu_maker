@@ -217,4 +217,4 @@ html[data-theme="halloween"] .head .date{ font-family:var(--board-font); font-si
 html[data-theme="halloween"] .head h1{ font-family:var(--board-font); font-size:3.95rem; }
 html[data-theme="halloween"] .info .name{ font-family:var(--board-font); font-size:2.25rem; }
 html[data-theme="halloween"] .info .quote{ font-family:var(--board-font); font-size:1.5rem; }
-html[data-theme="halloween"] .foot{ font-family:var(--board-font); font-size:1.16rem; letter-spacing:.12em; }
+html[data-theme="halloween"] .foot{ font-family:var(--board-font); font-size:1.16rem; letter-spacing:.12em; text-shadow:0 1px 2px rgba(0,0,0,.8), 0 0 12px rgba(255,140,30,.30); }

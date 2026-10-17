@@ -1,93 +1,255 @@
 /* ============================================================
    테마: 퀴어프라이드   id = "queerpride"
    ------------------------------------------------------------
-   퀴어 프라이드 바이올린 레인보우 무지개를 중심으로,
-   엽서에는 명도 낮춘 딥 레인보우, 나무 액자는 중성적 무광으로,
-   사진 테두리는 흰색 유지. 가독성을 위한 대비 보정.
+   무지개(레인보우) 프라이드 컨셉.
+   · 벽      : 무지개 빛이 은은하게 번지는 밝은 배경
+   · 액자    : 연한 회색 몰딩(은은한 광택 + 입체 베벨)
+   · 마운트  : 트랜스 깃발 하늘색, 채도 낮춘 파스텔 (#c7dfed)
+               — 흰 구름 + 왼쪽 세로 프레임을 폴대로 삼아 펄럭이는 프라이드 깃발
+                 (폴대에 바짝 붙지 않고 위·아래를 끈으로 묶어 물결치는 모양)
+   · 머릿말/꼬릿말 : 트랜스 깃발 핑크 계열, 채도 낮춘 글자 (제목은 더 진하게)
+   · 엽서    : 연한 핑크 종이 + 무지개 세로 구분선 / 점선 / 칩 / 테이프
+   · 우표    : 우표 안쪽이 엽서마다 다른 프라이드 깃발 18종
+               (아로마틱 · 에이섹슈얼 깃발 반드시 포함)
+   · 글씨    : 트랜스 깃발 색을 배치 (가독성 우선)
+               이름=트랜스 하늘 · 영문 부제=트랜스 핑크 · 본문=채도 뺀 짙은 회색
+               특징 칩=흰 배경 통일 + 글씨는 본문과 같은 회색(테두리만 하늘·핑크·회색 순환)
+               · 한마디=트랜스 하늘 (사진 테두리는 흰색 = 트랜스 깃발의 흰 줄)
+   덩굴(이파리) 장식은 무지개와 어울리지 않아 쓰지 않아요.
    ============================================================ */
 
 html[data-theme="queerpride"]{
-  /* 벽: 레인보우가 은은하게 스미도록 반투명 무지개 그라데이션 */
-  --wall-base:#faf7ff;
+  /* 벽: 무지개가 은은하게 번지도록 반투명 무지개 그라데이션 (채도 낮춘 톤) */
+  --wall-base:#fbf9ff;
   --wall-image:
-    radial-gradient(ellipse at 50% 6%, rgba(255,0,128,.10), transparent 62%),
-    radial-gradient(ellipse at 78% 18%, rgba(0,128,255,.10), transparent 64%),
-    radial-gradient(ellipse at 22% 18%, rgba(0,255,128,.10), transparent 64%),
-    radial-gradient(ellipse at 50% 110%, rgba(255,255,255,.72), transparent 78%),
+    radial-gradient(ellipse 80% 120% at 14% 0%,  rgba(199,93,93,.16),   transparent 60%),
+    radial-gradient(ellipse 80% 120% at 37% 0%,  rgba(206,163,110,.16),  transparent 60%),
+    radial-gradient(ellipse 80% 120% at 60% 0%,  rgba(206,190,110,.20),  transparent 60%),
+    radial-gradient(ellipse 80% 120% at 82% 0%,  rgba(47,142,75,.15),    transparent 60%),
+    radial-gradient(ellipse 92% 130% at 28% 100%, rgba(110,139,206,.15), transparent 64%),
+    radial-gradient(ellipse 92% 130% at 76% 100%, rgba(135,56,147,.17),  transparent 64%),
     var(--grain-2),
-    linear-gradient(180deg, #fbf7ff 0%, #f7f1ff 55%, #f2ebff 100%);
-  --wall-blend: soft-light, soft-light, soft-light, normal, overlay, normal;
-  --wall-size:  100% 100%, 100% 100%, 100% 100%, 100% 100%, 600px 600px, 100% 100%;
+    linear-gradient(180deg, #ffffff 0%, #f8f5ff 52%, #efe9ff 100%);
+  --wall-blend: soft-light, soft-light, soft-light, soft-light, soft-light, soft-light, overlay, normal;
+  --wall-size:  100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 100% 100%, 600px 600px, 100% 100%;
 
-  /* 액자: 무광 차콜 트위스트 */
-  --wood-deep:#1b1b1d;
-  --wood-dark:#2a2a2e;
-  --wood-mid:#4a4a50;
-  --wood-light:#6f6f75;
-  --wood-panel:#3a3a40;
+  /* 액자: 연한 회색 몰딩 (아래 .board 규칙에서 색·베벨을 잡아요) */
+  --wood-deep:#9c9ca3;
+  --wood-dark:#b0b0b7;
+  --wood-mid:#cccdd2;
+  --wood-light:#dcdce1;
+  --wood-panel:#cccdd2;
 
-  /* 마운트: 담백한 아이보리/그레이믹스 (무지개를 부각) */
-  --mount-bg:#f5f4f7;
-  --vine-opacity:.92;
+  /* 마운트(액자 배경): 트랜스 깃발 하늘색 — 채도 낮춘 파스텔 톤 */
+  --mount-bg:#c7dfed;
+  /* 마운트 위 흰 구름 무늬 — 흐림을 줄여 윤곽을 또렷하게 얹어요.
+     (data URI 라 저장기로 만든 저장본에도 그대로 들어가요) */
+  --mount-clouds:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI5MDAiIGhlaWdodD0iNjQwIiB2aWV3Qm94PSIwIDAgOTAwIDY0MCI+CjxkZWZzPjxmaWx0ZXIgaWQ9ImMiIHg9Ii0zNSUiIHk9Ii0zNSUiIHdpZHRoPSIxNzAlIiBoZWlnaHQ9IjE3MCUiPjxmZUdhdXNzaWFuQmx1ciBzdGREZXZpYXRpb249IjgiLz48L2ZpbHRlcj48L2RlZnM+CjxnIGZpbHRlcj0idXJsKCNjKSIgZmlsbD0iI2ZmZmZmZiI+CjxlbGxpcHNlIGN4PSIxNTAiIGN5PSIxMjAiIHJ4PSIxOTAiIHJ5PSI3NCIgb3BhY2l0eT0iMC44OCIvPgo8ZWxsaXBzZSBjeD0iMzYwIiBjeT0iODYiICByeD0iMTY1IiByeT0iNjIiIG9wYWNpdHk9IjAuNzAiLz4KPGVsbGlwc2UgY3g9IjY2MCIgY3k9IjE1MCIgcng9IjIwNSIgcnk9Ijg0IiBvcGFjaXR5PSIwLjgwIi8+CjxlbGxpcHNlIGN4PSIyMzAiIGN5PSIzNDAiIHJ4PSIyMTUiIHJ5PSI5MCIgb3BhY2l0eT0iMC42NCIvPgo8ZWxsaXBzZSBjeD0iNjAwIiBjeT0iMzkwIiByeD0iMTkwIiByeT0iODAiIG9wYWNpdHk9IjAuNzQiLz4KPGVsbGlwc2UgY3g9IjEzMCIgY3k9IjUyMCIgcng9IjE3MCIgcnk9IjcyIiBvcGFjaXR5PSIwLjU0Ii8+CjxlbGxpcHNlIGN4PSI3NzAiIGN5PSI1NDAiIHJ4PSIxNjUiIHJ5PSI3MCIgb3BhY2l0eT0iMC42NCIvPgo8L2c+Cjwvc3ZnPgo=");
+  --mount-flag:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMTgwIiBoZWlnaHQ9Ijk0MCIgdmlld0JveD0iMCAwIDExODAgOTQwIj48ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9InNoZWVuIiB4MT0iMCIgeTE9IjAiIHgyPSIwLjg1IiB5Mj0iMSI+PHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZmZmZmIiBzdG9wLW9wYWNpdHk9IjAuMzQiLz48c3RvcCBvZmZzZXQ9IjAuNDUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wNiIvPjxzdG9wIG9mZnNldD0iMC43MiIgc3RvcC1jb2xvcj0iIzAwMDAwMCIgc3RvcC1vcGFjaXR5PSIwLjEwIi8+PHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjMDAwMDAwIiBzdG9wLW9wYWNpdHk9IjAuMjIiLz48L2xpbmVhckdyYWRpZW50PjwvZGVmcz48ZyBvcGFjaXR5PSIwLjIiPjxwYXRoIGQ9Ik02LjAsNjYuMEw0MC43LDY4LjdMNzUuNCw3MS44TDExMC4xLDc1LjJMMTQ0LjgsNzguN0wxNzkuNCw4Mi4yTDIxNC4xLDg1LjNMMjQ4LjgsODguMEwyODMuNSw5MC4wTDMxOC4yLDkxLjFMMzUyLjksOTEuM0wzODcuNiw5MC40TDQyMi4zLDg4LjVMNDU2LjksODUuN0w0OTEuNiw4MS45TDUyNi4zLDc3LjZMNTYxLjAsNzIuOEw1OTUuNyw2Ny45TDYzMC40LDYzLjNMNjY1LjEsNTkuMUw2OTkuOCw1NS44TDczNC40LDUzLjZMNzY5LjEsNTIuOUw4MDMuOCw1My43TDgzOC41LDU2LjJMODczLjIsNjAuNUw5MDcuOSw2Ni40TDk0Mi42LDczLjlMOTc3LjMsODIuN0wxMDExLjksOTIuNEwxMDQ2LjYsMTAyLjZMMTA4MS4zLDExMy4wTDExMTYuMCwxMjMuMEwxMTE2LjYsMjU2LjRMMTA4Mi4xLDI0Ni4zTDEwNDcuNiwyMzYuMEwxMDEzLjAsMjI1LjdMOTc4LjUsMjE2LjBMOTQ0LjAsMjA3LjJMOTA5LjUsMTk5LjhMODc1LjAsMTkzLjhMODQwLjUsMTg5LjZMODA1LjksMTg3LjBMNzcxLjQsMTg2LjJMNzM2LjksMTg3LjBMNzAyLjQsMTg5LjFMNjY3LjksMTkyLjRMNjMzLjMsMTk2LjZMNTk4LjgsMjAxLjNMNTY0LjMsMjA2LjJMNTI5LjgsMjEwLjlMNDk1LjMsMjE1LjNMNDYwLjcsMjE5LjBMNDI2LjIsMjIxLjhMMzkxLjcsMjIzLjdMMzU3LjIsMjI0LjZMMzIyLjcsMjI0LjRMMjg4LjEsMjIzLjNMMjUzLjYsMjIxLjNMMjE5LjEsMjE4LjdMMTg0LjYsMjE1LjVMMTUwLjEsMjEyLjBMMTE1LjYsMjA4LjVMODEuMCwyMDUuMUw0Ni41LDIwMi4wTDEyLjAsMTk5LjNaIiBmaWxsPSIjZTQwMzAzIi8+PHBhdGggZD0iTTEyLjAsMTk5LjNMNDYuNSwyMDIuMEw4MS4wLDIwNS4xTDExNS42LDIwOC41TDE1MC4xLDIxMi4wTDE4NC42LDIxNS41TDIxOS4xLDIxOC43TDI1My42LDIyMS4zTDI4OC4xLDIyMy4zTDMyMi43LDIyNC40TDM1Ny4yLDIyNC42TDM5MS43LDIyMy43TDQyNi4yLDIyMS44TDQ2MC43LDIxOS4wTDQ5NS4zLDIxNS4zTDUyOS44LDIxMC45TDU2NC4zLDIwNi4yTDU5OC44LDIwMS4zTDYzMy4zLDE5Ni42TDY2Ny45LDE5Mi40TDcwMi40LDE4OS4xTDczNi45LDE4Ny4wTDc3MS40LDE4Ni4yTDgwNS45LDE4Ny4wTDg0MC41LDE4OS42TDg3NS4wLDE5My44TDkwOS41LDE5OS44TDk0NC4wLDIwNy4yTDk3OC41LDIxNi4wTDEwMTMuMCwyMjUuN0wxMDQ3LjYsMjM2LjBMMTA4Mi4xLDI0Ni4zTDExMTYuNiwyNTYuNEwxMTE3LjAsMzg5LjdMMTA4Mi42LDM3OS43TDEwNDguMiwzNjkuM0wxMDEzLjksMzU5LjBMOTc5LjUsMzQ5LjNMOTQ1LjEsMzQwLjZMOTEwLjcsMzMzLjFMODc2LjMsMzI3LjJMODQxLjksMzIyLjlMODA3LjUsMzIwLjRMNzczLjEsMzE5LjVMNzM4LjcsMzIwLjNMNzA0LjMsMzIyLjVMNjY5LjksMzI1LjhMNjM1LjUsMzI5LjlMNjAxLjEsMzM0LjZMNTY2LjcsMzM5LjVMNTMyLjMsMzQ0LjNMNDk3LjksMzQ4LjZMNDYzLjUsMzUyLjNMNDI5LjEsMzU1LjJMMzk0LjcsMzU3LjFMMzYwLjMsMzU3LjlMMzI1LjksMzU3LjhMMjkxLjYsMzU2LjZMMjU3LjIsMzU0LjdMMjIyLjgsMzUyLjBMMTg4LjQsMzQ4LjhMMTU0LjAsMzQ1LjRMMTE5LjYsMzQxLjlMODUuMiwzMzguNUw1MC44LDMzNS4zTDE2LjQsMzMyLjdaIiBmaWxsPSIjZmY4YzAwIi8+PHBhdGggZD0iTTE2LjQsMzMyLjdMNTAuOCwzMzUuM0w4NS4yLDMzOC41TDExOS42LDM0MS45TDE1NC4wLDM0NS40TDE4OC40LDM0OC44TDIyMi44LDM1Mi4wTDI1Ny4yLDM1NC43TDI5MS42LDM1Ni42TDMyNS45LDM1Ny44TDM2MC4zLDM1Ny45TDM5NC43LDM1Ny4xTDQyOS4xLDM1NS4yTDQ2My41LDM1Mi4zTDQ5Ny45LDM0OC42TDUzMi4zLDM0NC4zTDU2Ni43LDMzOS41TDYwMS4xLDMzNC42TDYzNS41LDMyOS45TDY2OS45LDMyNS44TDcwNC4zLDMyMi41TDczOC43LDMyMC4zTDc3My4xLDMxOS41TDgwNy41LDMyMC40TDg0MS45LDMyMi45TDg3Ni4zLDMyNy4yTDkxMC43LDMzMy4xTDk0NS4xLDM0MC42TDk3OS41LDM0OS4zTDEwMTMuOSwzNTkuMEwxMDQ4LjIsMzY5LjNMMTA4Mi42LDM3OS43TDExMTcuMCwzODkuN0wxMTE3LjIsNTIzLjBMMTA4Mi44LDUxMy4wTDEwNDguNSw1MDIuNkwxMDE0LjEsNDkyLjRMOTc5LjgsNDgyLjdMOTQ1LjUsNDczLjlMOTExLjEsNDY2LjRMODc2LjgsNDYwLjVMODQyLjQsNDU2LjJMODA4LjAsNDUzLjdMNzczLjcsNDUyLjlMNzM5LjQsNDUzLjZMNzA1LjAsNDU1LjhMNjcwLjYsNDU5LjFMNjM2LjMsNDYzLjNMNjAyLjAsNDY3LjlMNTY3LjYsNDcyLjhMNTMzLjMsNDc3LjZMNDk4LjksNDgxLjlMNDY0LjYsNDg1LjdMNDMwLjIsNDg4LjVMMzk1LjksNDkwLjRMMzYxLjUsNDkxLjNMMzI3LjEsNDkxLjFMMjkyLjgsNDkwLjBMMjU4LjQsNDg4LjBMMjI0LjEsNDg1LjNMMTg5LjgsNDgyLjJMMTU1LjQsNDc4LjdMMTIxLjAsNDc1LjJMODYuNyw0NzEuOEw1Mi40LDQ2OC43TDE4LjAsNDY2LjBaIiBmaWxsPSIjZmZkNDAwIi8+PHBhdGggZD0iTTE4LjAsNDY2LjBMNTIuNCw0NjguN0w4Ni43LDQ3MS44TDEyMS4wLDQ3NS4yTDE1NS40LDQ3OC43TDE4OS44LDQ4Mi4yTDIyNC4xLDQ4NS4zTDI1OC40LDQ4OC4wTDI5Mi44LDQ5MC4wTDMyNy4xLDQ5MS4xTDM2MS41LDQ5MS4zTDM5NS45LDQ5MC40TDQzMC4yLDQ4OC41TDQ2NC42LDQ4NS43TDQ5OC45LDQ4MS45TDUzMy4zLDQ3Ny42TDU2Ny42LDQ3Mi44TDYwMi4wLDQ2Ny45TDYzNi4zLDQ2My4zTDY3MC42LDQ1OS4xTDcwNS4wLDQ1NS44TDczOS40LDQ1My42TDc3My43LDQ1Mi45TDgwOC4wLDQ1My43TDg0Mi40LDQ1Ni4yTDg3Ni44LDQ2MC41TDkxMS4xLDQ2Ni40TDk0NS41LDQ3My45TDk3OS44LDQ4Mi43TDEwMTQuMSw0OTIuNEwxMDQ4LjUsNTAyLjZMMTA4Mi44LDUxMy4wTDExMTcuMiw1MjMuMEwxMTE3LjAsNjU2LjRMMTA4Mi42LDY0Ni4zTDEwNDguMiw2MzYuMEwxMDEzLjksNjI1LjdMOTc5LjUsNjE2LjBMOTQ1LjEsNjA3LjJMOTEwLjcsNTk5LjhMODc2LjMsNTkzLjhMODQxLjksNTg5LjZMODA3LjUsNTg3LjBMNzczLjEsNTg2LjJMNzM4LjcsNTg3LjBMNzA0LjMsNTg5LjFMNjY5LjksNTkyLjRMNjM1LjUsNTk2LjZMNjAxLjEsNjAxLjNMNTY2LjcsNjA2LjJMNTMyLjMsNjEwLjlMNDk3LjksNjE1LjNMNDYzLjUsNjE5LjBMNDI5LjEsNjIxLjhMMzk0LjcsNjIzLjdMMzYwLjMsNjI0LjZMMzI1LjksNjI0LjRMMjkxLjYsNjIzLjNMMjU3LjIsNjIxLjNMMjIyLjgsNjE4LjdMMTg4LjQsNjE1LjVMMTU0LjAsNjEyLjBMMTE5LjYsNjA4LjVMODUuMiw2MDUuMUw1MC44LDYwMi4wTDE2LjQsNTk5LjNaIiBmaWxsPSIjMDA4MDI2Ii8+PHBhdGggZD0iTTE2LjQsNTk5LjNMNTAuOCw2MDIuMEw4NS4yLDYwNS4xTDExOS42LDYwOC41TDE1NC4wLDYxMi4wTDE4OC40LDYxNS41TDIyMi44LDYxOC43TDI1Ny4yLDYyMS4zTDI5MS42LDYyMy4zTDMyNS45LDYyNC40TDM2MC4zLDYyNC42TDM5NC43LDYyMy43TDQyOS4xLDYyMS44TDQ2My41LDYxOS4wTDQ5Ny45LDYxNS4zTDUzMi4zLDYxMC45TDU2Ni43LDYwNi4yTDYwMS4xLDYwMS4zTDYzNS41LDU5Ni42TDY2OS45LDU5Mi40TDcwNC4zLDU4OS4xTDczOC43LDU4Ny4wTDc3My4xLDU4Ni4yTDgwNy41LDU4Ny4wTDg0MS45LDU4OS42TDg3Ni4zLDU5My44TDkxMC43LDU5OS44TDk0NS4xLDYwNy4yTDk3OS41LDYxNi4wTDEwMTMuOSw2MjUuN0wxMDQ4LjIsNjM2LjBMMTA4Mi42LDY0Ni4zTDExMTcuMCw2NTYuNEwxMTE2LjYsNzg5LjdMMTA4Mi4xLDc3OS43TDEwNDcuNiw3NjkuM0wxMDEzLjAsNzU5LjBMOTc4LjUsNzQ5LjNMOTQ0LjAsNzQwLjZMOTA5LjUsNzMzLjFMODc1LjAsNzI3LjJMODQwLjUsNzIyLjlMODA1LjksNzIwLjRMNzcxLjQsNzE5LjVMNzM2LjksNzIwLjNMNzAyLjQsNzIyLjVMNjY3LjksNzI1LjhMNjMzLjMsNzI5LjlMNTk4LjgsNzM0LjZMNTY0LjMsNzM5LjVMNTI5LjgsNzQ0LjNMNDk1LjMsNzQ4LjZMNDYwLjcsNzUyLjNMNDI2LjIsNzU1LjJMMzkxLjcsNzU3LjFMMzU3LjIsNzU3LjlMMzIyLjcsNzU3LjhMMjg4LjEsNzU2LjZMMjUzLjYsNzU0LjdMMjE5LjEsNzUyLjBMMTg0LjYsNzQ4LjhMMTUwLjEsNzQ1LjRMMTE1LjYsNzQxLjlMODEuMCw3MzguNUw0Ni41LDczNS4zTDEyLjAsNzMyLjdaIiBmaWxsPSIjMjQ0MDhlIi8+PHBhdGggZD0iTTEyLjAsNzMyLjdMNDYuNSw3MzUuM0w4MS4wLDczOC41TDExNS42LDc0MS45TDE1MC4xLDc0NS40TDE4NC42LDc0OC44TDIxOS4xLDc1Mi4wTDI1My42LDc1NC43TDI4OC4xLDc1Ni42TDMyMi43LDc1Ny44TDM1Ny4yLDc1Ny45TDM5MS43LDc1Ny4xTDQyNi4yLDc1NS4yTDQ2MC43LDc1Mi4zTDQ5NS4zLDc0OC42TDUyOS44LDc0NC4zTDU2NC4zLDczOS41TDU5OC44LDczNC42TDYzMy4zLDcyOS45TDY2Ny45LDcyNS44TDcwMi40LDcyMi41TDczNi45LDcyMC4zTDc3MS40LDcxOS41TDgwNS45LDcyMC40TDg0MC41LDcyMi45TDg3NS4wLDcyNy4yTDkwOS41LDczMy4xTDk0NC4wLDc0MC42TDk3OC41LDc0OS4zTDEwMTMuMCw3NTkuMEwxMDQ3LjYsNzY5LjNMMTA4Mi4xLDc3OS43TDExMTYuNiw3ODkuN0wxMTE2LjAsOTIzLjBMMTA4MS4zLDkxMy4wTDEwNDYuNiw5MDIuNkwxMDExLjksODkyLjRMOTc3LjMsODgyLjdMOTQyLjYsODczLjlMOTA3LjksODY2LjRMODczLjIsODYwLjVMODM4LjUsODU2LjJMODAzLjgsODUzLjdMNzY5LjEsODUyLjlMNzM0LjQsODUzLjZMNjk5LjgsODU1LjhMNjY1LjEsODU5LjFMNjMwLjQsODYzLjNMNTk1LjcsODY3LjlMNTYxLjAsODcyLjhMNTI2LjMsODc3LjZMNDkxLjYsODgxLjlMNDU2LjksODg1LjdMNDIyLjMsODg4LjVMMzg3LjYsODkwLjRMMzUyLjksODkxLjNMMzE4LjIsODkxLjFMMjgzLjUsODkwLjBMMjQ4LjgsODg4LjBMMjE0LjEsODg1LjNMMTc5LjQsODgyLjJMMTQ0LjgsODc4LjdMMTEwLjEsODc1LjJMNzUuNCw4NzEuOEw0MC43LDg2OC43TDYuMCw4NjYuMFoiIGZpbGw9IiM3MzI5ODIiLz48cGF0aCBkPSJNNi4wLDY2LjBMNDAuNyw2OC43TDc1LjQsNzEuOEwxMTAuMSw3NS4yTDE0NC44LDc4LjdMMTc5LjQsODIuMkwyMTQuMSw4NS4zTDI0OC44LDg4LjBMMjgzLjUsOTAuMEwzMTguMiw5MS4xTDM1Mi45LDkxLjNMMzg3LjYsOTAuNEw0MjIuMyw4OC41TDQ1Ni45LDg1LjdMNDkxLjYsODEuOUw1MjYuMyw3Ny42TDU2MS4wLDcyLjhMNTk1LjcsNjcuOUw2MzAuNCw2My4zTDY2NS4xLDU5LjFMNjk5LjgsNTUuOEw3MzQuNCw1My42TDc2OS4xLDUyLjlMODAzLjgsNTMuN0w4MzguNSw1Ni4yTDg3My4yLDYwLjVMOTA3LjksNjYuNEw5NDIuNiw3My45TDk3Ny4zLDgyLjdMMTAxMS45LDkyLjRMMTA0Ni42LDEwMi42TDEwODEuMywxMTMuMEwxMTE2LjAsMTIzLjBMMTExNi4wLDkyMy4wTDEwODEuMyw5MTMuMEwxMDQ2LjYsOTAyLjZMMTAxMS45LDg5Mi40TDk3Ny4zLDg4Mi43TDk0Mi42LDg3My45TDkwNy45LDg2Ni40TDg3My4yLDg2MC41TDgzOC41LDg1Ni4yTDgwMy44LDg1My43TDc2OS4xLDg1Mi45TDczNC40LDg1My42TDY5OS44LDg1NS44TDY2NS4xLDg1OS4xTDYzMC40LDg2My4zTDU5NS43LDg2Ny45TDU2MS4wLDg3Mi44TDUyNi4zLDg3Ny42TDQ5MS42LDg4MS45TDQ1Ni45LDg4NS43TDQyMi4zLDg4OC41TDM4Ny42LDg5MC40TDM1Mi45LDg5MS4zTDMxOC4yLDg5MS4xTDI4My41LDg5MC4wTDI0OC44LDg4OC4wTDIxNC4xLDg4NS4zTDE3OS40LDg4Mi4yTDE0NC44LDg3OC43TDExMC4xLDg3NS4yTDc1LjQsODcxLjhMNDAuNyw4NjguN0w2LjAsODY2LjBMNy4yLDg0MS4wTDguMyw4MTYuMEw5LjUsNzkxLjBMMTAuNiw3NjYuMEwxMS43LDc0MS4wTDEyLjcsNzE2LjBMMTMuNiw2OTEuMEwxNC41LDY2Ni4wTDE1LjMsNjQxLjBMMTYuMCw2MTYuMEwxNi42LDU5MS4wTDE3LjEsNTY2LjBMMTcuNSw1NDEuMEwxNy44LDUxNi4wTDE3LjksNDkxLjBMMTguMCw0NjYuMEwxNy45LDQ0MS4wTDE3LjgsNDE2LjBMMTcuNSwzOTEuMEwxNy4xLDM2Ni4wTDE2LjYsMzQxLjBMMTYuMCwzMTYuMEwxNS4zLDI5MS4wTDE0LjUsMjY2LjBMMTMuNiwyNDEuMEwxMi43LDIxNi4wTDExLjcsMTkxLjBMMTAuNiwxNjYuMEw5LjUsMTQxLjBMOC4zLDExNi4wTDcuMiw5MS4wTDYuMCw2Ni4wWiIgZmlsbD0idXJsKCNzaGVlbikiLz48Zz48ZWxsaXBzZSBjeD0iMTUuMCIgY3k9IjcyLjAiIHJ4PSIyOC41IiByeT0iMjAuNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOGQ3YTU1IiBzdHJva2Utd2lkdGg9IjExLjQiIG9wYWNpdHk9IjAuODUiLz48ZWxsaXBzZSBjeD0iMTUuMCIgY3k9IjcyLjAiIHJ4PSIyOC41IiByeT0iMjAuNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWZlNmNmIiBzdHJva2Utd2lkdGg9IjYuOSIvPjxjaXJjbGUgY3g9IjM3LjgiIGN5PSI3Mi4wIiByPSIxMC4yIiBmaWxsPSIjZWZlNmNmIiBzdHJva2U9IiM4ZDdhNTUiIHN0cm9rZS13aWR0aD0iMy42Ii8+PHBhdGggZD0iTTM5LjAgNzkuMiBDNDkuNSA5OS4wIDMzLjAgMTEyLjUgMjIuNSAxMjMuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjYzhiNjhmIiBzdHJva2Utd2lkdGg9IjYuOSIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PHBhdGggZD0iTTM5LjAgNzkuMiBDNDkuNSA5OS4wIDMzLjAgMTEyLjUgMjIuNSAxMjMuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWZlNmNmIiBzdHJva2Utd2lkdGg9IjMuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjxnPjxlbGxpcHNlIGN4PSIxNS4wIiBjeT0iODcyLjAiIHJ4PSIyOC41IiByeT0iMjAuNCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjOGQ3YTU1IiBzdHJva2Utd2lkdGg9IjExLjQiIG9wYWNpdHk9IjAuODUiLz48ZWxsaXBzZSBjeD0iMTUuMCIgY3k9Ijg3Mi4wIiByeD0iMjguNSIgcnk9IjIwLjQiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2VmZTZjZiIgc3Ryb2tlLXdpZHRoPSI2LjkiLz48Y2lyY2xlIGN4PSIzNy44IiBjeT0iODcyLjAiIHI9IjEwLjIiIGZpbGw9IiNlZmU2Y2YiIHN0cm9rZT0iIzhkN2E1NSIgc3Ryb2tlLXdpZHRoPSIzLjYiLz48cGF0aCBkPSJNMzkuMCA4NzkuMiBDNDkuNSA4OTkuMCAzMy4wIDkxMi41IDIyLjUgOTIzLjAiIGZpbGw9Im5vbmUiIHN0cm9rZT0iI2M4YjY4ZiIgc3Ryb2tlLXdpZHRoPSI2LjkiIHN0cm9rZS1saW5lY2FwPSJyb3VuZCIvPjxwYXRoIGQ9Ik0zOS4wIDg3OS4yIEM0OS41IDg5OS4wIDMzLjAgOTEyLjUgMjIuNSA5MjMuMCIgZmlsbD0ibm9uZSIgc3Ryb2tlPSIjZWZlNmNmIiBzdHJva2Utd2lkdGg9IjMuMyIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIi8+PC9nPjwvZz48L3N2Zz4=");
+  --vine-opacity:0;   /* 덩굴(이파리) 장식 없음 — 무지개와 어울리지 않아 제거 */
 
-  /* 머릿말/꼬릿말 글자 */
-  --head-title:#2a1b4c;
-  --head-rule-c:rgba(80,60,120,.88);
-  --rule-c:     rgba(100,80,140,.54);
-  --divider-c:  rgba(120,100,160,.88);
-  --sepia:#4a2f6b;
-  --pen:#5a3f7f;
-  --pen-red:#7f4aa0;
-  --ink:#f5f2fa;
+  /* 머릿말/꼬릿말 글자 — 트랜스 깃발 핑크 계열 (제목은 더 진하게, 채도는 낮춤) */
+  --head-title:#d06a8b;        /* 제목: 한 단계 더 진한 핑크 (채도 낮춤) */
+  --head-rule-c:rgba(120,80,190,.85);
+  --rule-c:     rgba(120,90,190,.55);
+  --divider-c:  rgba(130,95,200,.85);
+  --sepia:#dd90a8;
+  --pen:#dd90a8;
+  --pen-red:#dd90a8;
+  --ink:#241640;
 
-  /* 엽서: 딥 레인보우 톤(명도 낮춤) */
-  --card-bg:#e2dbf0;           /* 라벤더 베이스 */
-  --card-line:rgba(110,70,160,.38);
-  --card-edge:rgba(100,65,150,.42);
-  --photo-border:#ffffff;      /* 사진 테두리 흰색 유지 */
+  /* 엽서: 연한 핑크 종이 (트랜스 깃발의 핑크) */
+  --card-bg:#fce3ee;
+  --card-line:rgba(216,132,170,.42);
+  --card-edge:rgba(202,112,152,.45);
+  --photo-border:#ffffff;      /* 사진 테두리 흰색 = 트랜스 깃발의 흰 줄 */
 
-  --name-ink:#3a1f5c;          /* 딥 바이올렛 */
-  --desc-ink:#2b1f4a;          /* 차분한 네이비 바이올렛 */
-  --accent-red:#6f4fb5;        /* 퍼플-로즈 */
-  --chip-border:rgba(110,70,160,.55);
-  --chip-ink:#2f1f4f;
-  --chip-bg:rgba(244,239,255,.75);
+  --name-ink:#2b93c6;          /* 이름: 트랜스 하늘 */
+  --desc-ink:#3f3f42;          /* 본문: 채도 뺀 짙은 회색 (가독성 우선) */
+  --accent-red:#d6467f;        /* 영문 부제: 트랜스 핑크 */
+  --chip-border:rgba(120,150,190,.55);
+  --chip-ink:var(--desc-ink);   /* 특징 글씨 = 본문 글씨와 같은 회색 */
+  --chip-bg:rgba(255,255,255,.6);
 
-  --foot-line:rgba(120,90,180,.76);
+  --foot-line:rgba(120,90,190,.7);
 }
 
-/* 엽서 상단 살짝의 무지개 헤더 띠(배경과 조화되게 저명도) */
-html[data-theme="queerpride"] .info .name{
-  padding-top:6px;
-  border-top:6px solid transparent;
-  border-image-slice:1;
-  border-image-source: linear-gradient(90deg,
-    #7f5ae5 0%,
-    #a17aff 20%,
-    #c17aff 40%,
-    #ff6fbf 60%,
-    #ff9f80 80%,
-    #ffd27f 100%);
-  border-image-width:6px 0 0 0;
-  border-image-outset:0 0 4px 0;
-  opacity:.9;
+/* ================= 액자: 연한 회색 몰딩 ================= */
+html[data-theme="queerpride"] .board{
+  background-color:#cccdd2;
+  background-image:
+    /* 위에서 비스듬히 드는 빛(입체 하이라이트) */
+    linear-gradient(135deg, rgba(255,255,255,.70) 0%, rgba(255,255,255,0) 30%, rgba(0,0,0,0) 70%, rgba(0,0,0,.16) 100%),
+    var(--grain-2);
+  background-blend-mode: soft-light, overlay;
+  background-size: 100% 100%, 600px 600px;
+  box-shadow:
+    inset 2px 2px 0 rgba(255,255,255,.72),
+    inset -2px -2px 0 rgba(0,0,0,.10),
+    /* 몰딩 단면(계단식 베벨) — 밝은 회색에 맞춘 옅은 홈 */
+    inset 0 0 0 2px rgba(140,140,152,.44),
+    inset 0 0 0 6px rgba(255,255,255,.72),
+    inset 0 0 0 9px rgba(140,140,152,.30),
+    inset 0 0 0 15px rgba(255,255,255,.44),
+    inset 0 0 0 20px rgba(140,140,152,.24),
+    inset 0 0 0 28px rgba(255,255,255,.32),
+    inset 0 0 0 36px rgba(140,140,152,.20),
+    inset 0 0 0 48px rgba(140,140,152,.15),
+    /* 안쪽으로 꺼진 마운트 그림자 */
+    inset 0 0 80px 30px rgba(96,96,110,.22),
+    inset 0 0 22px 6px rgba(96,96,110,.18),
+    /* 벽에 걸린 듯한 바깥 그림자 */
+    0 70px 130px rgba(0,0,0,.34),
+    0 22px 40px rgba(0,0,0,.24),
+    0 4px 10px rgba(0,0,0,.20);
 }
 
-/* 마운트 위에 은은한 레인보우 링(저채도, PNG 저장 시 과도한 빛 남지 않게) */
-html[data-theme="queerpride"] .board::after{
-  content:"";
-  position:absolute; left:44px; right:44px; bottom:12px;
-  height:110px; border-radius:18px;
+/* 마운트(액자 배경): 트랜스 깃발 하늘색 파스텔 (#c7dfed)
+   — 채도를 낮춘 차분한 하늘 판 위에 흰 구름을 얹고,
+     왼쪽 세로 프레임(액자 기둥)을 폴대로 삼아 프라이드 깃발이 펄럭여요.
+     깃발은 폴대에 바짝 붙지 않고, 위·아래 두 곳을 '끈'으로 묶어
+     (위아래로 옮길 수 있는 것처럼) 가운데가 살짝 떠서 물결쳐요. */
+html[data-theme="queerpride"] .board::before{
+  background-color:#c7dfed;
+  background-image:var(--mount-flag), var(--mount-clouds);
+  background-size:1180px auto, cover;
+  background-repeat:no-repeat, no-repeat;
+  background-position:left top, center;
+  box-shadow:
+    inset 0 0 0 1px rgba(130,175,205,.30),
+    inset 0 0 0 9px rgba(110,160,195,.05),
+    /* 몰딩이 드리우는 위쪽 그림자(입체감) — 옅게 */
+    inset 0 16px 22px -10px rgba(70,120,160,.14),
+    inset 0 -10px 18px -10px rgba(255,255,255,.75),
+    inset 0 0 90px 14px rgba(90,140,180,.09);
+}
+
+/* 낡음/바랜 자국: 하늘색 마운트를 위해 표시하지 않음 */
+html[data-theme="queerpride"] .patina{ display:none; }
+
+/* ================= 머릿말 / 꼬릿말 ================= */
+/* 제목: 밝은 벽 위에서 차분한 핑크 그림자로 또렷하게 */
+html[data-theme="queerpride"] .head h1{
+  text-shadow: 0 1px 0 rgba(255,255,255,.8), 1px 2px 6px rgba(180,95,125,.34);
+}
+/* 머릿말 장식선: 무지개 실선 (채도 낮춤) */
+html[data-theme="queerpride"] .head .rule::before,
+html[data-theme="queerpride"] .head .rule::after{
+  height:2px; opacity:.7;
+  background: linear-gradient(90deg,
+    transparent,
+    #c75d5d, #cea36e, #cebe6e, #2f8e4b, #6e8bce, #873893,
+    transparent);
+}
+/* 꼬릿말 위 구분선: 꼬릿말 글씨와 같은 핑크 실선
+   (border-image 로 그리면 저장기(Chrome)가 -webkit-border-image … fill 로 복사해
+    가운데까지 칠해지므로, 배경 띠로 그려 화면·저장본을 똑같이 맞춘다) */
+html[data-theme="queerpride"] .foot{
+  border-top:0;
+  padding-top:17px;                 /* 띠 1px + 기존 여백 16px */
+  background-image: linear-gradient(90deg, #dd90a8, #dd90a8);
+  background-repeat:no-repeat;
+  background-size:100% 1px;
+  background-position:0 0;
+  box-shadow:none;
+}
+
+/* 제목·꼬릿말 클릭 편집 안내: 핑크 글로우 */
+html[data-theme="queerpride"] .head [data-head]:hover,
+html[data-theme="queerpride"] .foot [data-head]:hover{
+  box-shadow: inset 0 0 0 1px rgba(208,106,139,.7), 0 0 20px rgba(208,106,139,.5);
+}
+html[data-theme="queerpride"] .head [data-head]:focus-visible,
+html[data-theme="queerpride"] .foot [data-head]:focus-visible{
+  outline:2px dashed rgba(208,106,139,.9); outline-offset:3px;
+}
+
+/* ================= 엽서 ================= */
+/* (이름 위 무지개 헤더 띠는 쓰지 않아요) */
+
+/* 사진과 설명 사이 세로 구분선: 무지개 세로 띠 (채도 낮춤) */
+html[data-theme="queerpride"] .info::before{
+  width:2px; left:7px;
+  background: linear-gradient(180deg,
+    #c75d5d, #cea36e, #cebe6e, #2f8e4b, #6e8bce, #873893);
+  box-shadow:none; opacity:.7;
+}
+
+/* 설명 구분선: 점선 대신 무지개 실선 (채도 낮춤) */
+html[data-theme="queerpride"] .info .divider{
+  height:2px; border-radius:2px; opacity:.5;
+  background: linear-gradient(90deg,
+    rgba(199,93,93,.9), rgba(206,163,110,.9), rgba(206,190,110,.9),
+    rgba(47,142,75,.9), rgba(110,139,206,.9), rgba(135,56,147,.9));
+}
+
+/* 특징 칩: 흰 배경으로 통일하고, 테두리만 트랜스 깃발 3색을 순환 (하늘 → 핑크 → 흰색 회색)
+   흰 줄은 흰 칩으로 표현하되, 글씨는 본문과 같은 회색으로 맞춰 차분하게 읽혀요. */
+html[data-theme="queerpride"] .info .traits li{
+  border-style:solid; border-width:1.5px;
+  background:#ffffff;
+}
+html[data-theme="queerpride"] .info .traits li:nth-child(3n+1){ border-color:#4bb8e8; }
+html[data-theme="queerpride"] .info .traits li:nth-child(3n+2){ border-color:#e88aa4; }
+html[data-theme="queerpride"] .info .traits li:nth-child(3n+3){ border-color:rgba(150,150,185,.75); }
+
+/* 한마디: 트랜스 하늘 (이름과 같은 색으로 깃발의 위·아래 하늘 줄을 맞춰요) */
+html[data-theme="queerpride"] .info .quote{ color:#2b93c6; }
+
+/* 테이프: 무지개 셀로판 테이프 (채도 낮춤) */
+html[data-theme="queerpride"] .postcard .tape{
   background:
-    radial-gradient(60% 120% at 50% 10%, transparent 56%, rgba(127,90,229,.12) 100%),
-    conic-gradient(from 180deg at 50% 20%,
-      rgba(127,90,229,.14) 0deg 60deg,
-      rgba(161,122,255,.14) 60deg 120deg,
-      rgba(193,122,255,.14) 120deg 180deg,
-      rgba(255,111,191,.14) 180deg 240deg,
-      rgba(255,159,128,.14) 240deg 300deg,
-      rgba(255,210,127,.14) 300deg 360deg);
-  background-blend-mode:multiply, normal;
-  filter:saturate(.88);
-  z-index:1; pointer-events:none;
+    linear-gradient(180deg, rgba(255,255,255,.50), rgba(255,255,255,.18) 42%, rgba(255,255,255,.30) 78%, rgba(255,255,255,.42)),
+    linear-gradient(90deg,
+      rgba(199,93,93,.30), rgba(206,163,110,.30), rgba(206,190,110,.34),
+      rgba(47,142,75,.28), rgba(110,139,206,.30), rgba(135,56,147,.30));
+  border-top:1px solid rgba(255,255,255,.50);
+  border-bottom:1px solid rgba(255,255,255,.34);
 }
+/* ================= 우표(스탬프) 안쪽 = 프라이드 플래그 =================
+   엽서마다 우표 안쪽이 서로 다른 프라이드 깃발이에요 (18종, 프레임마다 9종씩).
+   · 아로마틱 · 에이섹슈얼 깃발은 반드시 포함.
+   · 가로 줄무늬를 우표 안쪽 가득 채우고, 숫자(01…)는 가려요. */
+html[data-theme="queerpride"] .photo .stamp .face{
+  border:0;
+  color:transparent;
+  background-image:var(--stamp-flag);
+  background-size:100% 100%;
+}
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(1){ --stamp-flag:linear-gradient(180deg, #e40303 0% 16.6667%, #ff8c00 16.6667% 33.3333%, #ffd400 33.3333% 50%, #008026 50% 66.6667%, #24408e 66.6667% 83.3333%, #732982 83.3333% 100%); } /* Rainbow */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(2){ --stamp-flag:linear-gradient(180deg, #5bcefa 0% 20%, #f5a9b8 20% 40%, #ffffff 40% 60%, #f5a9b8 60% 80%, #5bcefa 80% 100%); } /* Trans */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(3){ --stamp-flag:linear-gradient(180deg, #d60270 0% 33.3333%, #9b4f96 33.3333% 66.6667%, #0038a8 66.6667% 100%); } /* Bisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(4){ --stamp-flag:linear-gradient(180deg, #ff218c 0% 33.3333%, #ffd800 33.3333% 66.6667%, #21b1ff 66.6667% 100%); } /* Pansexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(5){ --stamp-flag:linear-gradient(180deg, #fcf434 0% 25%, #ffffff 25% 50%, #9c59d1 50% 75%, #2c2c2c 75% 100%); } /* Nonbinary */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(6){ --stamp-flag:linear-gradient(180deg, #d52d00 0% 14.2857%, #ef7627 14.2857% 28.5714%, #ff9a56 28.5714% 42.8571%, #ffffff 42.8571% 57.1429%, #d162a4 57.1429% 71.4286%, #b55690 71.4286% 85.7143%, #a30262 85.7143% 100%); } /* Lesbian */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(7){ --stamp-flag:linear-gradient(180deg, #3da542 0% 20%, #a7d379 20% 40%, #ffffff 40% 60%, #a9a9a9 60% 80%, #000000 80% 100%); } /* Aromantic */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(8){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #800080 75% 100%); } /* Asexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(1) .deck .postcard:nth-of-type(9){ --stamp-flag:linear-gradient(180deg, #ff75a2 0% 20%, #ffffff 20% 40%, #be18d6 40% 60%, #000000 60% 80%, #333ebd 80% 100%); } /* Genderfluid */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(1){ --stamp-flag:linear-gradient(180deg, #000000 0% 14.2857%, #b9b9b9 14.2857% 28.5714%, #ffffff 28.5714% 42.8571%, #b8f483 42.8571% 57.1429%, #ffffff 57.1429% 71.4286%, #b9b9b9 71.4286% 85.7143%, #000000 85.7143% 100%); } /* Agender */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(2){ --stamp-flag:linear-gradient(180deg, #b57edc 0% 33.3333%, #ffffff 33.3333% 66.6667%, #4a8123 66.6667% 100%); } /* Genderqueer */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(3){ --stamp-flag:linear-gradient(180deg, #c47900 0% 20%, #e8b323 20% 40%, #ffffff 40% 60%, #b3b3b3 60% 80%, #6a3a9e 80% 100%); } /* Bigender */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(4){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #6e0070 75% 100%); } /* Demisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(5){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #3da542 75% 100%); } /* Demiromantic */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(6){ --stamp-flag:linear-gradient(180deg, #f61cb9 0% 33.3333%, #07d569 33.3333% 66.6667%, #1c92f6 66.6667% 100%); } /* Polysexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(7){ --stamp-flag:linear-gradient(180deg, #ff9ecb 0% 20%, #ff53bd 20% 40%, #2c2c2c 40% 60%, #5049cc 60% 80%, #8f8fff 80% 100%); } /* Omnisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(8){ --stamp-flag:linear-gradient(180deg, #ffd800 0% 50%, #7a3f9d 50% 100%); } /* Intersex */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(2) .deck .postcard:nth-of-type(9){ --stamp-flag:linear-gradient(180deg, #e28c00 0% 20%, #eccc00 20% 40%, #ffffff 40% 60%, #62b0dc 60% 80%, #1f4fa8 80% 100%); } /* Aroace */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(1){ --stamp-flag:linear-gradient(180deg, #d52d00 0% 14.2857%, #ef7627 14.2857% 28.5714%, #ff9a56 28.5714% 42.8571%, #ffffff 42.8571% 57.1429%, #d162a4 57.1429% 71.4286%, #b55690 71.4286% 85.7143%, #a30262 85.7143% 100%); } /* Lesbian */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(2){ --stamp-flag:linear-gradient(180deg, #3da542 0% 20%, #a7d379 20% 40%, #ffffff 40% 60%, #a9a9a9 60% 80%, #000000 80% 100%); } /* Aromantic */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(3){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #800080 75% 100%); } /* Asexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(4){ --stamp-flag:linear-gradient(180deg, #ff75a2 0% 20%, #ffffff 20% 40%, #be18d6 40% 60%, #000000 60% 80%, #333ebd 80% 100%); } /* Genderfluid */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(5){ --stamp-flag:linear-gradient(180deg, #e40303 0% 16.6667%, #ff8c00 16.6667% 33.3333%, #ffd400 33.3333% 50%, #008026 50% 66.6667%, #24408e 66.6667% 83.3333%, #732982 83.3333% 100%); } /* Rainbow */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(6){ --stamp-flag:linear-gradient(180deg, #5bcefa 0% 20%, #f5a9b8 20% 40%, #ffffff 40% 60%, #f5a9b8 60% 80%, #5bcefa 80% 100%); } /* Trans */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(7){ --stamp-flag:linear-gradient(180deg, #d60270 0% 33.3333%, #9b4f96 33.3333% 66.6667%, #0038a8 66.6667% 100%); } /* Bisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(8){ --stamp-flag:linear-gradient(180deg, #ff218c 0% 33.3333%, #ffd800 33.3333% 66.6667%, #21b1ff 66.6667% 100%); } /* Pansexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(3) .deck .postcard:nth-of-type(9){ --stamp-flag:linear-gradient(180deg, #fcf434 0% 25%, #ffffff 25% 50%, #9c59d1 50% 75%, #2c2c2c 75% 100%); } /* Nonbinary */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(1){ --stamp-flag:linear-gradient(180deg, #f61cb9 0% 33.3333%, #07d569 33.3333% 66.6667%, #1c92f6 66.6667% 100%); } /* Polysexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(2){ --stamp-flag:linear-gradient(180deg, #ff9ecb 0% 20%, #ff53bd 20% 40%, #2c2c2c 40% 60%, #5049cc 60% 80%, #8f8fff 80% 100%); } /* Omnisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(3){ --stamp-flag:linear-gradient(180deg, #ffd800 0% 50%, #7a3f9d 50% 100%); } /* Intersex */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(4){ --stamp-flag:linear-gradient(180deg, #e28c00 0% 20%, #eccc00 20% 40%, #ffffff 40% 60%, #62b0dc 60% 80%, #1f4fa8 80% 100%); } /* Aroace */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(5){ --stamp-flag:linear-gradient(180deg, #000000 0% 14.2857%, #b9b9b9 14.2857% 28.5714%, #ffffff 28.5714% 42.8571%, #b8f483 42.8571% 57.1429%, #ffffff 57.1429% 71.4286%, #b9b9b9 71.4286% 85.7143%, #000000 85.7143% 100%); } /* Agender */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(6){ --stamp-flag:linear-gradient(180deg, #b57edc 0% 33.3333%, #ffffff 33.3333% 66.6667%, #4a8123 66.6667% 100%); } /* Genderqueer */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(7){ --stamp-flag:linear-gradient(180deg, #c47900 0% 20%, #e8b323 20% 40%, #ffffff 40% 60%, #b3b3b3 60% 80%, #6a3a9e 80% 100%); } /* Bigender */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(8){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #6e0070 75% 100%); } /* Demisexual */
+html[data-theme="queerpride"] #sheets > .board:nth-of-type(4) .deck .postcard:nth-of-type(9){ --stamp-flag:linear-gradient(180deg, #000000 0% 25%, #a3a3a3 25% 50%, #ffffff 50% 75%, #3da542 75% 100%); } /* Demiromantic */
+
