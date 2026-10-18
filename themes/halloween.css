@@ -117,7 +117,8 @@ html[data-theme="halloween"] .board::after{
   content:"";
   /* 액자 테두리까지 덮는다(브라우저·html2canvas 기준을 맞추기 위해). overflow:visible 필요 */
   position:absolute; inset:-96px -68px -92px -72px;
-  z-index:1000; pointer-events:none;
+  /* 덩굴(.frame, z-index 999) 뒤로 들어가도록 998 (아래쪽 틀 위 소품들이 덩굴에 가려짐) */
+  z-index:998; pointer-events:none;
   background-repeat:no-repeat;
   background-image:
     /* 액자 아래쪽에 얹힌 할로윈 포장 사탕 (호박·마녀모자 사이사이) */
