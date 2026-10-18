@@ -1,4 +1,4 @@
-/* 오프라인용 내장 폰트 (Google Fonts 에서 받아 woff2 로 저장) */
+/* 오프라인용 내장 폰트 (웹폰트를 받아 woff2 로 저장) */
 @font-face{font-family:'Caveat';font-style:normal;font-weight:400;font-display:swap;src:url('Caveat-400.woff2') format('woff2');}
 @font-face{font-family:'Caveat';font-style:normal;font-weight:600;font-display:swap;src:url('Caveat-600.woff2') format('woff2');}
 @font-face{font-family:'Caveat';font-style:normal;font-weight:700;font-display:swap;src:url('Caveat-700.woff2') format('woff2');}
@@ -7,3 +7,5 @@
 @font-face{font-family:'Nanum Myeongjo';font-style:normal;font-weight:700;font-display:swap;src:url('NanumMyeongjo-700.woff2') format('woff2');}
 @font-face{font-family:'Nanum Myeongjo';font-style:normal;font-weight:800;font-display:swap;src:url('NanumMyeongjo-800.woff2') format('woff2');}
 @font-face{font-family:'Nanum Pen Script';font-style:normal;font-weight:400;font-display:swap;src:url('NanumPenScript-400.woff2') format('woff2');}
+/* 즐거운이야기체 (projectnoonnu OTEnjoystoriesBA) — 로컬 woff2 */
+@font-face{font-family:'JoyfulStory';font-style:normal;font-weight:400;font-display:swap;src:url('JoyfulStory-400.woff2') format('woff2');}
