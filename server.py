@@ -273,7 +273,32 @@ def normalize_for_slot(html):
     html = re.sub(r'href="(?:\.\./)*themes/', 'href="../../themes/', html)
     html = re.sub(r'src="(?:\.\./)*assets/', 'src="../../assets/', html)
     html = re.sub(r'href="(?:\.\./)*assets/', 'href="../../assets/', html)
+    html = ensure_local_fonts(html, "../../")
     return html
+
+
+# 구글 폰트 CDN 링크(옛날 저장물) — 오프라인에서 죽으므로 제거 대상
+_GOOGLE_FONT_RES = [
+    re.compile(r'<link[^>]*href="https://fonts\.(?:googleapis|gstatic)\.com[^>]*>\s*', re.I),
+]
+
+
+def ensure_local_fonts(html, prefix):
+    """저장물에 로컬 폰트(assets/fonts/fonts.css) 링크가 없으면 넣어 준다.
+
+    옛날 버전에 저장된 html은 구글 폰트 CDN 링크만 있고 내장 폰트 링크가 없어서
+    오프라인(패키지 실행 등)에서 폰트가 전부 기본 글꼴로 떨어진다.
+    죽을 수 있는 구글 폰트 링크는 제거하고, 로컬 woff2 링크를 보장한다.
+    """
+    for rx in _GOOGLE_FONT_RES:
+        html = rx.sub("", html)
+    if "assets/fonts/fonts.css" in html:
+        return html
+    link = '<link rel="stylesheet" href="%sassets/fonts/fonts.css">' % prefix
+    mh = re.search(r'<head\b[^>]*>', html, re.I)
+    if mh:
+        return html[:mh.end()] + "\n" + link + html[mh.end():]
+    return link + "\n" + html
 
 
 # ------------------------------------------------------------------ 자동 틀 갱신
