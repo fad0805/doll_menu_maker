@@ -28,10 +28,9 @@ html[data-theme="halloween"]{
   --wood-light:#7c8663;
   --wood-panel:#5f6a49;
 
-  /* 마운트(액자 안쪽 배경): 사탕과 톤을 맞춘 딥 퍼플
-     (HSL 채도 약 58% — 눈을 자극하는 네온感 없음, 명도는 낮게 유지.
-      주황 글씨와 대비 약 6:1) */
-  --mount-bg:#482795;
+  /* 마운트(액자 안쪽 배경): 바이올렛 계열 → 퍼플 계열 딥 퍼플
+     (HSL hue 약 258° → 282°, 채도·명도는 비슷하게 유지) */
+  --mount-bg:#6a1f8c;
   --mount-sprinkles:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgMzQwIDM0MCI+PHJlY3QgeD0iMzIzLjgiIHk9IjMxNi4xIiB3aWR0aD0iOC4wIiBoZWlnaHQ9IjE2IiByeD0iNC4wIiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgxOTQgMzI3LjggMzI0LjEpIi8+PHJlY3QgeD0iNDMuMyIgeT0iMjM4LjgiIHdpZHRoPSI3LjAiIGhlaWdodD0iMTYiIHJ4PSIzLjUiIGZpbGw9IiNmZjhjMWEiIHRyYW5zZm9ybT0icm90YXRlKDIzMSA0Ni44IDI0Ni44KSIvPjxyZWN0IHg9IjIzLjgiIHk9IjEyNy42IiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE5IiByeD0iMy41IiBmaWxsPSIjZjZlYWQwIiB0cmFuc2Zvcm09InJvdGF0ZSgzMDUgMjcuMyAxMzcuMSkiLz48Y2lyY2xlIGN4PSI5MS40IiBjeT0iNjIuOSIgcj0iNC41IiBmaWxsPSIjZjI1NTJlIi8+PHJlY3QgeD0iMjA3LjUiIHk9IjMwOC40IiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE5IiByeD0iMy41IiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgyNzYgMjExLjAgMzE3LjkpIi8+PGNpcmNsZSBjeD0iMTY2LjMiIGN5PSIyMzguMiIgcj0iNC41IiBmaWxsPSIjZmZkMTY2Ii8+PHJlY3QgeD0iMjAyLjgiIHk9IjIxNS4yIiB3aWR0aD0iOC4wIiBoZWlnaHQ9IjE2IiByeD0iNC4wIiBmaWxsPSIjZjI1NTJlIiB0cmFuc2Zvcm09InJvdGF0ZSgzNDYgMjA2LjggMjIzLjIpIi8+PHJlY3QgeD0iMTI0LjUiIHk9IjI4Ni4xIiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE1IiByeD0iMy41IiBmaWxsPSIjZjI1NTJlIiB0cmFuc2Zvcm09InJvdGF0ZSgzMzcgMTI4LjAgMjkzLjYpIi8+PHJlY3QgeD0iMjk0LjYiIHk9Ijc0LjIiIHdpZHRoPSI3LjUiIGhlaWdodD0iMTUiIHJ4PSIzLjgiIGZpbGw9IiNmZjhjMWEiIHRyYW5zZm9ybT0icm90YXRlKDkyIDI5OC4zIDgxLjcpIi8+PHJlY3QgeD0iMjIxLjMiIHk9IjI2Ni43IiB3aWR0aD0iNy41IiBoZWlnaHQ9IjE1IiByeD0iMy44IiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgzNDAgMjI1LjEgMjc0LjIpIi8+PGNpcmNsZSBjeD0iMTY2LjkiIGN5PSIzMy4zIiByPSI0LjUiIGZpbGw9IiNmZmQxNjYiLz48cmVjdCB4PSI4NS41IiB5PSIxOTkuOSIgd2lkdGg9IjcuMCIgaGVpZ2h0PSIxNSIgcng9IjMuNSIgZmlsbD0iI2YyNTUyZSIgdHJhbnNmb3JtPSJyb3RhdGUoMTcgODkuMCAyMDcuNCkiLz48L3N2Zz4=");
   --vine-opacity:.95;      /* 시든 덩굴 장식(아래에서 교체) */
 
