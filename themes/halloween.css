@@ -49,9 +49,9 @@ html[data-theme="halloween"]{
   --card-edge:rgba(160,92,36,.48);
   --photo-border:#fdf3e2;   /* 인화지 테두리: 크림색 */
 
-  --name-ink:#3a2010;
+  --name-ink:#6920c9;         /* 이름: 마운트 보라보다 한 단계 쨍한 바이올렛(대비 약 3.5:1, 굵은 큰 글씨 기준 충분) */
   --desc-ink:#4a2c14;
-  --accent-red:#5e2107;     /* 영문 부제·한마디: 진하게 눌러 가독성↑ */
+  --accent-red:#8f3a05;       /* 영문 부제·한마디: 주황(눈에 띄면서도 읽힐 정도의 명도, 대비 약 3.4:1) */
   --chip-border:rgba(150,70,20,.55);
   --chip-ink:#3d2210;
   --chip-bg:rgba(255,240,220,.55);
