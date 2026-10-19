@@ -252,8 +252,11 @@ html[data-theme="halloween"] .photo .stamp{
   background-position:center 46%;
   background-size:96% auto;
 }
-/* 일부 우표(3의 배수): 짙은 초록 배경 + 장난스러운 거미 */
-html[data-theme="halloween"] .deck .postcard:nth-of-type(3n) .photo .stamp{
+/* 일부 우표(3의 배수): 짙은 초록 배경 + 장난스러운 거미
+   — 두 번째 줄 가운데(5번째)와 오른쪽 끝(6번째)의 우표무늬는 맞바꿈:
+     5번째는 보라 호박 → 초록 거미, 6번째는 초록 거미(3n에서 제외) → 보라 호박 */
+html[data-theme="halloween"] .deck .postcard:nth-of-type(3n):not(:nth-of-type(6)) .photo .stamp,
+html[data-theme="halloween"] .deck .postcard:nth-of-type(5) .photo .stamp{
   background-color:#2e6b2a;
   background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxMDAgMTAwIiB3aWR0aD0iMTAwIiBoZWlnaHQ9IjEwMCI+PHBhdGggZD0iTTUwIDQgTDUwIDIyIiBzdHJva2U9IiNlOGYwZDAiIHN0cm9rZS1vcGFjaXR5PSIwLjUiIHN0cm9rZS13aWR0aD0iMi4yIi8+PGcgc3Ryb2tlPSIjMTAwYzE0IiBzdHJva2Utd2lkdGg9IjQuNCIgc3Ryb2tlLWxpbmVjYXA9InJvdW5kIiBmaWxsPSJub25lIj48cGF0aCBkPSJNNDEgNTAgQzI2IDM5IDIxIDI5IDI3IDIwIi8+PHBhdGggZD0iTTQxIDU3IEMyMyA1MiAxNiA0NCAxOCAzNSIvPjxwYXRoIGQ9Ik00MSA2NCBDMjQgNjMgMTUgNjAgMTEgNTMiLz48cGF0aCBkPSJNNDEgNzEgQzI3IDc5IDIxIDg2IDI0IDk0Ii8+PHBhdGggZD0iTTU5IDUwIEM3NCAzOSA3OSAyOSA3MyAyMCIvPjxwYXRoIGQ9Ik01OSA1NyBDNzcgNTIgODQgNDQgODIgMzUiLz48cGF0aCBkPSJNNTkgNjQgQzc2IDYzIDg1IDYwIDg5IDUzIi8+PHBhdGggZD0iTTU5IDcxIEM3MyA3OSA3OSA4NiA3NiA5NCIvPjwvZz48ZWxsaXBzZSBjeD0iNTAiIGN5PSI0OCIgcng9IjEyIiByeT0iMTAiIGZpbGw9IiMxYjE1MjYiLz48ZWxsaXBzZSBjeD0iNTAiIGN5PSI2NiIgcng9IjE3IiByeT0iMTUiIGZpbGw9IiMyYTIxMzgiLz48Y2lyY2xlIGN4PSI0MyIgY3k9IjQ1IiByPSI3LjUiIGZpbGw9IiNmZGY3ZTQiLz48Y2lyY2xlIGN4PSI0NSIgY3k9IjQ3IiByPSIzLjQiIGZpbGw9IiMxNDEwMTkiLz48Y2lyY2xlIGN4PSI1NyIgY3k9IjQ1IiByPSI3LjUiIGZpbGw9IiNmZGY3ZTQiLz48Y2lyY2xlIGN4PSI1OSIgY3k9IjQ3IiByPSIzLjQiIGZpbGw9IiMxNDEwMTkiLz48cGF0aCBkPSJNNDMgNjIgcTcgOCAxNCAwIiBzdHJva2U9IiNmZGY3ZTQiIHN0cm9rZS13aWR0aD0iMi40IiBmaWxsPSJub25lIiBzdHJva2UtbGluZWNhcD0icm91bmQiLz48Y2lyY2xlIGN4PSI1MCIgY3k9IjcyIiByPSIzLjIiIGZpbGw9IiNiMDM0M2YiLz48L3N2Zz4=");
   background-position:center 42%;
