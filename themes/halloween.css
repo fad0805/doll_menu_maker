@@ -35,14 +35,14 @@ html[data-theme="halloween"]{
   --mount-sprinkles:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIzNDAiIGhlaWdodD0iMzQwIiB2aWV3Qm94PSIwIDAgMzQwIDM0MCI+PHJlY3QgeD0iMzIzLjgiIHk9IjMxNi4xIiB3aWR0aD0iOC4wIiBoZWlnaHQ9IjE2IiByeD0iNC4wIiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgxOTQgMzI3LjggMzI0LjEpIi8+PHJlY3QgeD0iNDMuMyIgeT0iMjM4LjgiIHdpZHRoPSI3LjAiIGhlaWdodD0iMTYiIHJ4PSIzLjUiIGZpbGw9IiNmZjhjMWEiIHRyYW5zZm9ybT0icm90YXRlKDIzMSA0Ni44IDI0Ni44KSIvPjxyZWN0IHg9IjIzLjgiIHk9IjEyNy42IiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE5IiByeD0iMy41IiBmaWxsPSIjZjZlYWQwIiB0cmFuc2Zvcm09InJvdGF0ZSgzMDUgMjcuMyAxMzcuMSkiLz48Y2lyY2xlIGN4PSI5MS40IiBjeT0iNjIuOSIgcj0iNC41IiBmaWxsPSIjZjI1NTJlIi8+PHJlY3QgeD0iMjA3LjUiIHk9IjMwOC40IiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE5IiByeD0iMy41IiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgyNzYgMjExLjAgMzE3LjkpIi8+PGNpcmNsZSBjeD0iMTY2LjMiIGN5PSIyMzguMiIgcj0iNC41IiBmaWxsPSIjZmZkMTY2Ii8+PHJlY3QgeD0iMjAyLjgiIHk9IjIxNS4yIiB3aWR0aD0iOC4wIiBoZWlnaHQ9IjE2IiByeD0iNC4wIiBmaWxsPSIjZjI1NTJlIiB0cmFuc2Zvcm09InJvdGF0ZSgzNDYgMjA2LjggMjIzLjIpIi8+PHJlY3QgeD0iMTI0LjUiIHk9IjI4Ni4xIiB3aWR0aD0iNy4wIiBoZWlnaHQ9IjE1IiByeD0iMy41IiBmaWxsPSIjZjI1NTJlIiB0cmFuc2Zvcm09InJvdGF0ZSgzMzcgMTI4LjAgMjkzLjYpIi8+PHJlY3QgeD0iMjk0LjYiIHk9Ijc0LjIiIHdpZHRoPSI3LjUiIGhlaWdodD0iMTUiIHJ4PSIzLjgiIGZpbGw9IiNmZjhjMWEiIHRyYW5zZm9ybT0icm90YXRlKDkyIDI5OC4zIDgxLjcpIi8+PHJlY3QgeD0iMjIxLjMiIHk9IjI2Ni43IiB3aWR0aD0iNy41IiBoZWlnaHQ9IjE1IiByeD0iMy44IiBmaWxsPSIjZmY4YzFhIiB0cmFuc2Zvcm09InJvdGF0ZSgzNDAgMjI1LjEgMjc0LjIpIi8+PGNpcmNsZSBjeD0iMTY2LjkiIGN5PSIzMy4zIiByPSI0LjUiIGZpbGw9IiNmZmQxNjYiLz48cmVjdCB4PSI4NS41IiB5PSIxOTkuOSIgd2lkdGg9IjcuMCIgaGVpZ2h0PSIxNSIgcng9IjMuNSIgZmlsbD0iI2YyNTUyZSIgdHJhbnNmb3JtPSJyb3RhdGUoMTcgODkuMCAyMDcuNCkiLz48L3N2Zz4=");
   --vine-opacity:.95;      /* 시든 덩굴 장식(아래에서 교체) */
 
-  /* 보라 마운트 위 머릿말·꼬릿말 글자: 어둡게 가라앉힌 주황 (보라 위 가독성 유지) */
-  --head-title:#ffb02e;    /* 제목 — 보라 위 가독성: 밝고 진한 주황 */
-  --head-rule-c:rgba(255,175,70,.92);
-  --rule-c:     rgba(255,150,55,.6);
-  --divider-c:  rgba(255,165,65,.95);
-  --sepia:#ffb63f;         /* 머릿말 작은 글씨 · 꼬릿말 */
-  --pen:#ffc763;           /* 날짜 */
-  --pen-red:#ffa032;       /* 부제 */
+  /* 보라 마운트 위 머릿말·꼬릿말 글자: 호박(늙은 호박) 색에 맞춘 붉은 주황 (보라 위 가독성 유지) */
+  --head-title:#ff9c46;    /* 제목 — 호박색에 맞춘 붉은 주황 */
+  --head-rule-c:rgba(255,150,72,.92);
+  --rule-c:     rgba(255,140,66,.6);
+  --divider-c:  rgba(255,145,68,.95);
+  --sepia:#ff9c46;         /* 머릿말 작은 글씨 · 꼬릿말 (호박색) */
+  --pen:#ffb264;           /* 날짜 */
+  --pen-red:#ff8a33;       /* 부제 */
   --ink:#efe3cc;
 
   /* 엽서: 주황빛이 도는 빈티지 종이 (검은 글씨가 겨우 읽히는 수준까지 명도를 낮춤) */
@@ -58,7 +58,7 @@ html[data-theme="halloween"]{
   --chip-ink:#3d2210;
   --chip-bg:rgba(255,240,220,.55);
 
-  --foot-line:rgba(255,160,70,.8);
+  --foot-line:rgba(255,145,68,.8);
 }
 
 /* 덩굴 장식: 진한 초록 덩굴 + 넓은 호박잎. */
