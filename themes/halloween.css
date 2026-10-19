@@ -31,7 +31,6 @@ html[data-theme="halloween"]{
   /* 마운트(액자 안쪽 배경): 바이올렛 계열 → 퍼플 계열 딥 퍼플
      (HSL hue 약 258° → 282°, 채도·명도는 비슷하게 유지) */
   --mount-bg:#6a1f8c;
-  --mount-sprinkles:none;   /* 숨김 */
   --vine-opacity:.95;      /* 시든 덩굴 장식(아래에서 교체) */
 
   /* 보라 마운트 위 머릿말·꼬릿말 글자: 호박(늙은 호박) 색에 맞춘 붉은 주황 (보라 위 가독성 유지) */
@@ -97,7 +96,6 @@ html[data-theme="halloween"] .board::before{
     var(--lolli-9),
     var(--lolli-10),
     var(--mansion),
-    var(--mount-sprinkles),   /* 마운트 전체에 반복으로 흩뿌리는 스프링클 */
     var(--grain),
     /* 씨실(가로 실) */
     repeating-linear-gradient(0deg,
@@ -105,7 +103,7 @@ html[data-theme="halloween"] .board::before{
     /* 날실(세로 실) */
     repeating-linear-gradient(90deg,
       rgba(34,6,72,.22) 0 1px, rgba(240,228,255,.10) 1px 3px, rgba(34,6,72,.08) 3px 5px);
-  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat, repeat;
+  background-repeat: no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, repeat;
   background-position:
     -26px 41px,
     196px 171px,
@@ -118,7 +116,6 @@ html[data-theme="halloween"] .board::before{
     1416px 221px,
     1644px 121px,
     center 0px,
-    0 0,
     0 0,
     0 0,
     0 0;
@@ -134,7 +131,6 @@ html[data-theme="halloween"] .board::before{
     46px auto,
     58px auto,
     auto 1592px,
-    340px 340px,
     200px 200px,
     5px 5px,
     5px 5px;
@@ -222,14 +218,14 @@ background-position:
     86px calc(100% - 158px),
     1764px calc(100% - 129px);
 background-size:
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
-    0 0,
+    54px auto,
+    56px auto,
+    46px auto,
+    75px auto,
+    63px auto,
+    81px auto,
+    78px auto,
+    72px auto,
     124px auto,
     46px auto,
     150px auto,
