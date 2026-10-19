@@ -338,7 +338,7 @@ html[data-theme="halloween"] .postcard .tape::after{
   width:40px; height:32px; transform:translateX(-50%);
   border-radius:50%; pointer-events:none;
   background:radial-gradient(ellipse 50% 46% at 50% 38%,
-    rgba(12,0,20,.82), rgba(12,0,20,.50) 52%, rgba(12,0,20,.20) 72%, rgba(12,0,20,0) 86%);
+    rgba(12,0,20,.42), rgba(12,0,20,.24) 52%, rgba(12,0,20,.09) 72%, rgba(12,0,20,0) 86%);
 }
 html[data-theme="halloween"] .board{ overflow:visible; }   /* 전구줄이 액자 위로도 그려지도록 */
 html[data-theme="halloween"] .head .overline{ font-family:"JoyfulStory", var(--board-font); font-size:1.1rem; letter-spacing:.5em; text-indent:.5em; }
