@@ -132,6 +132,18 @@ html[data-theme="halloween"] .postcard{
   background-blend-mode: multiply, multiply, multiply, soft-light, multiply;
 }
 
+/* 특징 버블 → 빛나는 창문 (형태는 그대로, 빛만 + 창틀 테두리) */
+html[data-theme="halloween"] .info .traits li{
+  border:1px solid rgba(120,52,14,.75);           /* 창틀: 진한 갈색 실선(점선 제거) */
+  background:
+    /* 아래에서 위로 번지는 주황·노랑 빛 */
+    radial-gradient(ellipse 140% 170% at 50% 118%, #fff6cf 0%, #ffdc8a 34%, #ffb24e 68%, #ef8b28 100%);
+  box-shadow:
+    0 0 12px rgba(255,158,58,.55),                 /* 바깥으로 번지는 빛 */
+    0 0 3px rgba(255,214,140,.85),
+    inset 0 1px 2px rgba(255,255,226,.75);         /* 유리 위쪽 반사 */
+}
+
 /* 액자 바닥 빈 곳에 할로윈 소품(호박 · 잭오랜턴 · 타고 있는 양초)을 흩뿌림 */
 /* 좌·우 두 무리로 나누고 중앙(꼬릿말 자리)은 비워 글자와 겹치지 않게 함 */
 html[data-theme="halloween"] .board::after{
