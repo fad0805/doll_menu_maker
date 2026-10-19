@@ -708,6 +708,9 @@
   }
   body.capturing{ overflow:visible; height:auto; }
   body.capturing .board{ transform:none !important; zoom:1 !important; }
+  /* 저장용 SVG 복제본에서 폰트 지표가 화면과 0.01px만 어긋나도 특징 칩이
+     2줄로 갈라지던 문제 → 캡처 동안 한 줄 고정 (넘치는 폭은 칩 안쪽 여백이 흡수) */
+  body.capturing .traits li{ white-space:nowrap; }
 
   /* ================= 엽서 편집 (임시) ================= */
   .deck .postcard{ cursor:pointer; }
