@@ -1607,7 +1607,16 @@
         document.body.appendChild(wrap);
       }
 
-      /* 4) 테마 목록(#themeList)을 현재 THEMES 기준으로 채운다.
+      /* 4) 보태니컬 등나무 장식 span(.vine-swag)이 없으면 .frame 끝에 넣는다.
+         예전 저장본에는 이 span이 없어 테마만 적용되고 꽃이 안 보였다. */
+      var frameEl = document.querySelector('.frame');
+      if (frameEl && !frameEl.querySelector('.vine-swag')) {
+        var swag = document.createElement('span');
+        swag.className = 'vine-swag';
+        frameEl.appendChild(swag);
+      }
+
+      /* 5) 테마 목록(#themeList)을 현재 THEMES 기준으로 채운다.
          예전 저장본은 목록이 3개(클래식·모던·할로윈)로 굳어 있어 새 테마가 안 보인다.
          JS가 켜져 있으면 항상 최신 목록으로 다시 그려 준다. */
       var listEl = document.getElementById('themeList');
