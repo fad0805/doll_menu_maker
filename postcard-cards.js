@@ -472,19 +472,6 @@
       if (e.key === 'Escape' && modal.classList.contains('open')) close();
     });
 
-    var resetAll = document.getElementById('resetAllBtn');
-    if (resetAll) {
-      resetAll.addEventListener('click', function () {
-        if (!window.confirm('처음 상태로 되돌릴까요?\n\n확인을 눌러도 💾 저장(Ctrl+S)을 하기 전에는 서버에 반영되지 않아요.')) return;
-        cards.forEach(function (c, i) { apply(i, c.__defaults); });
-        close();
-        setCount(Math.min(PER_FRAME, cards.length));   /* 아예 9장 기본 화면으로 */
-        scrollFrameTo(0);                              /* 첫 프레임으로 */
-        /* 초기화는 실수로 누를 수 있으니 서버에는 자동 저장하지 않는다 */
-        screenOnly('↺ 처음 상태로 되돌렸어요. 저장하려면 💾 저장(Ctrl+S)을 누르세요.');
-      });
-    }
-
     /* ============ 머리말(제목/부제목) + 바닥글 클릭 편집 ============ */
     var footSpan = document.querySelector('.foot span');
     var footFull = footSpan ? footSpan.textContent : '';
@@ -633,7 +620,6 @@
       document.addEventListener('keydown', function (e) {
         if (e.key === 'Escape' && headModal.classList.contains('open')) closeHead();
       });
-      if (resetAll) resetAll.addEventListener('click', function () { applyHead(headDefaults); screenOnly('↺ 머리말을 기본값으로 되돌렸어요. 저장하려면 💾 저장(Ctrl+S)을 누르세요.'); });
     }
 
     /* ============ 편집창: 플레이스홀더(지금 값) 복사 버튼 ============
@@ -1121,11 +1107,24 @@
       if (MS && typeof MS.domToCanvas === 'function') {
         var nw = board.offsetWidth || 1754;
         var nh = board.offsetHeight || 1700;
+        var bg = (opts && opts.backgroundColor) || '#20241d';
+        /* modern-screenshot에 backgroundColor를 넘기면 루트(.board)의
+           background-color까지 !important로 덮어써서 모던시크의 검정 액자틀이
+           벽 색으로 날아간다. → 배경은 캔버스에 직접 채운다. */
         return MS.domToCanvas(board, {
           width: nw,
           height: nh,
-          scale: (opts && opts.scale) || 1,
-          backgroundColor: (opts && opts.backgroundColor) || '#20241d'
+          scale: (opts && opts.scale) || 1
+        }).then(function (cv) {
+          var out = document.createElement('canvas');
+          out.width = cv.width;
+          out.height = cv.height;
+          var g = out.getContext('2d');
+          if (!g) return cv;
+          g.fillStyle = bg;
+          g.fillRect(0, 0, out.width, out.height);
+          g.drawImage(cv, 0, 0);
+          return out;
         });
       }
       var host = document.createElement('div');
@@ -1672,18 +1671,27 @@
     }
     ensureThemeInfra();   /* 페이지가 열릴 때 한 번 보정 */
 
-    /* ⏻ 서버 종료 버튼 — 창 없는 exe 에서 앱을 닫을 수 있게 한다 (서버가 있을 때만 보임) */
+    /* 예전에 저장한 슬롯(HTML)에 남아 있는 ↺ 초기화 버튼은 화면에서 없앤다. */
+    (function removeLegacyResetButton() {
+      var old = document.getElementById('resetAllBtn');
+      if (old && old.parentNode) old.parentNode.removeChild(old);
+    })();
+
+    /* ⏻ 서버 종료 버튼 — 창 없는 exe 에서 앱을 닫을 수 있게 한다 (서버가 있을 때만 보임)
+       항상 플로팅 메뉴의 가장 오른쪽에 오도록 맨 끝으로 옮겨 둔다. */
     (function ensureQuitButton() {
-      if (document.getElementById('quitBtn')) return;
       var bar = document.querySelector('.toolbar');
       if (!bar) return;
-      var btn = document.createElement('button');
-      btn.type = 'button';
-      btn.id = 'quitBtn';
-      btn.title = '서버 종료 (앱 닫기)';
-      btn.setAttribute('aria-label', '서버 종료');
-      btn.textContent = '⏻';
-      btn.style.display = 'none';
+      var btn = document.getElementById('quitBtn');
+      if (!btn) {
+        btn = document.createElement('button');
+        btn.type = 'button';
+        btn.id = 'quitBtn';
+        btn.title = '서버 종료 (앱 닫기)';
+        btn.setAttribute('aria-label', '서버 종료');
+        btn.textContent = '⏻';
+        btn.style.display = 'none';
+      }
       bar.appendChild(btn);
     })();
 
@@ -1700,7 +1708,9 @@
         b.title = '플로팅 메뉴 숨기기 (H)';
         b.setAttribute('aria-label', '플로팅 메뉴 숨기기');
         b.textContent = '👁';
-        bar.appendChild(b);
+        /* 전원(⏻) 버튼이 있으면 그 왼쪽에, 없으면 맨 끝에 둔다 */
+        var quit = document.getElementById('quitBtn');
+        if (quit) bar.insertBefore(b, quit); else bar.appendChild(b);
       }
       if (!document.getElementById('uiReveal')) {
         var r = document.createElement('button');
