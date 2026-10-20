@@ -1221,7 +1221,13 @@
         }
         saveBtn.disabled = true;
         setStatus('🖼️ 프레임 ' + boards.length + '장을 각각 이미지로 저장하는 중…', false);
+        /* 화면에서 한 줄로 보이는 머릿말 소개만, 저장 이미지에서도 한 줄로 고정
+           (SVG 복제본의 폰트 지표 차이로 2줄이 되는 것 방지) */
+        var headP = document.querySelector('.head p');
+        var headLineH = headP ? (parseFloat(getComputedStyle(headP).lineHeight) || parseFloat(getComputedStyle(headP).fontSize) * 1.5) : 0;
+        var headOneLine = !!(headP && headLineH && headP.offsetHeight <= headLineH * 1.5);
         document.body.classList.add('capturing');
+        if (headOneLine) document.body.classList.add('capture-head-nowrap');
         var restorePatternGuard = installPatternGuard();
 
         var opts = {
@@ -1261,6 +1267,7 @@
         }).then(function () {
           if (restorePatternGuard) restorePatternGuard();
           saveBtn.disabled = false;
+          document.body.classList.remove('capture-head-nowrap');
           document.body.classList.remove('capturing');
         });
       });

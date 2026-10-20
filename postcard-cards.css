@@ -711,6 +711,12 @@
   /* 저장용 SVG 복제본에서 폰트 지표가 화면과 0.01px만 어긋나도 특징 칩이
      2줄로 갈라지던 문제 → 캡처 동안 한 줄 고정 (넘치는 폭은 칩 안쪽 여백이 흡수) */
   body.capturing .traits li{ white-space:nowrap; }
+  /* 화면에서 한 줄인 머릿말 소개는 저장용 SVG 복제본에서도 한 줄로 고정
+     (폰트 지표가 미세하게 달라 저장 이미지에서만 2줄로 갈라지던 문제) */
+  body.capturing.capture-head-nowrap .head p{ white-space:nowrap; }
+  /* 날짜도 inline-block이라 복제본에서 폰트 지표가 조금만 달라도 두 줄이 되고,
+     머릿말이 높아지며 아래 엽서와의 간격이 좁아진다 → 캡처 동안 한 줄 고정 */
+  body.capturing .head .date{ white-space:nowrap; }
 
   /* ================= 엽서 편집 (임시) ================= */
   .deck .postcard{ cursor:pointer; }
