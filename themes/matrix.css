@@ -1,0 +1,610 @@
+/* ============================================================
+   테마: 매트릭스   id = "matrix"
+   ------------------------------------------------------------
+   검은 터미널 위로 초록 코드가 주루룩 흘러내리는 해커 화면.
+   · 벽·마운트: 거의 검은 초록 + 희미한 그리드 + 흐르는 글자 비
+   · 액자: 무광 검정 몰딩에 네온 초록 헤어라인, 네 모서리 HUD 브래킷
+   · 엽서: 다크 터미널 패널(그리드·스캔라인), 인화지 대신 CRT 화면 같은 사진칸
+   · 글씨: 전체 모노스페이스, 이름은 형광 초록, 부제·한마디는 시안
+   · 움직임: 배경 글자 비 3겹(벽/마운트/앞쪽), CRT 스캔라인, 위아래로 훑는 스캔 빔
+   색은 아래 '테마 표면' 변수로, 비·스캔라인·HUD는 선택자 규칙으로 정리했어요.
+   ============================================================ */
+
+html[data-theme="matrix"]{
+  /* 벽: 거의 검은 초록, 위쪽에 옅은 네온 번짐 */
+  --wall-base:#010604;
+  --wall-image:
+    radial-gradient(ellipse at 50% 0%, rgba(0,255,130,.10), transparent 60%),
+    radial-gradient(ellipse at 50% 120%, rgba(0,0,0,.85), transparent 72%),
+    var(--grain-2),
+    linear-gradient(180deg, #04130a 0%, #020a06 48%, #010403 100%);
+  --wall-blend: screen, multiply, overlay, normal;
+  --wall-size:  100% 100%, 100% 100%, 600px 600px, 100% 100%;
+
+  /* 액자: 빛을 먹은 무광 검정 플라스틱 */
+  --wood-deep:#010403;
+  --wood-dark:#04100a;
+  --wood-mid:#07190f;
+  --wood-light:#0b2416;
+  --wood-panel:#041009;
+
+  /* 마운트: 깊은 터미널 블랙그린 */
+  --mount-bg:#020b06;
+  --vine-opacity:0;               /* 나무 덩굴 장식은 숨김 */
+
+  /* 글꼴: 화면 전체를 모노스페이스로 */
+  --mono: "SFMono-Regular", "D2Coding", "Nanum Gothic Coding", "IBM Plex Mono", Menlo, Consolas, "Courier New", "Apple SD Gothic Neo", "Malgun Gothic", "Noto Sans KR", monospace;
+  --myeongjo: var(--mono);
+  --gothic:   var(--mono);
+  --hand:     var(--mono);
+  --hand-t:   var(--mono);
+  --hand-e:   var(--mono);
+  --board-font: var(--mono);
+
+  /* 머릿말·꼬릿말 */
+  --head-title:#7dffb0;
+  --head-rule-c:rgba(60,255,150,.55);
+  --rule-c:     rgba(60,255,150,.32);
+  --divider-c:  rgba(60,255,150,.55);
+  --sepia:#4fd88a;
+  --pen:#73f2c2;
+  --pen-red:#45ddff;
+  --ink:#c8f7da;
+
+  /* 엽서: 검은 유리 터미널 */
+  --card-bg:#04110a;
+  --card-line:rgba(52,255,146,.26);
+  --card-edge:rgba(52,255,146,.40);
+  --photo-border:#081b10;
+
+  --name-ink:#8dffb8;
+  --desc-ink:#b9e9ce;
+  --accent-red:#4fe3ff;
+  --chip-border:rgba(70,255,160,.45);
+  --chip-ink:#8fffc0;
+  --chip-bg:rgba(0,255,130,.06);
+
+  --foot-line:rgba(60,255,150,.28);
+
+  /* 흐르는 글자 비 — 두 가지 밀도(작은 글씨 / 큰 글씨)의 심리스 타일 */
+  --matrix-rain-a:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iNTYwIiB2aWV3Qm94PSIwIDAgNjQwIDU2MCI+PGcgZmlsbD0iIzBiN2E0MiIgZmlsbC1vcGFjaXR5PSIuMzAiIGZvbnQtZmFtaWx5PSJNZW5sbyxDb25zb2xhcyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTUiPjx0ZXh0IHg9IjkiIHk9IjE2OSI+KjwvdGV4dD48dGV4dCB4PSI5IiB5PSIxODkiPu2YuDwvdGV4dD48dGV4dCB4PSIzMCIgeT0iNTMzIj4rPC90ZXh0Pjx0ZXh0IHg9IjMwIiB5PSI1NTMiPj08L3RleHQ+PHRleHQgeD0iNTAiIHk9IjU1NiI+RTwvdGV4dD48dGV4dCB4PSI1MCIgeT0iMTYiPu+9vjwvdGV4dD48dGV4dCB4PSI1MCIgeT0iMzYiPu2EsDwvdGV4dD48dGV4dCB4PSI1MCIgeT0iNTYiPjk8L3RleHQ+PHRleHQgeD0iNTAiIHk9Ijc2Ij4qPC90ZXh0Pjx0ZXh0IHg9IjkwIiB5PSI1NTMiPi88L3RleHQ+PHRleHQgeD0iOTAiIHk9IjMzIj7vvbk8L3RleHQ+PHRleHQgeD0iMTA5IiB5PSI3NCI+MTwvdGV4dD48dGV4dCB4PSIxMDkiIHk9Ijk0Ij5DPC90ZXh0Pjx0ZXh0IHg9IjEwOSIgeT0iMTE0Ij7vvog8L3RleHQ+PHRleHQgeD0iMTI5IiB5PSI0MjEiPu+9tjwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjQ0MSI+RjwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjQ2MSI+OjwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjQ4MSI+776bPC90ZXh0Pjx0ZXh0IHg9IjEyOSIgeT0iNTAxIj4qPC90ZXh0Pjx0ZXh0IHg9IjEyOSIgeT0iNTIxIj45PC90ZXh0Pjx0ZXh0IHg9IjE2OSIgeT0iMjU0Ij4wPC90ZXh0Pjx0ZXh0IHg9IjE2OSIgeT0iMjc0Ij4yPC90ZXh0Pjx0ZXh0IHg9IjE2OSIgeT0iMjk0Ij4rPC90ZXh0Pjx0ZXh0IHg9IjE4OSIgeT0iNTQiPuuTnDwvdGV4dD48dGV4dCB4PSIxODkiIHk9Ijc0Ij40PC90ZXh0Pjx0ZXh0IHg9IjE4OSIgeT0iOTQiPjY8L3RleHQ+PHRleHQgeD0iMjQ5IiB5PSIzMiI+NDwvdGV4dD48dGV4dCB4PSIyNDkiIHk9IjUyIj4xPC90ZXh0Pjx0ZXh0IHg9IjI0OSIgeT0iNzIiPjM8L3RleHQ+PHRleHQgeD0iMjQ5IiB5PSI5MiI+LzwvdGV4dD48dGV4dCB4PSIyNzEiIHk9IjQ4MCI+NDwvdGV4dD48dGV4dCB4PSIyNzEiIHk9IjUwMCI+772/PC90ZXh0Pjx0ZXh0IHg9IjI3MSIgeT0iNTIwIj7vvbU8L3RleHQ+PHRleHQgeD0iMjkxIiB5PSI0MzAiPu+9vTwvdGV4dD48dGV4dCB4PSIyOTEiIHk9IjQ1MCI+PTwvdGV4dD48dGV4dCB4PSIyOTEiIHk9IjQ3MCI+7723PC90ZXh0Pjx0ZXh0IHg9IjI5MSIgeT0iNDkwIj44PC90ZXh0Pjx0ZXh0IHg9IjI5MSIgeT0iNTEwIj5GPC90ZXh0Pjx0ZXh0IHg9IjMwOSIgeT0iNDg0Ij7vvo88L3RleHQ+PHRleHQgeD0iMzA5IiB5PSI1MDQiPjg8L3RleHQ+PHRleHQgeD0iMzA5IiB5PSI1MjQiPu2VtDwvdGV4dD48dGV4dCB4PSIzMDkiIHk9IjU0NCI+776NPC90ZXh0Pjx0ZXh0IHg9IjMwOSIgeT0iMjQiPkQ8L3RleHQ+PHRleHQgeD0iMzI5IiB5PSIzNzYiPu++jzwvdGV4dD48dGV4dCB4PSIzMjkiIHk9IjM5NiI+JTwvdGV4dD48dGV4dCB4PSIzNTEiIHk9IjU1MyI+776cPC90ZXh0Pjx0ZXh0IHg9IjM1MSIgeT0iMzMiPjQ8L3RleHQ+PHRleHQgeD0iMzUxIiB5PSI1MyI+MDwvdGV4dD48dGV4dCB4PSIzNzIiIHk9IjQ0NiI+IzwvdGV4dD48dGV4dCB4PSIzNzIiIHk9IjQ2NiI+NzwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjIxNiI+OjwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjIzNiI+7728PC90ZXh0Pjx0ZXh0IHg9IjM5MSIgeT0iMjU2Ij5FPC90ZXh0Pjx0ZXh0IHg9IjM5MSIgeT0iMjc2Ij42PC90ZXh0Pjx0ZXh0IHg9IjM5MSIgeT0iMjk2Ij4rPC90ZXh0Pjx0ZXh0IHg9IjM5MSIgeT0iMzE2Ij7slZQ8L3RleHQ+PHRleHQgeD0iNDA5IiB5PSIzODEiPu+9uzwvdGV4dD48dGV4dCB4PSI0MDkiIHk9IjQwMSI+776GPC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMjc5Ij5EPC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMjk5Ij42PC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMzE5Ij4jPC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMzM5Ij7vvoE8L3RleHQ+PHRleHQgeD0iNDcwIiB5PSIzNzMiPu+9ujwvdGV4dD48dGV4dCB4PSI0NzAiIHk9IjM5MyI+LzwvdGV4dD48dGV4dCB4PSI0NzAiIHk9IjQxMyI+MTwvdGV4dD48dGV4dCB4PSI0NzAiIHk9IjQzMyI+776QPC90ZXh0Pjx0ZXh0IHg9IjQ3MCIgeT0iNDUzIj5GPC90ZXh0Pjx0ZXh0IHg9IjUyOCIgeT0iMTczIj4lPC90ZXh0Pjx0ZXh0IHg9IjUyOCIgeT0iMTkzIj5FPC90ZXh0Pjx0ZXh0IHg9IjUyOCIgeT0iMjEzIj7rk5w8L3RleHQ+PHRleHQgeD0iNTI4IiB5PSIyMzMiPuuTnDwvdGV4dD48dGV4dCB4PSI1MjgiIHk9IjI1MyI+776cPC90ZXh0Pjx0ZXh0IHg9IjU2OCIgeT0iMjU1Ij7vvoQ8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIyNzUiPjA8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIyOTUiPjY8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIzMTUiPjY8L3RleHQ+PHRleHQgeD0iNTkxIiB5PSIyOCI+7J6FPC90ZXh0Pjx0ZXh0IHg9IjU5MSIgeT0iNDgiPkU8L3RleHQ+PHRleHQgeD0iNTkxIiB5PSI2OCI+PTwvdGV4dD48dGV4dCB4PSI1OTEiIHk9Ijg4Ij7sho08L3RleHQ+PHRleHQgeD0iNTkxIiB5PSIxMDgiPiU8L3RleHQ+PHRleHQgeD0iNjA5IiB5PSI1MDgiPu++gDwvdGV4dD48dGV4dCB4PSI2MDkiIHk9IjUyOCI+MjwvdGV4dD48dGV4dCB4PSI2MzIiIHk9IjM1MyI+OTwvdGV4dD48dGV4dCB4PSI2MzIiIHk9IjM3MyI+QTwvdGV4dD48dGV4dCB4PSI2MzIiIHk9IjM5MyI+MjwvdGV4dD48L2c+PGcgZmlsbD0iIzI1ZmY4NyIgZmlsbC1vcGFjaXR5PSIuNTIiIGZvbnQtZmFtaWx5PSJNZW5sbyxDb25zb2xhcyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTUiPjx0ZXh0IHg9IjkiIHk9IjIwOSI+KzwvdGV4dD48dGV4dCB4PSI5IiB5PSIyMjkiPu2CuTwvdGV4dD48dGV4dCB4PSI1MCIgeT0iOTYiPu++jjwvdGV4dD48dGV4dCB4PSI1MCIgeT0iMTE2Ij7vvpI8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjEzNiI+776bPC90ZXh0Pjx0ZXh0IHg9IjUwIiB5PSIxNTYiPjI8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjE3NiI+776ZPC90ZXh0Pjx0ZXh0IHg9IjUwIiB5PSIxOTYiPuy9lDwvdGV4dD48dGV4dCB4PSI5MCIgeT0iNTMiPkQ8L3RleHQ+PHRleHQgeD0iOTAiIHk9IjczIj7vvoU8L3RleHQ+PHRleHQgeD0iOTAiIHk9IjkzIj7vvbQ8L3RleHQ+PHRleHQgeD0iMTA5IiB5PSIxMzQiPu2CuTwvdGV4dD48dGV4dCB4PSIxMDkiIHk9IjE1NCI+776VPC90ZXh0Pjx0ZXh0IHg9IjEyOSIgeT0iNTQxIj44PC90ZXh0Pjx0ZXh0IHg9IjEyOSIgeT0iMjEiPu+9vTwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjQxIj7vvb08L3RleHQ+PHRleHQgeD0iMTI5IiB5PSI2MSI+NjwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjgxIj43PC90ZXh0Pjx0ZXh0IHg9IjEyOSIgeT0iMTAxIj4wPC90ZXh0Pjx0ZXh0IHg9IjE2OSIgeT0iMzE0Ij7vvbo8L3RleHQ+PHRleHQgeD0iMTY5IiB5PSIzMzQiPu++nTwvdGV4dD48dGV4dCB4PSIxNjkiIHk9IjM1NCI+NTwvdGV4dD48dGV4dCB4PSIxODkiIHk9IjExNCI+7J20PC90ZXh0Pjx0ZXh0IHg9IjE4OSIgeT0iMTM0Ij44PC90ZXh0Pjx0ZXh0IHg9IjI0OSIgeT0iMTEyIj4wPC90ZXh0Pjx0ZXh0IHg9IjI0OSIgeT0iMTMyIj7vvpY8L3RleHQ+PHRleHQgeD0iMjQ5IiB5PSIxNTIiPu++gDwvdGV4dD48dGV4dCB4PSIyNDkiIHk9IjE3MiI+772+PC90ZXh0Pjx0ZXh0IHg9IjI0OSIgeT0iMTkyIj44PC90ZXh0Pjx0ZXh0IHg9IjI3MSIgeT0iNTQwIj43PC90ZXh0Pjx0ZXh0IHg9IjI3MSIgeT0iMjAiPkE8L3RleHQ+PHRleHQgeD0iMjkxIiB5PSI1MzAiPjo8L3RleHQ+PHRleHQgeD0iMjkxIiB5PSI1NTAiPjg8L3RleHQ+PHRleHQgeD0iMjkxIiB5PSIzMCI+MjwvdGV4dD48dGV4dCB4PSIyOTEiIHk9IjUwIj7vvbY8L3RleHQ+PHRleHQgeD0iMjkxIiB5PSI3MCI+ODwvdGV4dD48dGV4dCB4PSIzMDkiIHk9IjQ0Ij45PC90ZXh0Pjx0ZXh0IHg9IjMwOSIgeT0iNjQiPu++nDwvdGV4dD48dGV4dCB4PSIzMDkiIHk9Ijg0Ij49PC90ZXh0Pjx0ZXh0IHg9IjMwOSIgeT0iMTA0Ij7vvpc8L3RleHQ+PHRleHQgeD0iMzA5IiB5PSIxMjQiPu+9tDwvdGV4dD48dGV4dCB4PSIzMDkiIHk9IjE0NCI+OTwvdGV4dD48dGV4dCB4PSIzMDkiIHk9IjE2NCI+7726PC90ZXh0Pjx0ZXh0IHg9IjMyOSIgeT0iNDE2Ij7sho08L3RleHQ+PHRleHQgeD0iMzI5IiB5PSI0MzYiPu++lzwvdGV4dD48dGV4dCB4PSIzNTEiIHk9IjczIj43PC90ZXh0Pjx0ZXh0IHg9IjM1MSIgeT0iOTMiPu2VtDwvdGV4dD48dGV4dCB4PSIzNTEiIHk9IjExMyI+776LPC90ZXh0Pjx0ZXh0IHg9IjM3MiIgeT0iNDg2Ij5FPC90ZXh0Pjx0ZXh0IHg9IjM3MiIgeT0iNTA2Ij7vvpo8L3RleHQ+PHRleHQgeD0iMzkxIiB5PSIzMzYiPu2YuDwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjM1NiI+7728PC90ZXh0Pjx0ZXh0IHg9IjM5MSIgeT0iMzc2Ij7vvbQ8L3RleHQ+PHRleHQgeD0iMzkxIiB5PSIzOTYiPjQ8L3RleHQ+PHRleHQgeD0iMzkxIiB5PSI0MTYiPu+9tjwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjQzNiI+RjwvdGV4dD48dGV4dCB4PSI0MDkiIHk9IjQyMSI+7IaNPC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMzU5Ij41PC90ZXh0Pjx0ZXh0IHg9IjQ1MiIgeT0iMzc5Ij7vvpg8L3RleHQ+PHRleHQgeD0iNDUyIiB5PSIzOTkiPu++kjwvdGV4dD48dGV4dCB4PSI0NzAiIHk9IjQ3MyI+776PPC90ZXh0Pjx0ZXh0IHg9IjQ3MCIgeT0iNDkzIj4yPC90ZXh0Pjx0ZXh0IHg9IjQ3MCIgeT0iNTEzIj7vvos8L3RleHQ+PHRleHQgeD0iNDcwIiB5PSI1MzMiPjA8L3RleHQ+PHRleHQgeD0iNDcwIiB5PSI1NTMiPkY8L3RleHQ+PHRleHQgeD0iNTI4IiB5PSIyNzMiPj08L3RleHQ+PHRleHQgeD0iNTI4IiB5PSIyOTMiPjM8L3RleHQ+PHRleHQgeD0iNTI4IiB5PSIzMTMiPu2YuDwvdGV4dD48dGV4dCB4PSI1MjgiIHk9IjMzMyI+776VPC90ZXh0Pjx0ZXh0IHg9IjUyOCIgeT0iMzUzIj7tmLg8L3RleHQ+PHRleHQgeD0iNTI4IiB5PSIzNzMiPjc8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIzMzUiPjk8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIzNTUiPjc8L3RleHQ+PHRleHQgeD0iNTY4IiB5PSIzNzUiPu++lTwvdGV4dD48dGV4dCB4PSI1NjgiIHk9IjM5NSI+776VPC90ZXh0Pjx0ZXh0IHg9IjU2OCIgeT0iNDE1Ij46PC90ZXh0Pjx0ZXh0IHg9IjU5MSIgeT0iMTI4Ij5EPC90ZXh0Pjx0ZXh0IHg9IjU5MSIgeT0iMTQ4Ij7svZQ8L3RleHQ+PHRleHQgeD0iNTkxIiB5PSIxNjgiPjY8L3RleHQ+PHRleHQgeD0iNTkxIiB5PSIxODgiPu++lzwvdGV4dD48dGV4dCB4PSI1OTEiIHk9IjIwOCI+MTwvdGV4dD48dGV4dCB4PSI2MDkiIHk9IjU0OCI+7J20PC90ZXh0Pjx0ZXh0IHg9IjYzMiIgeT0iNDEzIj7vvok8L3RleHQ+PHRleHQgeD0iNjMyIiB5PSI0MzMiPu2VtDwvdGV4dD48L2c+PGcgZmlsbD0iI2M5ZmZkYyIgZmlsbC1vcGFjaXR5PSIuOTIiIGZvbnQtZmFtaWx5PSJNZW5sbyxDb25zb2xhcyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTUiPjx0ZXh0IHg9IjkiIHk9IjI0OSI+KjwvdGV4dD48dGV4dCB4PSI5IiB5PSIyNjkiPjE8L3RleHQ+PHRleHQgeD0iMzAiIHk9IjMzIj7vvpM8L3RleHQ+PHRleHQgeD0iMzAiIHk9IjUzIj4yPC90ZXh0Pjx0ZXh0IHg9IjUwIiB5PSIyMTYiPkU8L3RleHQ+PHRleHQgeD0iNTAiIHk9IjIzNiI+MDwvdGV4dD48dGV4dCB4PSI5MCIgeT0iMTEzIj7vvo48L3RleHQ+PHRleHQgeD0iOTAiIHk9IjEzMyI+7724PC90ZXh0Pjx0ZXh0IHg9IjEwOSIgeT0iMTc0Ij7tlbQ8L3RleHQ+PHRleHQgeD0iMTA5IiB5PSIxOTQiPjA8L3RleHQ+PHRleHQgeD0iMTI5IiB5PSIxMjEiPu++lTwvdGV4dD48dGV4dCB4PSIxMjkiIHk9IjE0MSI+QjwvdGV4dD48dGV4dCB4PSIxNjkiIHk9IjM3NCI+LzwvdGV4dD48dGV4dCB4PSIxNjkiIHk9IjM5NCI+RjwvdGV4dD48dGV4dCB4PSIxODkiIHk9IjE1NCI+776FPC90ZXh0Pjx0ZXh0IHg9IjE4OSIgeT0iMTc0Ij5EPC90ZXh0Pjx0ZXh0IHg9IjI0OSIgeT0iMjEyIj7vvos8L3RleHQ+PHRleHQgeD0iMjQ5IiB5PSIyMzIiPis8L3RleHQ+PHRleHQgeD0iMjcxIiB5PSI0MCI+776GPC90ZXh0Pjx0ZXh0IHg9IjI3MSIgeT0iNjAiPu2YuDwvdGV4dD48dGV4dCB4PSIyOTEiIHk9IjkwIj4jPC90ZXh0Pjx0ZXh0IHg9IjI5MSIgeT0iMTEwIj4vPC90ZXh0Pjx0ZXh0IHg9IjMwOSIgeT0iMTg0Ij7vvoQ8L3RleHQ+PHRleHQgeD0iMzA5IiB5PSIyMDQiPu++gjwvdGV4dD48dGV4dCB4PSIzMjkiIHk9IjQ1NiI+NDwvdGV4dD48dGV4dCB4PSIzMjkiIHk9IjQ3NiI+QzwvdGV4dD48dGV4dCB4PSIzNTEiIHk9IjEzMyI+NzwvdGV4dD48dGV4dCB4PSIzNTEiIHk9IjE1MyI+JTwvdGV4dD48dGV4dCB4PSIzNzIiIHk9IjUyNiI+IzwvdGV4dD48dGV4dCB4PSIzNzIiIHk9IjU0NiI+LzwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjQ1NiI+KzwvdGV4dD48dGV4dCB4PSIzOTEiIHk9IjQ3NiI+RDwvdGV4dD48dGV4dCB4PSI0MDkiIHk9IjQ0MSI+776KPC90ZXh0Pjx0ZXh0IHg9IjQwOSIgeT0iNDYxIj7vvbI8L3RleHQ+PHRleHQgeD0iNDUyIiB5PSI0MTkiPiM8L3RleHQ+PHRleHQgeD0iNDUyIiB5PSI0MzkiPkY8L3RleHQ+PHRleHQgeD0iNDcwIiB5PSIzMyI+776QPC90ZXh0Pjx0ZXh0IHg9IjUyOCIgeT0iMzkzIj7vvok8L3RleHQ+PHRleHQgeD0iNTI4IiB5PSI0MTMiPu++jjwvdGV4dD48dGV4dCB4PSI1NjgiIHk9IjQzNSI+QTwvdGV4dD48dGV4dCB4PSI1NjgiIHk9IjQ1NSI+QTwvdGV4dD48dGV4dCB4PSI1OTEiIHk9IjIyOCI+MTwvdGV4dD48dGV4dCB4PSI1OTEiIHk9IjI0OCI+QTwvdGV4dD48dGV4dCB4PSI2MDkiIHk9IjI4Ij7vvoc8L3RleHQ+PHRleHQgeD0iNjMyIiB5PSI0NTMiPu++ijwvdGV4dD48dGV4dCB4PSI2MzIiIHk9IjQ3MyI+7720PC90ZXh0PjwvZz48L3N2Zz4=");
+  --matrix-rain-b:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI1NjAiIGhlaWdodD0iNjQwIiB2aWV3Qm94PSIwIDAgNTYwIDY0MCI+PGcgZmlsbD0iIzBiN2E0MiIgZmlsbC1vcGFjaXR5PSIuMzAiIGZvbnQtZmFtaWx5PSJNZW5sbyxDb25zb2xhcyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTgiPjx0ZXh0IHg9IjcwIiB5PSI1MDQiPj08L3RleHQ+PHRleHQgeD0iNzAiIHk9IjUyOCI+7IaNPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSI1NTIiPu++gzwvdGV4dD48dGV4dCB4PSI3MCIgeT0iNTc2Ij4qPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSI2MDAiPi88L3RleHQ+PHRleHQgeD0iNzAiIHk9IjYyNCI+7JWUPC90ZXh0Pjx0ZXh0IHg9Ijk4IiB5PSI1ODYiPkY8L3RleHQ+PHRleHQgeD0iOTgiIHk9IjYxMCI+MDwvdGV4dD48dGV4dCB4PSI5OCIgeT0iNjM0Ij4rPC90ZXh0Pjx0ZXh0IHg9Ijk4IiB5PSIxOCI+NDwvdGV4dD48dGV4dCB4PSI5OCIgeT0iNDIiPu+9uTwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjUwIj7vvo88L3RleHQ+PHRleHQgeD0iMTU1IiB5PSI3NCI+PTwvdGV4dD48dGV4dCB4PSIxNTUiIHk9Ijk4Ij7vvpA8L3RleHQ+PHRleHQgeD0iMTU1IiB5PSIxMjIiPjg8L3RleHQ+PHRleHQgeD0iMTU1IiB5PSIxNDYiPjk8L3RleHQ+PHRleHQgeD0iMTU1IiB5PSIxNzAiPu++jzwvdGV4dD48dGV4dCB4PSIxODAiIHk9IjI5MCI+IzwvdGV4dD48dGV4dCB4PSIxODAiIHk9IjMxNCI+KjwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjM5OCI+NzwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjQyMiI+NzwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjQ0NiI+776LPC90ZXh0Pjx0ZXh0IHg9IjIxMSIgeT0iNDcwIj7snbQ8L3RleHQ+PHRleHQgeD0iMjExIiB5PSI0OTQiPu++gDwvdGV4dD48dGV4dCB4PSIzMjIiIHk9IjMwOSI+NDwvdGV4dD48dGV4dCB4PSIzMjIiIHk9IjMzMyI+7IaNPC90ZXh0Pjx0ZXh0IHg9IjMyMiIgeT0iMzU3Ij5GPC90ZXh0Pjx0ZXh0IHg9IjMyMiIgeT0iMzgxIj7vvbo8L3RleHQ+PHRleHQgeD0iMzIyIiB5PSI0MDUiPu+9tjwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjQ1MSI+IzwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjQ3NSI+ODwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjQ5OSI+776RPC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iNTIzIj4jPC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iNTQ3Ij41PC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iNTcxIj7vvpE8L3RleHQ+PHRleHQgeD0iMzc3IiB5PSI1OTUiPuydtDwvdGV4dD48dGV4dCB4PSI0MzUiIHk9IjMyNSI+642wPC90ZXh0Pjx0ZXh0IHg9IjQzNSIgeT0iMzQ5Ij5DPC90ZXh0Pjx0ZXh0IHg9IjQzNSIgeT0iMzczIj7vvbw8L3RleHQ+PHRleHQgeD0iNDM1IiB5PSIzOTciPkI8L3RleHQ+PHRleHQgeD0iNDg5IiB5PSIyMTMiPuuNsDwvdGV4dD48dGV4dCB4PSI0ODkiIHk9IjIzNyI+PTwvdGV4dD48dGV4dCB4PSI0ODkiIHk9IjI2MSI+RjwvdGV4dD48dGV4dCB4PSI0ODkiIHk9IjI4NSI+776NPC90ZXh0PjwvZz48ZyBmaWxsPSIjMjVmZjg3IiBmaWxsLW9wYWNpdHk9Ii41MiIgZm9udC1mYW1pbHk9Ik1lbmxvLENvbnNvbGFzLG1vbm9zcGFjZSIgZm9udC1zaXplPSIxOCI+PHRleHQgeD0iNzAiIHk9IjMyIj5EPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSI1NiI+7LmoPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSI4MCI+776ZPC90ZXh0Pjx0ZXh0IHg9IjcwIiB5PSIxMDQiPjU8L3RleHQ+PHRleHQgeD0iNzAiIHk9IjEyOCI+776RPC90ZXh0Pjx0ZXh0IHg9Ijk4IiB5PSI2NiI+MTwvdGV4dD48dGV4dCB4PSI5OCIgeT0iOTAiPu2EsDwvdGV4dD48dGV4dCB4PSI5OCIgeT0iMTE0Ij7vvbM8L3RleHQ+PHRleHQgeD0iOTgiIHk9IjEzOCI+NTwvdGV4dD48dGV4dCB4PSI5OCIgeT0iMTYyIj7vvbk8L3RleHQ+PHRleHQgeD0iOTgiIHk9IjE4NiI+NjwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjE5NCI+NzwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjIxOCI+MzwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjI0MiI+776DPC90ZXh0Pjx0ZXh0IHg9IjE1NSIgeT0iMjY2Ij5BPC90ZXh0Pjx0ZXh0IHg9IjE1NSIgeT0iMjkwIj4jPC90ZXh0Pjx0ZXh0IHg9IjE1NSIgeT0iMzE0Ij5CPC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iMzM4Ij4xPC90ZXh0Pjx0ZXh0IHg9IjE4MCIgeT0iMzYyIj49PC90ZXh0Pjx0ZXh0IHg9IjIxMSIgeT0iNTE4Ij7vvpA8L3RleHQ+PHRleHQgeD0iMjExIiB5PSI1NDIiPjc8L3RleHQ+PHRleHQgeD0iMjExIiB5PSI1NjYiPuyGjTwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjU5MCI+KjwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjYxNCI+RjwvdGV4dD48dGV4dCB4PSIzMjIiIHk9IjQyOSI+7J6FPC90ZXh0Pjx0ZXh0IHg9IjMyMiIgeT0iNDUzIj4rPC90ZXh0Pjx0ZXh0IHg9IjMyMiIgeT0iNDc3Ij7tlbQ8L3RleHQ+PHRleHQgeD0iMzIyIiB5PSI1MDEiPuyGjTwvdGV4dD48dGV4dCB4PSIzMjIiIHk9IjUyNSI+ODwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjYxOSI+KzwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjI3Ij7vvbM8L3RleHQ+PHRleHQgeD0iMzc3IiB5PSI1MSI+7727PC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iNzUiPiM8L3RleHQ+PHRleHQgeD0iMzc3IiB5PSI5OSI+772xPC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iMTIzIj5EPC90ZXh0Pjx0ZXh0IHg9IjM3NyIgeT0iMTQ3Ij4yPC90ZXh0Pjx0ZXh0IHg9IjQzNSIgeT0iNDIxIj7vvbU8L3RleHQ+PHRleHQgeD0iNDM1IiB5PSI0NDUiPu+9uDwvdGV4dD48dGV4dCB4PSI0MzUiIHk9IjQ2OSI+RjwvdGV4dD48dGV4dCB4PSI0MzUiIHk9IjQ5MyI+776APC90ZXh0Pjx0ZXh0IHg9IjQzNSIgeT0iNTE3Ij7thLA8L3RleHQ+PHRleHQgeD0iNDg5IiB5PSIzMDkiPiU8L3RleHQ+PHRleHQgeD0iNDg5IiB5PSIzMzMiPu+9uzwvdGV4dD48dGV4dCB4PSI0ODkiIHk9IjM1NyI+ODwvdGV4dD48L2c+PGcgZmlsbD0iI2M5ZmZkYyIgZmlsbC1vcGFjaXR5PSIuOTIiIGZvbnQtZmFtaWx5PSJNZW5sbyxDb25zb2xhcyxtb25vc3BhY2UiIGZvbnQtc2l6ZT0iMTgiPjx0ZXh0IHg9IjcwIiB5PSIxNTIiPi88L3RleHQ+PHRleHQgeD0iNzAiIHk9IjE3NiI+IzwvdGV4dD48dGV4dCB4PSI5OCIgeT0iMjEwIj4yPC90ZXh0Pjx0ZXh0IHg9Ijk4IiB5PSIyMzQiPu++hzwvdGV4dD48dGV4dCB4PSIxNTUiIHk9IjMzOCI+7IaNPC90ZXh0Pjx0ZXh0IHg9IjE1NSIgeT0iMzYyIj7vvoE8L3RleHQ+PHRleHQgeD0iMTgwIiB5PSIzODYiPjg8L3RleHQ+PHRleHQgeD0iMTgwIiB5PSI0MTAiPu++izwvdGV4dD48dGV4dCB4PSIyMTEiIHk9IjYzOCI+65OcPC90ZXh0Pjx0ZXh0IHg9IjIxMSIgeT0iMjIiPjA8L3RleHQ+PHRleHQgeD0iMzIyIiB5PSI1NDkiPio8L3RleHQ+PHRleHQgeD0iMzIyIiB5PSI1NzMiPuygkTwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjE3MSI+RTwvdGV4dD48dGV4dCB4PSIzNzciIHk9IjE5NSI+ODwvdGV4dD48dGV4dCB4PSI0MzUiIHk9IjU0MSI+776BPC90ZXh0Pjx0ZXh0IHg9IjQzNSIgeT0iNTY1Ij4wPC90ZXh0Pjx0ZXh0IHg9IjQ4OSIgeT0iMzgxIj7vvoU8L3RleHQ+PHRleHQgeD0iNDg5IiB5PSI0MDUiPu++gDwvdGV4dD48L2c+PC9zdmc+");
+}
+
+/* ============================================================
+   벽 전체를 흐르는 글자 비 (화면에 고정, 액자 뒤)
+   ============================================================ */
+html[data-theme="matrix"] body::before{
+  content:"";
+  position:fixed; left:0; right:0; top:-560px; bottom:0;
+  z-index:0; pointer-events:none;
+  background-image:var(--matrix-rain-a);
+  background-size:640px 560px;
+  background-repeat:repeat;
+  opacity:.34;
+  animation:matrix-fall-a 24s linear infinite;
+  will-change:transform;
+}
+
+/* ============================================================
+   액자 몰딩: 네온 초록 헤어라인 + HUD 모서리 브래킷
+   ============================================================ */
+html[data-theme="matrix"] .board{
+  background-color:#041009;
+  background-image:
+    linear-gradient(135deg, rgba(60,255,150,.13), transparent 30%, rgba(0,0,0,.55) 72%, rgba(60,255,150,.07)),
+    repeating-linear-gradient(90deg, rgba(60,255,150,.05) 0 1px, transparent 1px 6px),
+    var(--grain-2),
+    linear-gradient(180deg, #071a10 0%, #020a06 58%, #041009 100%);
+  background-blend-mode: screen, normal, overlay, normal;
+  background-size: 100% 100%, 6px 100%, 600px 600px, 100% 100%;
+  border:1px solid rgba(60,255,150,.22);
+  border-radius:3px;
+  box-shadow:
+    inset 0 0 0 1px rgba(60,255,150,.72),
+    inset 0 0 0 5px rgba(1,6,4,.96),
+    inset 0 0 0 6px rgba(60,255,150,.22),
+    inset 0 0 0 18px rgba(0,0,0,.58),
+    inset 0 0 0 19px rgba(60,255,150,.10),
+    inset 0 0 90px 30px rgba(0,0,0,.88),
+    0 0 0 1px rgba(0,0,0,.92),
+    0 0 34px rgba(0,255,140,.16),
+    0 30px 80px rgba(0,0,0,.82);
+}
+
+/* 액자 안쪽 마운트: 희미한 그리드 + 위쪽 네온 번짐 */
+html[data-theme="matrix"] .board::before{
+  background-color:var(--mount-bg);
+  background-image:
+    linear-gradient(rgba(60,255,150,.055) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,255,150,.055) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 0%, rgba(0,255,140,.12), transparent 62%),
+    radial-gradient(ellipse at 50% 100%, rgba(0,255,140,.05), transparent 70%),
+    var(--grain);
+  background-size: 44px 44px, 44px 44px, 100% 100%, 100% 100%, 220px 220px;
+  background-repeat: repeat, repeat, no-repeat, no-repeat, repeat;
+  box-shadow:
+    inset 0 0 0 1px rgba(60,255,150,.20),
+    inset 0 0 0 9px rgba(0,255,140,.03),
+    inset 0 16px 22px -10px rgba(0,0,0,.85),
+    inset 0 -10px 18px -10px rgba(0,255,140,.06),
+    inset 0 0 90px 14px rgba(0,0,0,.64);
+}
+
+/* 마운트 위를 흐르는 글자 비 (카드 뒤, z=1) */
+html[data-theme="matrix"] .board::after{
+  content:"";
+  position:absolute; left:0; right:0; top:-560px; bottom:0;
+  z-index:1; pointer-events:none;
+  background-image:var(--matrix-rain-a);
+  background-size:470px 410px;
+  background-repeat:repeat;
+  opacity:.30;
+  animation:matrix-fall-b 19s linear infinite;
+  will-change:transform;
+}
+
+/* ============================================================
+   앞쪽 글자 비 + 비네트 (마운트 안쪽, 카드 뒤)
+   ============================================================ */
+html[data-theme="matrix"] .patina{
+  overflow:hidden;
+  background-image:
+    radial-gradient(ellipse at 50% 38%, transparent 54%, rgba(0,12,6,.52) 100%),
+    radial-gradient(ellipse 70% 30% at 50% 4%, rgba(80,255,170,.10), transparent 70%);
+  background-size: 100% 100%, 100% 100%;
+  opacity:.92;
+}
+html[data-theme="matrix"] .patina::before{
+  content:"";
+  position:absolute; left:0; right:0; top:-520px; bottom:0;
+  background-image:var(--matrix-rain-b);
+  background-size:460px 520px;
+  background-repeat:repeat;
+  opacity:.38;
+  animation:matrix-fall-c 13s linear infinite;
+  will-change:transform;
+}
+
+/* ============================================================
+   액자 위 HUD: 모서리 브래킷 · CRT 스캔라인 · 훑고 지나가는 스캔 빔
+   ============================================================ */
+html[data-theme="matrix"] .frame{
+  background-image:
+    linear-gradient(#4dffa0,#4dffa0), linear-gradient(#4dffa0,#4dffa0),
+    linear-gradient(#4dffa0,#4dffa0), linear-gradient(#4dffa0,#4dffa0),
+    linear-gradient(#4dffa0,#4dffa0), linear-gradient(#4dffa0,#4dffa0),
+    linear-gradient(#4dffa0,#4dffa0), linear-gradient(#4dffa0,#4dffa0);
+  background-size:
+    34px 2px, 2px 34px,
+    34px 2px, 2px 34px,
+    34px 2px, 2px 34px,
+    34px 2px, 2px 34px;
+  background-position:
+    left 26px top 26px, left 26px top 26px,
+    right 26px top 26px, right 26px top 26px,
+    left 26px bottom 26px, left 26px bottom 26px,
+    right 26px bottom 26px, right 26px bottom 26px;
+  background-repeat:no-repeat;
+  filter:drop-shadow(0 0 4px rgba(0,255,140,.65));
+}
+/* CRT 스캔라인: 화면 전체에 아주 옅게 */
+html[data-theme="matrix"] .frame::before{
+  content:"";
+  position:absolute; inset:44px;
+  pointer-events:none;
+  background-image:repeating-linear-gradient(
+    0deg,
+    rgba(0,0,0,.30) 0 1px,
+    transparent 1px 3px
+  );
+  opacity:.38;
+  mix-blend-mode:multiply;
+}
+/* 위에서 아래로 훑고 지나가는 스캔 빔 */
+html[data-theme="matrix"] .frame::after{
+  content:"";
+  position:absolute; left:44px; right:44px; top:-220px; height:220px;
+  pointer-events:none;
+  background-image:linear-gradient(
+    180deg,
+    transparent 0%,
+    rgba(50,255,150,.045) 55%,
+    rgba(150,255,205,.13) 88%,
+    rgba(190,255,225,.22) 100%
+  );
+  animation:matrix-sweep 9s linear infinite;
+  will-change:transform;
+}
+
+/* ============================================================
+   머릿말: 터미널 프롬프트 + 네온 제목
+   ============================================================ */
+html[data-theme="matrix"] .head .overline{
+  letter-spacing:.30em; text-indent:.30em;
+  color:#4fd88a;
+  text-shadow:0 0 8px rgba(0,255,140,.45);
+}
+html[data-theme="matrix"] .head .overline::before{
+  content:"> "; color:#8dffb8; text-shadow:0 0 8px rgba(0,255,140,.8);
+}
+html[data-theme="matrix"] .head .date{
+  font-size:1.28rem; letter-spacing:.04em;
+  color:var(--pen);
+  text-shadow:0 0 10px rgba(80,240,190,.35);
+}
+html[data-theme="matrix"] .head .date::before{ content:"["; opacity:.55; margin-right:4px; }
+html[data-theme="matrix"] .head .date::after{ content:"]"; opacity:.55; margin-left:4px; }
+html[data-theme="matrix"] .head h1{
+  font-weight:800; letter-spacing:.02em;
+  color:var(--head-title);
+  text-shadow:
+    1px 0 0 rgba(80,220,255,.14),
+    -1px 0 0 rgba(255,80,200,.10),
+    0 0 6px rgba(120,255,180,.55),
+    0 0 22px rgba(0,255,140,.38),
+    0 0 48px rgba(0,255,140,.18);
+  animation:matrix-flicker 7s steps(1) infinite;
+}
+html[data-theme="matrix"] .head .rule::before,
+html[data-theme="matrix"] .head .rule::after{
+  height:1px;
+  background:repeating-linear-gradient(90deg, rgba(60,255,150,.55) 0 6px, transparent 6px 12px);
+}
+html[data-theme="matrix"] .head .rule span{ font-size:0; }
+html[data-theme="matrix"] .head .rule span::before{
+  content:"///";
+  font-family:var(--mono); font-size:1.05rem; font-weight:700;
+  letter-spacing:.24em;
+  color:#4dffa0;
+  text-shadow:0 0 9px rgba(0,255,140,.85);
+}
+html[data-theme="matrix"] .head p{
+  font-size:1.12rem; letter-spacing:0;
+  color:var(--pen-red);
+  text-shadow:0 0 10px rgba(70,220,255,.28);
+}
+html[data-theme="matrix"] .head [data-head]:hover,
+html[data-theme="matrix"] .foot [data-head]:hover{
+  box-shadow:inset 0 0 0 1px rgba(60,255,150,.5), 0 0 18px rgba(60,255,150,.32);
+}
+html[data-theme="matrix"] .head [data-head]:focus-visible,
+html[data-theme="matrix"] .foot [data-head]:focus-visible{
+  outline:2px dashed rgba(60,255,150,.85); outline-offset:3px;
+}
+
+/* ============================================================
+   엽서: 검은 유리 터미널 패널
+   ============================================================ */
+html[data-theme="matrix"] .deck .postcard{ --rot:0deg; }
+html[data-theme="matrix"] .postcard{
+  --punch:#04110a;
+  background-image:
+    linear-gradient(rgba(60,255,150,.022) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(60,255,150,.022) 1px, transparent 1px),
+    radial-gradient(ellipse at 50% 0%, rgba(0,255,140,.09), transparent 72%),
+    var(--paper-tex);
+  background-size: 20px 20px, 20px 20px, 100% 100%, 240px 240px;
+  background-repeat: repeat, repeat, no-repeat, repeat;
+  background-blend-mode: screen, screen, screen, normal;
+  border-radius:2px;
+  box-shadow:
+    inset 0 0 0 1px var(--card-edge),
+    0 0 0 1px rgba(0,0,0,.75),
+    0 0 18px rgba(0,255,140,.09),
+    0 9px 22px rgba(0,0,0,.58);
+}
+html[data-theme="matrix"] .inside{
+  border-color:var(--card-line);
+}
+/* 엽서 네 모서리의 HUD 브래킷 */
+html[data-theme="matrix"] .inside::before{
+  content:"";
+  position:absolute; inset:3px; z-index:3; pointer-events:none;
+  background-image:
+    linear-gradient(#3cff92,#3cff92), linear-gradient(#3cff92,#3cff92),
+    linear-gradient(#3cff92,#3cff92), linear-gradient(#3cff92,#3cff92),
+    linear-gradient(#3cff92,#3cff92), linear-gradient(#3cff92,#3cff92),
+    linear-gradient(#3cff92,#3cff92), linear-gradient(#3cff92,#3cff92);
+  background-size:
+    11px 1px, 1px 11px,
+    11px 1px, 1px 11px,
+    11px 1px, 1px 11px,
+    11px 1px, 1px 11px;
+  background-position:
+    left top, left top,
+    right top, right top,
+    left bottom, left bottom,
+    right bottom, right bottom;
+  background-repeat:no-repeat;
+  opacity:.45;
+  filter:drop-shadow(0 0 2px rgba(0,255,140,.8));
+}
+
+/* 사진칸: 인화지 대신 작은 CRT 화면 */
+html[data-theme="matrix"] .photo{
+  border-width:4px;
+  border-color:var(--photo-border);
+  background-color:#06170e;
+  box-shadow:
+    0 0 0 1px rgba(60,255,150,.30),
+    0 0 12px rgba(0,255,140,.12),
+    0 3px 10px rgba(0,0,0,.55);
+}
+html[data-theme="matrix"] .photo .art-img{
+  filter:drop-shadow(0 0 6px rgba(0,255,140,.38));
+}
+html[data-theme="matrix"] .photo .art-img.is-user{ filter:none; }
+/* 스캔라인 + 비네트 (사진 위) */
+html[data-theme="matrix"] .photo::after{
+  content:"";
+  position:absolute; inset:0; z-index:2; pointer-events:none;
+  background-image:
+    repeating-linear-gradient(0deg, rgba(0,0,0,.22) 0 1px, transparent 1px 3px),
+    radial-gradient(ellipse at 50% 50%, transparent 52%, rgba(0,0,0,.42) 100%);
+  opacity:.62;
+}
+/* 색면: 사용자가 직접 고른 색이 아니면 검은 초록 화면으로 통일 */
+html[data-theme="matrix"] .photo:not(.is-user-color){
+  --scene:#061a0f !important;
+}
+/* 우표: 매트릭스에서는 우표 대신 위쪽 파일 탭이 번호를 보여 주므로 숨김 */
+html[data-theme="matrix"] .photo .stamp{
+  display:none;
+}
+
+/* 테이프 → 카드 위에 붙은 파일 헤더 탭 (파일 번호/고유 코드 표시)
+   data-code 는 postcard-cards.js 가 카드의 data-art(파일 번호)로 채워 준다. */
+html[data-theme="matrix"] .postcard .tape{
+  top:-12px;
+  left:50%;
+  width:auto; min-width:84px; height:19px;
+  padding:0 10px;
+  display:flex; align-items:center; justify-content:center;
+  transform:translateX(-50%);
+  background:#04110a;
+  border:1px solid rgba(60,255,150,.45);
+  border-bottom:0;
+  border-radius:2px 2px 0 0;
+  box-shadow:0 0 10px rgba(0,255,140,.22), inset 0 0 8px rgba(0,255,140,.05);
+  clip-path:none; opacity:1;
+  color:#8dffb8;
+  font-family:var(--mono);
+  font-size:.68rem; line-height:1;
+  letter-spacing:.14em;
+  white-space:nowrap;
+}
+html[data-theme="matrix"] .postcard .tape::before{
+  content:"▮ " attr(data-code);
+  text-shadow:0 0 6px rgba(0,255,140,.6);
+}
+
+/* ============================================================
+   설명란: 터미널 로그
+   ============================================================ */
+html[data-theme="matrix"] .info::before{
+  left:7px; top:12px; bottom:12px;
+  background:repeating-linear-gradient(180deg, rgba(60,255,150,.5) 0 4px, transparent 4px 9px);
+  box-shadow:none; opacity:.85;
+}
+html[data-theme="matrix"] .info .name{
+  line-height:1.32;               /* 모노스페이스 한글 윗부분이 잘리지 않게 */
+  letter-spacing:.015em;
+  color:var(--name-ink);
+  text-shadow:0 0 8px rgba(60,255,150,.45), 0 0 2px rgba(120,255,180,.65);
+}
+html[data-theme="matrix"] .info .name small{
+  line-height:1.38;
+  letter-spacing:.32em;
+  color:var(--accent-red);
+  text-shadow:0 0 7px rgba(70,220,255,.45);
+}
+html[data-theme="matrix"] .info .divider{
+  background:repeating-linear-gradient(90deg, var(--divider-c) 0 3px, transparent 3px 7px);
+  opacity:.8;
+}
+html[data-theme="matrix"] .info .desc{
+  font-size:1.14rem; line-height:1.66; letter-spacing:0;
+  color:var(--desc-ink);
+}
+html[data-theme="matrix"] .info .traits li{
+  border:1px solid var(--chip-border);
+  border-radius:3px;
+  padding:4px 8px 3px;
+  color:var(--chip-ink);
+  background:var(--chip-bg);
+  box-shadow:inset 0 0 8px rgba(0,255,140,.04);
+}
+html[data-theme="matrix"] .info .traits li::before{
+  content:"#";
+  opacity:.65; margin-right:2px;
+  color:#4dffa0;
+}
+html[data-theme="matrix"] .info .quote{
+  font-style:normal; letter-spacing:0;
+  color:var(--accent-red);
+  text-shadow:0 0 8px rgba(70,220,255,.28);
+}
+html[data-theme="matrix"] .info .quote::before{
+  content:"> "; opacity:.7; color:#4dffa0;
+}
+
+/* ============================================================
+   꼬릿말: 프롬프트 + 깜빡이는 커서
+   ============================================================ */
+html[data-theme="matrix"] .foot{
+  border-top:1px dashed var(--foot-line);
+  box-shadow:none;
+  color:#5fe6a0;
+  letter-spacing:.16em;
+  text-shadow:0 0 8px rgba(0,255,140,.28);
+}
+html[data-theme="matrix"] .foot::before{
+  content:">"; margin-right:9px; color:#8dffb8;
+}
+html[data-theme="matrix"] .foot::after{
+  content:"▌"; margin-left:7px; color:#7dffb0;
+  animation:matrix-caret 1.15s steps(1) infinite;
+}
+
+/* ============================================================
+   화면 가장자리 UI도 터미널 톤으로
+   ============================================================ */
+html[data-theme="matrix"] .sheets{
+  scrollbar-color:rgba(60,255,150,.35) transparent;
+}
+html[data-theme="matrix"] .sheets::-webkit-scrollbar-thumb{
+  background:rgba(60,255,150,.30); border-radius:999px;
+  border:2px solid transparent; background-clip:padding-box;
+}
+html[data-theme="matrix"] .sheets::-webkit-scrollbar-thumb:hover{
+  background:rgba(60,255,150,.5); background-clip:padding-box;
+}
+html[data-theme="matrix"] .counter{
+  width:176px;
+  background:#05120b;
+  border:1px solid rgba(70,255,160,.40);
+  color:#8dffb8;
+  box-shadow:0 0 18px rgba(0,255,140,.16);
+  border-radius:5px;
+}
+html[data-theme="matrix"] .counter .cnote{
+  font-size:.76rem; line-height:1.45;
+}
+html[data-theme="matrix"] .counter .clabel,
+html[data-theme="matrix"] .counter .crow .cnum,
+html[data-theme="matrix"] .counter button,
+html[data-theme="matrix"] .counter .cnote{ color:#8dffb8; }
+html[data-theme="matrix"] .counter button{
+  background:#07160e; border-color:rgba(70,255,160,.42); border-radius:4px;
+}
+html[data-theme="matrix"] .counter button:hover{ background:#0c2416; }
+html[data-theme="matrix"] .counter input[type=range]{ accent-color:#39ff88; }
+html[data-theme="matrix"] .counter .crow .cnum.editing{
+  outline:1px solid rgba(70,255,160,.9);
+  background:rgba(0,255,140,.10);
+}
+html[data-theme="matrix"] .toolbar button{
+  position:relative;
+  color:transparent;
+  background-color:#07160e;
+  background-image:none;            /* 기본 갈색 SVG 아이콘은 아래 마스크로 다시 그림 */
+  border:1px solid rgba(70,255,160,.45);
+  border-radius:4px;
+  box-shadow:0 0 12px rgba(0,255,140,.18), inset 0 0 0 1px rgba(0,255,140,.07);
+}
+/* 플로팅 메뉴 아이콘: 기본 SVG 아이콘을 초록색 마스크로 다시 채운다.
+   (배경색만 바꾸면 기본 아이콘의 갈색 선이 어두운 배경에서 안 보임) */
+html[data-theme="matrix"] .toolbar button::before,
+html[data-theme="matrix"] .ui-reveal::before{
+  content:"";
+  position:absolute; inset:1px;
+  background-color:#8dffb8;
+  -webkit-mask-image:var(--ico);
+  mask-image:var(--ico);
+  -webkit-mask-repeat:no-repeat;
+  mask-repeat:no-repeat;
+  -webkit-mask-position:center;
+  mask-position:center;
+  pointer-events:none;
+  opacity:.95;
+}
+html[data-theme="matrix"] .toolbar button::before{
+  -webkit-mask-size:25px 25px; mask-size:25px 25px;
+}
+html[data-theme="matrix"] .ui-reveal::before{
+  -webkit-mask-size:22px 22px; mask-size:22px 22px;
+}
+html[data-theme="matrix"] .toolbar button:hover{
+  background-color:#0c2416;
+  transform:translateY(-2px);
+  box-shadow:0 0 20px rgba(0,255,140,.36);
+}
+html[data-theme="matrix"] .toolbar button:hover::before{ background-color:#b9ffd2; }
+html[data-theme="matrix"] .ui-reveal{
+  background-color:#07160e;
+  background-image:none;
+  border-color:rgba(70,255,160,.45);
+  border-radius:4px;
+  box-shadow:0 0 18px rgba(0,255,140,.20);
+  color:transparent;
+}
+html[data-theme="matrix"] .ui-reveal:hover{
+  background-color:#0c2416;
+}
+html[data-theme="matrix"] .ui-reveal:hover::before{ background-color:#b9ffd2; }
+html[data-theme="matrix"] .toolbar .status{
+  background:rgba(2,10,6,.88);
+  border:1px solid rgba(70,255,160,.30);
+  color:#9df5c2;
+}
+html[data-theme="matrix"] .topleft .slot-badge,
+html[data-theme="matrix"] .frame-nav{
+  background:rgba(3,12,7,.92);
+  border:1px solid rgba(70,255,160,.35);
+  color:#8dffb8;
+  box-shadow:0 0 14px rgba(0,255,140,.16);
+}
+html[data-theme="matrix"] .frame-nav button{
+  background:#07160e; color:#8dffb8;
+  border-color:rgba(70,255,160,.45); border-radius:4px;
+}
+html[data-theme="matrix"] .frame-nav button:hover{ background:#0c2416; }
+html[data-theme="matrix"] .hint{
+  background:rgba(2,10,6,.82);
+  border:1px solid rgba(70,255,160,.25);
+  color:#9df5c2;
+  border-radius:4px;
+}
+
+/* ============================================================
+   PNG 저장 중에는 '움직이는 장식'이 찍히지 않게 고정
+   · 위에서 내려오는 스캔 빔은 저장 이미지에서 제외
+   · 꼬릿말 커서는 깜빡임을 멈추고 항상 켜 둠
+   · 제목 깜빡임도 항상 밝은 상태로
+   ============================================================ */
+html[data-theme="matrix"] body.capturing .frame::after{ display:none; }
+html[data-theme="matrix"] body.capturing .foot::after{ animation:none; opacity:1; }
+html[data-theme="matrix"] body.capturing .head h1{ animation:none; opacity:1; }
+
+/* ============================================================
+   움직임
+   ============================================================ */
+@keyframes matrix-fall-a{
+  from{ transform:translate3d(0,0,0); }
+  to{   transform:translate3d(0,560px,0); }
+}
+@keyframes matrix-fall-b{
+  from{ transform:translate3d(0,0,0); }
+  to{   transform:translate3d(0,410px,0); }
+}
+@keyframes matrix-fall-c{
+  from{ transform:translate3d(0,0,0); }
+  to{   transform:translate3d(0,520px,0); }
+}
+@keyframes matrix-sweep{
+  from{ transform:translate3d(0,-220px,0); }
+  to{   transform:translate3d(0,1960px,0); }
+}
+@keyframes matrix-caret{
+  0%,49%{ opacity:1; }
+  50%,100%{ opacity:0; }
+}
+@keyframes matrix-flicker{
+  0%, 95%, 97.4%, 100%{ opacity:1; }
+  95.6%{ opacity:.72; }
+  96.4%{ opacity:.9; }
+  98.2%{ opacity:.84; }
+}
+
+/* 움직임을 줄여 달라고 한 경우: 글자 비·스캔 빔은 멈추고 커서 깜빡임만 남김 */
+@media (prefers-reduced-motion: reduce){
+  html[data-theme="matrix"] body::before,
+  html[data-theme="matrix"] .board::after,
+  html[data-theme="matrix"] .patina::before,
+  html[data-theme="matrix"] .frame::after,
+  html[data-theme="matrix"] .head h1{
+    animation:none;
+  }
+  html[data-theme="matrix"] .frame::after{ display:none; }
+}

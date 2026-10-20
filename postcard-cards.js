@@ -17,6 +17,19 @@
     var modal = document.getElementById('editor');
     if (!cards.length || !modal) return;
 
+    /* 카드의 고유 파일 번호(data-art)를 꺼내 data-code 로도 붙여 둔다.
+       매트릭스 테마의 상단 파일 탭이 이 값을 그대로 표시한다.
+       (순서를 바꿔도 data-art 는 카드를 따라가므로 코드도 안 바뀐다) */
+    cards.forEach(function (c) {
+      var im = c.querySelector('.art-img');
+      var n = im ? parseInt(im.getAttribute('data-art'), 10) : NaN;
+      if (isNaN(n)) return;
+      var code = 'FILE-' + ('0' + n).slice(-2);
+      c.setAttribute('data-file', code);
+      var tape = c.querySelector('.tape');
+      if (tape) tape.setAttribute('data-code', code);
+    });
+
     function hex2(n) { return ('0' + (n | 0).toString(16)).slice(-2); }
     /* 그림칸의 현재 '단색' 값을 읽어 #rrggbb 로 돌려준다 */
     function sceneColor(c) {
@@ -1501,7 +1514,8 @@
       { id: 'christmas', name: '크리스마스', desc: '짙은 남색 밤하늘 액자 속 · 클래식 나무 액자(홀리 덩굴·전구줄) · 짙은 초록 엽서(흰 글씨·금색) · 눈/선물' },
       { id: 'queerpride', name: '퀴어프라이드', desc: '무지개 프라이드 · 연한 회색 액자 · 왼쪽 기둥에 끈으로 묶인 연한 프라이드 깃발(엽서 뒤 배경) · 핑크 엽서' },
       { id: 'white', name: '화이트 심플', desc: '흰 게시판 · 테두리 없는 판 · 헤어라인 구분선 · 앤티크 모서리 장식 · 엽서 이름·한마디는 명조체' },
-      { id: 'botanical', name: '보태니컬', desc: '식물도감 · 옅은 세이지 벽 · 크림빛 종이 액자 · 이끼빛 잎 덩굴 · 도감 종이 엽서 · 잎맥 구분선' }
+      { id: 'botanical', name: '보태니컬', desc: '식물도감 · 옅은 세이지 벽 · 크림빛 종이 액자 · 이끼빛 잎 덩굴 · 도감 종이 엽서 · 잎맥 구분선' },
+      { id: 'matrix', name: '매트릭스', desc: '네온 초록 코드 비 · 검은 터미널 액자 · FILE 코드 탭 · CRT 스캔라인 · 모노스페이스 엽서' }
     ];
     var DEFAULT_THEME = 'classic';
 

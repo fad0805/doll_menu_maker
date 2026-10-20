@@ -72,7 +72,7 @@ exe 를 직접 만들려면 **[BUILD_WINDOWS.md](BUILD_WINDOWS.md)** 를 참고�
 
 | 버튼 | 하는 일 |
 |---|---|
-| 🎨 | **테마** 바꾸기 (클래식 / 모던시크 / 할로윈 / 크리스마스 / 퀴어프라이드 / 화이트 심플 / 보태니컬) — 화면 미리보기 |
+| 🎨 | **테마** 바꾸기 (클래식 / 모던시크 / 할로윈 / 크리스마스 / 퀴어프라이드 / 화이트 심플 / 보태니컬 / 매트릭스) — 화면 미리보기 |
 | 🕘 | **저장 버전** (불러오기 · 별칭 · 삭제, 최대 5개) |
 | 💾 | 지금 슬롯에 **저장** (단축키 **Ctrl+S**) |
 | ↺ | 처음 상태로 되돌리기 |
@@ -112,6 +112,7 @@ exe 를 직접 만들려면 **[BUILD_WINDOWS.md](BUILD_WINDOWS.md)** 를 참고�
 - **queerpride** — 무지개 프라이드 · 연한 회색 액자 · 엽서 뒤 프라이드 깃발 · 핑크 엽서
 - **white** — 화이트 심플 · 흰 게시판 위에 항목을 바로 놓은 듯한 테두리 없는 구성 · 사진/글 세로선·이름 아래 실선·칸 구분선만 · 제목–한줄소개 사이는 ❧ 로 끊긴 선 · 액자 네 모서리에 선으로 그린 앤티크 장식 · 엽서 이름·한마디는 명조체(나머지는 고딕)
 - **botanical** — 보태니컬 · 식물도감(허바리움) · 옅은 세이지 벽 · 크림빛 종이 액자(섬유 결) · 이끼빛 잎 덩굴 장식 · 미색 도감 종이 엽서(얇은 잎맥 세로선·점선) · 압화 톤 사진칸 · 이끼빛 우표 · 제목·이름·한마디는 명조체
+- **matrix** — 매트릭스 · 네온 초록 코드가 흐르는 검은 터미널 · HUD 모서리 브래킷 · 카드마다 `FILE-01` 파일 코드 탭 · CRT 스캔라인/스캔 빔 · 다크 터미널 엽서(모노스페이스·시안 포인트)
 
 고른 테마는 **화면에만** 미리 적용되고, **💾 저장**할 때 그 버전에 함께 담깁니다.
 
@@ -163,7 +164,7 @@ postcard-cards.html   화면(템플릿) — 기본 레이아웃과 편집 창들
 postcard-cards.css    스타일 — 레이아웃/엽서/액자/툴바 + 테마 변수
 postcard-cards.js     동작 — 편집 · 저장 · 테마 · 이미지 저장
 themes/
-  classic.css · modern.css · halloween.css · christmas.css · queerpride.css · white.css · botanical.css
+  classic.css · modern.css · halloween.css · christmas.css · queerpride.css · white.css · botanical.css · matrix.css
 assets/
   fonts/    내장 글꼴 (woff2) + fonts.css   ← 나눔명조·나눔펜·나눔붓글씨·Caveat
   vendor/   html2canvas.min.js, modern-screenshot.js
