@@ -1612,7 +1612,7 @@
          (.vine-swag = 상단에서 늘어지는 꽃, .vine-flowers-l/r = 좌우 세로 덩굴 꽃) */
       var frameEl = document.querySelector('.frame');
       if (frameEl) {
-        ['vine-swag', 'vine-flowers-l', 'vine-flowers-r'].forEach(function (cls) {
+        ['vine-swag', 'vine-flowers-l', 'vine-flowers-r', 'vine-flowers-b'].forEach(function (cls) {
           if (!frameEl.querySelector('.' + cls)) {
             var sp = document.createElement('span');
             sp.className = cls;
