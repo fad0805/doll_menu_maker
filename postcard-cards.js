@@ -1607,13 +1607,18 @@
         document.body.appendChild(wrap);
       }
 
-      /* 4) 보태니컬 등나무 장식 span(.vine-swag)이 없으면 .frame 끝에 넣는다.
-         예전 저장본에는 이 span이 없어 테마만 적용되고 꽃이 안 보였다. */
+      /* 4) 보태니컬 덩굴 꽃 장식 span들이 없으면 .frame 끝에 넣는다.
+         예전 저장본에는 이 span들이 없어 테마만 적용되고 꽃이 안 보였다.
+         (.vine-swag = 상단에서 늘어지는 꽃, .vine-flowers-l/r = 좌우 세로 덩굴 꽃) */
       var frameEl = document.querySelector('.frame');
-      if (frameEl && !frameEl.querySelector('.vine-swag')) {
-        var swag = document.createElement('span');
-        swag.className = 'vine-swag';
-        frameEl.appendChild(swag);
+      if (frameEl) {
+        ['vine-swag', 'vine-flowers-l', 'vine-flowers-r'].forEach(function (cls) {
+          if (!frameEl.querySelector('.' + cls)) {
+            var sp = document.createElement('span');
+            sp.className = cls;
+            frameEl.appendChild(sp);
+          }
+        });
       }
 
       /* 5) 테마 목록(#themeList)을 현재 THEMES 기준으로 채운다.
