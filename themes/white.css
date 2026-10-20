@@ -1,0 +1,233 @@
+/* ============================================================
+   테마: 화이트 심플   id = "white"
+   ------------------------------------------------------------
+   흰 게시판 위에 안내문을 나란히 붙인 듯한 구성.
+   - 액자 테두리 없음: 흰 판 한 장 + 부드러운 그림자만
+   - 엽서 테두리·그림자 없음: 종이 카드가 아니라 게시판에 직접 놓인 항목
+   - 사진 테두리 없음: 사진은 색면/이미지 자체로만 구분
+   - 구분은 최소한의 헤어라인(사진/글 사이 세로선, 이름 아래 실선,
+     머리말 아래 선, 바닥글 위 선)으로만 한다.
+   - 제목과 한줄소개 사이에는 가운데 기호(❧)로 끊긴 두 조각 가로선,
+     액자 가장자리 네 모서리에는 선으로만 그린 앤티크 장식을 둔다.
+   엽서 이름·한마디(인용)만 명조체, 제목·날짜·본문 등 나머지는 고딕이다.
+   색은 무채색(화이트·그레이·니어 블랙)만 사용한다.
+   ============================================================ */
+
+html[data-theme="white"]{
+  /* 벽: 옅은 회색 (흰 게시판이 떠 보이도록) */
+  --wall-base:#ececea;
+  --wall-image:linear-gradient(180deg,#f0f0ee 0%,#eaeae8 55%,#e3e3e1 100%);
+  --wall-blend:normal;
+  --wall-size:100% 100%;
+
+  /* 액자: 테두리 없이 흰 판 하나 */
+  --wood-deep:#e4e4e2;
+  --wood-dark:#ececea;
+  --wood-mid:#f4f4f2;
+  --wood-light:#ffffff;
+  --wood-panel:#ffffff;
+
+  --mount-bg:transparent;   /* 마운트 경계 없음 */
+
+  /* 액자 네 모서리 앤티크 장식 (선만으로 그림, data URI 내장) */
+  --vine-opacity:.85;
+  --white-corner:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 132 132' fill='none' stroke='%239b958c' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M8 64V24Q8 8 24 8h40'/%3E%3Cpath d='M20 56V32Q20 20 32 20h24'/%3E%3Cpath d='M8 64l12-8'/%3E%3Cpath d='M56 20l8-12'/%3E%3Cpath d='M8 64c0 9 5 14 11 14 5 0 7-4 5-8'/%3E%3Cpath d='M64 8c9 0 14 5 14 11 0 5-4 7-8 5'/%3E%3Cpath d='M38 44l6-6 6 6-6 6z'/%3E%3C/svg%3E");
+
+  /* 명조체(엽서 이름·한마디 전용), 나머지 글씨는 고딕 */
+  --white-serif:"Nanum Myeongjo", "Batang", "바탕", "Apple SD Gothic Neo", Georgia, serif;
+
+  /* 글꼴: 제목·날짜·본문 등 나머지는 고딕 */
+  --myeongjo: var(--gothic);
+  --hand-t:  var(--gothic);
+  --hand-e:  var(--gothic);
+  --hand:    var(--gothic);
+  --board-font: var(--gothic);
+
+  /* 글자: 무채색 */
+  --sepia:#9a9a9a;
+  --pen:#4a4a4a;
+  --pen-red:#6e6e6e;
+  --head-title:#141414;
+  --head-rule-c:rgba(0,0,0,.18);
+  --rule-c:rgba(0,0,0,.12);
+  --divider-c:rgba(0,0,0,.14);
+
+  /* 엽서: 테두리 없는 흰 면 */
+  --card-bg:transparent;
+  --card-line:transparent;
+  --card-edge:transparent;
+  --photo-border:transparent;
+
+  --name-ink:#111111;
+  --desc-ink:#4c4c4c;
+  --accent-red:#7c7c7c;
+  --chip-border:rgba(0,0,0,.14);
+  --chip-ink:#555555;
+  --chip-bg:transparent;
+
+  --foot-line:rgba(0,0,0,.12);
+}
+
+/* ---------- 액자: 테두리 없이 흰 판 한 장 ---------- */
+html[data-theme="white"] .board{
+  background-color:#ffffff;
+  background-image:none;
+  background-blend-mode:normal;
+  border-radius:2px;
+  box-shadow:
+    0 24px 56px rgba(0,0,0,.10),
+    0 6px 16px rgba(0,0,0,.06);
+}
+html[data-theme="white"] .board::before{ display:none; }  /* 마운트 경계 제거 */
+html[data-theme="white"] .patina{ display:none; }         /* 바랜 자국 제거 */
+
+/* 액자 가장자리: 덩굴 대신 네 모서리에 선만으로 그린 앤티크 장식 */
+html[data-theme="white"] .frame > span{ filter:none; }    /* 그림자(입체) 없이 플랫하게 */
+html[data-theme="white"] .frame .vine-t,
+html[data-theme="white"] .frame .vine-b,
+html[data-theme="white"] .frame .vine-l,
+html[data-theme="white"] .frame .vine-r{ display:none; }  /* 모서리만 남김 */
+html[data-theme="white"] .frame .vine-corner{
+  width:132px; height:132px;
+  background-image:var(--white-corner);
+  background-size:100% 100%;
+}
+html[data-theme="white"] .frame .vine-corner.tl{ top:16px; left:16px; }
+html[data-theme="white"] .frame .vine-corner.tr{ top:16px; right:16px; transform:scaleX(-1); }
+html[data-theme="white"] .frame .vine-corner.bl{ bottom:16px; left:16px; transform:scaleY(-1); }
+html[data-theme="white"] .frame .vine-corner.br{ bottom:16px; right:16px; transform:scale(-1,-1); }
+
+/* ---------- 머리말 ---------- */
+/* 제목: 고딕 */
+html[data-theme="white"] .head h1{
+  font-weight:700;
+  text-shadow:none;
+  letter-spacing:-0.01em;
+}
+html[data-theme="white"] .head p{ color:#6e6e6e; }
+/* 제목과 한줄소개 사이: 가운데 겹장 기호(❧)로 끊긴 두 조각 선 —
+   끝까지 진하게 보이도록 그라데이션(투명) 없이 단색으로 */
+html[data-theme="white"] .head .rule{
+  display:flex;
+  max-width:560px;
+}
+html[data-theme="white"] .head .rule::before,
+html[data-theme="white"] .head .rule::after{
+  display:block;
+  flex:1;
+  height:1px;
+  background:rgba(0,0,0,.30);
+}
+
+/* ---------- 게시판 구분선: 한 판이 9칸으로 꽉 찼을 때만 ---------- */
+/* 세로선: 엽서 사이 간격(32px)의 한가운데 */
+html[data-theme="white"] .deck:has(.postcard:nth-child(9):not(.is-hidden)){
+  background-image:linear-gradient(90deg,
+    transparent calc(100% - 17px),
+    rgba(0,0,0,.07) calc(100% - 17px),
+    rgba(0,0,0,.07) calc(100% - 16px),
+    transparent calc(100% - 16px));
+  background-size:calc((100% + 32px) / 3) 100%;
+  background-repeat:repeat-x;
+}
+/* 가로선: 행 사이 간격(52px)의 한가운데
+   (액자 폭 1754 − 좌우 여백 140 = 1614 → 3열 카드 높이 ≈349px,
+    줄 위치 = 10 + 349 + 26 = 385px, 그다음 = 10 + 2×349 + 52 + 26 = 786px) */
+html[data-theme="white"] .deck:has(.postcard:nth-child(9):not(.is-hidden))::before{
+  content:"";
+  position:absolute;
+  left:0; right:0;
+  top:385px; height:1px;
+  background:rgba(0,0,0,.07);
+  pointer-events:none;
+}
+html[data-theme="white"] .deck:has(.postcard:nth-child(9):not(.is-hidden))::after{
+  content:"";
+  position:absolute;
+  left:0; right:0;
+  top:786px; height:1px;
+  background:rgba(0,0,0,.07);
+  pointer-events:none;
+}
+
+/* ---------- 엽서: 테두리·그림자 없이 게시판에 바로 놓인 항목 ---------- */
+html[data-theme="white"] .deck .postcard{ --rot:0deg; }
+html[data-theme="white"] .postcard{
+  background-color:transparent;
+  background-image:none;
+  box-shadow:none;
+}
+html[data-theme="white"] .inside{ border:none; }
+html[data-theme="white"] .postcard .tape{ display:none; }
+
+/* ---------- 사진칸: 테두리 없이 색면/이미지만 ---------- */
+html[data-theme="white"] .photo{
+  border:0;
+  border-radius:0;
+  transform:none;
+  box-shadow:none;
+}
+/* 기본 랜덤 배정색은 옅은 회색으로 (사용자가 고른 색은 유지) */
+html[data-theme="white"] .photo:not(.is-user-color){
+  --scene:#ececea !important;
+}
+html[data-theme="white"] .photo .stamp{ display:none; }
+html[data-theme="white"] .photo .art-img{ filter:none; }
+html[data-theme="white"] .photo .glyph{ filter:none; opacity:.45; }
+
+/* ---------- 설명란: 사진과 글 사이 얇은 세로선 하나 ---------- */
+html[data-theme="white"] .info{
+  padding: 9px 12px 9px 18px;
+}
+html[data-theme="white"] .info::before{
+  display:block;
+  left:0;
+  top:9px;
+  bottom:9px;
+  width:1px;
+  background:rgba(0,0,0,.10);
+  box-shadow:none;
+}
+html[data-theme="white"] .info .divider{
+  background:rgba(0,0,0,.10);
+  opacity:1;
+  margin:10px 0 9px;
+}
+/* 엽서 이름: 명조체 (영문 부제 small 은 고딕 유지) */
+html[data-theme="white"] .info .name{
+  font-family: var(--white-serif);
+  line-height:1.5;
+}
+html[data-theme="white"] .info .name small{ color:#a2a2a2; }
+
+/* 한마디(인용): 명조체 */
+html[data-theme="white"] .info .quote{
+  font-family: var(--white-serif);
+  font-style:normal;
+}
+
+/* 특징: 칩 대신 가운뎃점으로 구분한 최소 텍스트 */
+html[data-theme="white"] .info .traits{
+  gap:0;
+  padding-top:6px;
+}
+html[data-theme="white"] .info .traits li{
+  border:0;
+  background:none;
+  padding:4px 0;
+  border-radius:0;
+  font-size:.92rem;
+  line-height:1.2;
+  color:#666666;
+}
+html[data-theme="white"] .info .traits li + li::before{
+  content:"·";
+  margin:0 7px;
+  color:rgba(0,0,0,.28);
+}
+
+/* ---------- 바닥글 ---------- */
+html[data-theme="white"] .foot{
+  box-shadow:none;
+  border-top-color:rgba(0,0,0,.10);
+}
