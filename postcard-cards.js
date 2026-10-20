@@ -1023,6 +1023,9 @@
       var frameState = normalizeForSave();     /* 여러 프레임을 한 덱으로 합쳐 저장 */
       var prevCount = document.body.getAttribute('data-count');
       document.body.setAttribute('data-count', String(currentN));   /* 펼쳐 놓은 장수 저장 */
+      /* 저장물에는 항상 모든 테마 <link> 와 최신 테마 목록을 담는다
+         (예전 저장본을 열어 다시 저장해도 새 테마가 함께 담기도록) */
+      ensureThemeInfra();
       var html = '<!doctype html>\n' + document.documentElement.outerHTML;
       if (prevCount === null) document.body.removeAttribute('data-count');
       else document.body.setAttribute('data-count', prevCount);
@@ -1538,8 +1541,10 @@
 
     /* ---- 예전에 저장한 슬롯 HTML도 테마를 바꿀 수 있게 자동 보정 ----
        저장된 슬롯에는 테마 <link>·🎨 버튼·테마 선택창이 없을 수 있다(테마 기능 이전 저장본).
-       그럴 때 이 스크립트가 페이지에 없으면 만들어 넣는다. (한 번 저장하면 파일에도 함께 담긴다) */
-    (function ensureThemeInfra() {
+       그럴 때 이 스크립트가 페이지에 없으면 만들어 넣는다. (한 번 저장하면 파일에도 함께 담긴다)
+       저장(buildHTML) 직전에도 한 번 호출해서, 파일에 담기는 HTML에
+       현재의 모든 테마 <link> 와 테마 목록이 항상 들어가게 한다. */
+    function ensureThemeInfra() {
       /* 이 스크립트의 src에서 페이지 기준 상대 경로 접두어를 구한다 ('' 또는 '../../' 등) */
       var prefix = '';
       var scripts = document.getElementsByTagName('script');
@@ -1601,7 +1606,43 @@
           '</div>';
         document.body.appendChild(wrap);
       }
-    })();
+
+      /* 4) 테마 목록(#themeList)을 현재 THEMES 기준으로 채운다.
+         예전 저장본은 목록이 3개(클래식·모던·할로윈)로 굳어 있어 새 테마가 안 보인다.
+         JS가 켜져 있으면 항상 최신 목록으로 다시 그려 준다. */
+      var listEl = document.getElementById('themeList');
+      if (listEl) {
+        var cur = currentTheme();
+        listEl.innerHTML = '';
+        THEMES.forEach(function (t) {
+          var li = document.createElement('li');
+          li.className = 'theme-row' + (t.id === cur ? ' current' : '');
+          li.setAttribute('data-theme-id', t.id);
+          li.setAttribute('role', 'button');
+          li.setAttribute('tabindex', '0');
+          var radio = document.createElement('span');
+          radio.className = 't-radio';
+          radio.textContent = (t.id === cur ? '●' : '○');
+          var mid = document.createElement('div');
+          var nm = document.createElement('span');
+          nm.className = 't-name';
+          nm.textContent = t.name;
+          var ds = document.createElement('span');
+          ds.className = 't-desc';
+          ds.textContent = t.desc || '';
+          mid.appendChild(nm);
+          mid.appendChild(ds);
+          var badge = document.createElement('span');
+          badge.className = 't-badge';
+          badge.textContent = (t.id === cur ? '사용 중' : '전환');
+          li.appendChild(radio);
+          li.appendChild(mid);
+          li.appendChild(badge);
+          listEl.appendChild(li);
+        });
+      }
+    }
+    ensureThemeInfra();   /* 페이지가 열릴 때 한 번 보정 */
 
     /* ⏻ 서버 종료 버튼 — 창 없는 exe 에서 앱을 닫을 수 있게 한다 (서버가 있을 때만 보임) */
     (function ensureQuitButton() {
