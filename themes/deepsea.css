@@ -8,8 +8,9 @@
      위쪽 입구에 코르크 마개
    · 병 안(마운트): 짙은 심해 물빛 + 표층에서 들어오는 빛 +
      물방울이 천천히 위로 오름
-   · 엽서: 병에 담긴 오래된 편지 — 양피지 + 접힘 자국 +
-     붉은 밀봉(우표) + 손글씨 이름
+   · 엽서: 병에 담긴 돌돌 말린 편지(두루마기) — 양피지 위·아래끝이
+     말린 실린더(하이라이트 + 접촉선 + 끝 단면) + 붉은 밀봉(우표) +
+     손글씨 이름
    색은 '테마 표면' 변수로, 목·어깨 유리선·기포·빛 셰이더는 선택자 규칙으로.
    ============================================================ */
 
@@ -55,6 +56,33 @@ html[data-theme="deepsea"]{
   --chip-bg:rgba(255,252,240,.35);
 
   --foot-line:rgba(140,190,215,.35);
+
+  /* 엽서 두루마기: 위·아래 말린 끝(양피지 실린더)
+     · --roll-top: 위 끝 24px(본문 쪽 11px 접힘 그림자 포함, 총 35px)
+     · --roll-bot: 아래 끝 21px(위쪽 10px 접힘 그림자 포함, 총 31px)
+       — 아래 끝은 사진·글씨가 끝나는 선(cardH-21px)에서 접합해 선 어긋남 없음
+     · --roll-cap: 말린 끝의 옆 단면(나선이 보이는 듯한 동심 링) */
+  --roll-top:
+    linear-gradient(180deg,
+      #ab9360 0%, #cbb787 5.7%, #f8efd4 14.3%, #f4e9cb 25.7%,
+      #eadbb3 40%, #ddcb9f 51.4%, #cbb486 60%, #b39c69 65.7%,
+      #7a6642 68.6%,
+      rgba(56,40,16,.55) 73%, rgba(56,40,16,.30) 82%,
+      rgba(56,40,16,.12) 93%, rgba(56,40,16,0) 100%);
+  --roll-bot:
+    linear-gradient(180deg,
+      rgba(56,40,16,0) 0%, rgba(56,40,16,.14) 12.9%, rgba(56,40,16,.34) 25.8%,
+      rgba(56,40,16,.50) 29%,
+      #7a6642 32.3%, #a68f60 38.7%, #d9c79a 48.4%, #f6ecd1 58.1%,
+      #eddfb7 67.7%, #d8c596 80.6%, #bfa877 90.3%, #a08a5b 100%);
+  --roll-cap-t:
+    radial-gradient(ellipse 5px 11.5px at 50% 50%,
+      rgba(84,64,34,.55) 0 44%, rgba(244,233,202,.92) 46% 58%,
+      rgba(134,108,62,.50) 60% 80%, rgba(84,64,34,.30) 84% 94%, transparent 96%);
+  --roll-cap-b:
+    radial-gradient(ellipse 5px 10px at 50% 50%,
+      rgba(84,64,34,.52) 0 44%, rgba(242,231,199,.90) 46% 58%,
+      rgba(134,108,62,.48) 60% 80%, rgba(84,64,34,.28) 84% 94%, transparent 96%);
 
   /* 병 실루엣(clip-path)
      · 바깥: 입구 평평 200px → 목 → 어깨 S곡선 → 옆선 → 바닥(100%)
@@ -264,22 +292,42 @@ html[data-theme="deepsea"] .foot [data-head]:focus-visible{
 }
 
 /* ============================================================
-   엽서 = 편지(양피지)
-   · 종이 위에 위·아래로 접힌 자국(가로 접힘선 2줄)
-   · 가장자리 어둡게 + 얼룩
+   엽서 = 돌돌 말린 편지(두루마기)
+   · 카드 위·아래 끝을 말린 실린더로 그림(양피지 하이라이트 +
+     접촉선 + 본문 쪽 접힘 그림자 + 옆 단면), 가운데는 펼친 종이
+   · 가로 접힘선 2줄은 말린 자리로 대체, 가장자리 어둡게 + 얼룩
    ============================================================ */
 html[data-theme="deepsea"] .postcard{
   background-image:
-    var(--paper-tex),                                                    /* 종이 섬유 */
-    var(--foxing-card),                                                  /* 오래된 얼룩 */
-    /* 위쪽 접힘 자국: 짙은 선 + 아래 밝은 윤곽 */
-    linear-gradient(180deg, transparent 32.4%, rgba(122,96,56,.20) 33%, rgba(255,252,238,.55) 33.7%, transparent 34.6%),
-    /* 아래쪽 접힘 자국 */
-    linear-gradient(180deg, transparent 65.4%, rgba(122,96,56,.18) 66%, rgba(255,252,238,.50) 66.7%, transparent 67.6%),
+    var(--roll-cap-t), var(--roll-cap-t),                         /* 위 끝 단면 좌·우 */
+    var(--roll-cap-b), var(--roll-cap-b),                         /* 아래 끝 단면 좌·우 */
+    var(--roll-top),                                              /* 위쪽 말린 끝 + 접힘 그림자 */
+    var(--roll-bot),                                              /* 아래쪽 말린 끝 + 접힘 그림자 */
+    var(--paper-tex),                                             /* 종이 섬유 */
+    var(--foxing-card),                                           /* 오래된 얼룩 */
     radial-gradient(ellipse 140% 130% at 50% 50%, transparent 55%, rgba(84,60,28,.34) 100%);
-  background-size:240px 240px, 170px 170px, 100% 100%, 100% 100%, 100% 100%;
-  background-repeat:repeat, repeat, no-repeat, no-repeat, no-repeat;
-  background-blend-mode:multiply, multiply, normal, normal, multiply;
+  background-size:9px 24px, 9px 24px, 9px 21px, 9px 21px, 100% 35px, 100% 31px, 240px 240px, 170px 170px, 100% 100%;
+  background-position:0 0, 100% 0, 0 100%, 100% 100%, 0 0, 0 100%, 0 0, 0 0, 50% 50%;
+  background-repeat:no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, no-repeat, repeat, repeat, no-repeat;
+  background-blend-mode:normal, normal, normal, normal, normal, normal, multiply, multiply, multiply;
+}
+
+/* 위쪽 말린 끝: 사진 윗단 위로 같은 그라데이션을 이어 그려
+   사진이 말린 자리에 '안착'한 것처럼 보임(사진 폭 40% + 여백까지) */
+html[data-theme="deepsea"] .inside::before{
+  content:"";
+  position:absolute; left:9px; top:9px;      /* 사진 테두리 상단 = 카드 y21px */
+  width:40%; height:14px;                     /* 말린 끝 3px + 접힘 그림자 11px */
+  z-index:3; pointer-events:none;
+  background-image:var(--roll-top);
+  background-size:100% 35px;
+  background-position:0 -21px;
+  background-repeat:no-repeat;
+}
+/* 카드 위·아래 1px 안쪽 선은 말린 끝에 가로로 지나가므로 감춤(좌·우선은 유지) */
+html[data-theme="deepsea"] .inside{
+  border-top-color:transparent;
+  border-bottom-color:transparent;
 }
 
 /* 편지 붙드는 테이프: 누래킨 종이 테이프(광택 없음) */
