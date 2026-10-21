@@ -1,0 +1,337 @@
+/* ============================================================
+   테마: 심해 유리병   id = "deepsea"
+   ------------------------------------------------------------
+   어두운 심해 바다에 떠 있는 거대한 유리병.
+   · 벽: 먹빛 심해 + 위에서 스며드는 빛기둥 + 천천히 내려오는 해양 눈
+   · 액자: 유리병 몸통 — 두꺼운 유리 테두리(창백한 하이라이트) ·
+     위쪽 중앙에 코르크 마개와 유리 목(입구)
+   · 병 안(마운트): 짙은 심해 물빛 + 표층에서 들어오는 빛 +
+     물방울이 천천히 위로 오름
+   · 엽서: 병에 담긴 오래된 편지 — 양피지 + 접힘 자국 +
+     붉은 밀봉(우표) + 손글씨 이름
+   색은 '테마 표면' 변수로, 유리 목·기포·빛 셰이더는 선택자 규칙으로.
+   ============================================================ */
+
+html[data-theme="deepsea"]{
+  /* 벽: 먹빛 심해 + 위쪽 빛기둥 + 해양 눈(플랑크톤) */
+  --wall-base:#02111d;
+  --wall-image:
+    /* 위에서 내려오는 비스듬한 빛기둥 */
+    repeating-linear-gradient(102deg,
+      rgba(140,215,245,.055) 0 26px, rgba(140,215,245,0) 26px 190px),
+    radial-gradient(ellipse at 50% -10%, rgba(120,205,240,.20), transparent 58%),
+    radial-gradient(ellipse at 50% 118%, rgba(0,0,0,.75), transparent 70%),
+    var(--grain-2),
+    linear-gradient(180deg, #073049 0%, #042033 42%, #010a13 100%);
+  --wall-blend: screen, screen, multiply, overlay, normal;
+  --wall-size:  100% 100%, 100% 100%, 100% 100%, 600px 600px, 100% 100%;
+
+  /* 마운트 = 병 안의 심해 물 */
+  --mount-bg:#04202f;
+  --vine-opacity:0;               /* 나무 덩굴 장식은 숨김(대신 유리 목·기포) */
+
+  /* 머릿말·꼬릿말: 물속 찬빛 */
+  --head-title:#d8f4ff;
+  --head-rule-c:rgba(140,215,245,.55);
+  --rule-c:     rgba(140,200,230,.40);
+  --divider-c:  rgba(120,175,210,.70);
+  --sepia:#8fb6c9;
+  --pen:#a9d4e5;
+  --pen-red:#e8d5aa;              /* 한 줄 소개: 모래빛 */
+  --ink:#cfe6f0;
+
+  /* 엽서 = 편지(양피지) */
+  --card-bg:#f0e4c2;
+  --card-line:rgba(84,116,152,.50);
+  --card-edge:rgba(96,124,152,.55);
+  --photo-border:#fdf8e8;
+
+  --name-ink:#2a4a75;             /* 잉크색 이름 */
+  --desc-ink:#374960;
+  --accent-red:#9a4a33;           /* 붉은 갈색 잉크(영문 부제·한마디) */
+  --chip-border:rgba(74,112,150,.55);
+  --chip-ink:#2f4f78;
+  --chip-bg:rgba(255,252,240,.35);
+
+  --foot-line:rgba(140,190,215,.35);
+}
+
+/* ============================================================
+   벽: 천천히 내려오는 해양 눈(플랑크톤 입자) — 두 겹 다른 크기/속도
+   ============================================================ */
+html[data-theme="deepsea"] body::before{
+  content:"";
+  position:fixed; inset:0;
+  z-index:0; pointer-events:none;
+  background-image:
+    radial-gradient(circle at 40px 60px,  rgba(200,240,255,.20) 0 1.4px, transparent 2.4px),
+    radial-gradient(circle at 170px 190px, rgba(200,240,255,.13) 0 1.1px, transparent 2.1px),
+    radial-gradient(circle at 90px 300px,  rgba(200,240,255,.22) 0 1.8px, transparent 2.8px),
+    radial-gradient(circle at 260px 120px, rgba(200,240,255,.10) 0 1.2px, transparent 2.2px),
+    radial-gradient(circle at 320px 420px, rgba(200,240,255,.17) 0 1.5px, transparent 2.5px);
+  background-size:360px 480px, 300px 260px, 420px 640px, 340px 380px, 380px 520px;
+  animation:deepsea-snow 46s linear infinite;
+  will-change:background-position;
+}
+@keyframes deepsea-snow{
+  from{ background-position:0 0, 0 0, 0 0, 0 0, 0 0; }
+  to  { background-position:0 480px, 0 260px, 0 640px, 0 380px, 0 520px; }
+}
+
+/* ============================================================
+   액자 = 유리병 몸통
+   · 두꺼운 유리 테두리(창백한 테두리선 + 유리 두께) + 대각 반사광
+   · 아주 둥근 모서리(병 몸통)
+   ============================================================ */
+html[data-theme="deepsea"] .board{
+  border-radius:46px;
+  /* 위쪽 여백을 넉넉히 — 코르크 마개 + 유리 목(병 입구) 자리 */
+  padding-top:158px;
+  background-color:rgba(10,42,62,.42);
+  background-image:
+    /* 유리 반사광(위왼쪽→아래오른쪽 넓은 띠) */
+    linear-gradient(115deg,
+      rgba(225,248,255,.15) 0%, rgba(225,248,255,.05) 16%, rgba(225,248,255,0) 32%,
+      rgba(225,248,255,0) 68%, rgba(160,220,255,.05) 86%, rgba(225,248,255,.10) 100%),
+    var(--grain-2),
+    linear-gradient(180deg, rgba(24,80,110,.45) 0%, rgba(6,32,52,.55) 55%, rgba(2,16,28,.62) 100%);
+  background-blend-mode:screen, overlay, normal;
+  background-size:100% 100%, 600px 600px, 100% 100%;
+  box-shadow:
+    /* 유리 테두리: 밝은 최외곽선 */
+    inset 0 0 0 2px rgba(205,242,255,.48),
+    /* 유리 두께(반투명 유리 살) */
+    inset 0 0 0 16px rgba(150,215,250,.13),
+    inset 0 0 0 18px rgba(215,245,255,.30),
+    /* 안쪽으로 어두워지는 물 */
+    inset 26px 30px 70px -34px rgba(225,250,255,.30),
+    inset -18px -22px 60px -34px rgba(180,230,255,.16),
+    inset 0 0 130px 46px rgba(0,10,22,.55),
+    /* 심해 그림자·발광 */
+    0 44px 120px rgba(0,0,0,.75),
+    0 0 90px rgba(70,180,230,.10);
+}
+
+/* 병 안의 물: 표층에서 들어오는 빛 + 플랑크톤 입자 */
+html[data-theme="deepsea"] .board::before{
+  border-radius:22px;
+  background-color:var(--mount-bg);
+  background-image:
+    /* 표층 빛(위쪽 가운데 번짐) */
+    radial-gradient(ellipse 60% 34% at 50% -4%, rgba(150,225,255,.26), transparent 70%),
+    /* 플랑크톤 입자 */
+    radial-gradient(circle at 60px 90px,  rgba(190,235,255,.12) 0 1.4px, transparent 2.4px),
+    radial-gradient(circle at 240px 200px, rgba(190,235,255,.08) 0 1.1px, transparent 2.1px),
+    radial-gradient(circle at 150px 340px, rgba(190,235,255,.13) 0 1.7px, transparent 2.7px),
+    var(--grain),
+    linear-gradient(180deg, #0c425e 0%, #063049 42%, #02141f 100%);
+  background-size:100% 100%, 380px 300px, 320px 260px, 400px 420px, 220px 220px, 100% 100%;
+  background-blend-mode:screen, screen, screen, screen, overlay, normal;
+  box-shadow:
+    inset 0 0 0 1px rgba(170,225,250,.22),
+    inset 0 16px 26px -12px rgba(0,8,16,.75),
+    inset 0 -12px 22px -12px rgba(160,220,250,.10),
+    inset 0 0 100px 16px rgba(0,8,16,.55);
+}
+
+/* 병 안: 물방울이 천천히 위로 오름 (카드 뒤, z=1) */
+html[data-theme="deepsea"] .board::after{
+  content:"";
+  position:absolute; inset:44px; z-index:1; pointer-events:none;
+  border-radius:22px;
+  background-image:
+    /* 속찬 큰 물방울(테두리만) */
+    radial-gradient(circle at 44px 250px, transparent 0 5px, rgba(190,238,258,.28) 5px 6.2px, transparent 7px),
+    radial-gradient(circle at 210px 60px,  transparent 0 3.4px, rgba(190,238,258,.20) 3.4px 4.4px, transparent 5.2px),
+    radial-gradient(circle at 130px 420px, transparent 0 4.2px, rgba(190,238,258,.24) 4.2px 5.2px, transparent 6px),
+    /* 채워진 작은 기포 */
+    radial-gradient(circle at 96px 140px,  rgba(200,242,258,.22) 0 2.2px, transparent 3px),
+    radial-gradient(circle at 264px 330px, rgba(200,242,258,.16) 0 1.7px, transparent 2.5px),
+    radial-gradient(circle at 178px 520px, rgba(200,242,258,.26) 0 2.6px, transparent 3.4px),
+    radial-gradient(circle at 30px 610px,  rgba(200,242,258,.14) 0 1.5px, transparent 2.3px);
+  background-size:300px 700px, 300px 700px, 300px 700px, 300px 700px, 300px 700px, 300px 700px, 300px 700px;
+  animation:deepsea-rise 22s linear infinite;
+  will-change:background-position;
+}
+@keyframes deepsea-rise{
+  from{ background-position:0 0, 0 0, 0 0, 0 0, 0 0, 0 0, 0 0; }
+  to  { background-position:0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px; }
+}
+
+/* 물속 비네트 + 천천히 흔들리는 셰이더 빛 */
+html[data-theme="deepsea"] .patina{
+  border-radius:22px;
+  background-image:
+    radial-gradient(ellipse at 50% 40%, transparent 52%, rgba(0,8,16,.55) 100%);
+  background-size:100% 100%;
+  opacity:.9;
+}
+html[data-theme="deepsea"] .patina::before{
+  content:"";
+  position:absolute; inset:0; pointer-events:none;
+  background-image:
+    repeating-linear-gradient(104deg, rgba(170,230,255,.055) 0 24px, transparent 24px 96px),
+    repeating-linear-gradient(76deg,  rgba(170,230,255,.040) 0 18px, transparent 18px 112px);
+  background-size:420px 100%, 380px 100%;
+  mix-blend-mode:screen;
+  opacity:.75;
+  animation:deepsea-caustic 26s linear infinite alternate;
+  will-change:background-position;
+}
+@keyframes deepsea-caustic{
+  from{ background-position:0 0, 0 0; }
+  to  { background-position:360px 0, -300px 0; }
+}
+
+/* ============================================================
+   액자 위: 유리 목(입구) + 코르크 마개 — 위쪽 가운데
+   ============================================================ */
+html[data-theme="deepsea"] .frame::before{
+  /* 유리 목: 위로 갈수록 좁아지고 아래로 벌어지는 유리관(각진 하이라이트 포함) */
+  content:"";
+  position:absolute; left:50%; top:54px;
+  width:250px; height:90px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAyNTAgOTAiPgo8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDhmN2ZmIiBzdG9wLW9wYWNpdHk9Ii41MCIvPgo8c3RvcCBvZmZzZXQ9Ii4xMCIgc3RvcC1jb2xvcj0iI2Q4ZjdmZiIgc3RvcC1vcGFjaXR5PSIuMTIiLz4KPHN0b3Agb2Zmc2V0PSIuNTAiIHN0b3AtY29sb3I9IiNkOGY3ZmYiIHN0b3Atb3BhY2l0eT0iLjA2Ii8+CjxzdG9wIG9mZnNldD0iLjkwIiBzdG9wLWNvbG9yPSIjZDhmN2ZmIiBzdG9wLW9wYWNpdHk9Ii4xMiIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNkOGY3ZmYiIHN0b3Atb3BhY2l0eT0iLjQyIi8+CjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cGF0aCBkPSJNNjQgMyBMMTg2IDMgTDI0NCA4NyBMNiA4NyBaIiBmaWxsPSJ1cmwoI2cpIiBzdHJva2U9IiNkNmY1ZmYiIHN0cm9rZS1vcGFjaXR5PSIuNTUiIHN0cm9rZS13aWR0aD0iMyIvPgo8cGF0aCBkPSJNNzIgNyBMMjYgODQiIHN0cm9rZT0iI2VhZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4zMCIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHBhdGggZD0iTTE3OCA3IEwyMjQgODQiIHN0cm9rZT0iI2VhZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xNCIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
+  background-size:100% 100%;
+  background-repeat:no-repeat;
+}
+html[data-theme="deepsea"] .frame::after{
+  /* 코르크 마개 — 병 상단 테두리에 딱 붙음 + 마개를 감싸는 유리 입구 링 */
+  content:"";
+  position:absolute; left:50%; top:3px;
+  width:134px; height:60px;
+  transform:translateX(-50%);
+  pointer-events:none;
+  border-radius:10px 10px 12px 12px;
+  background-image:
+    radial-gradient(circle at 22% 30%, rgba(96,60,26,.45) 0 2px, transparent 3px),
+    radial-gradient(circle at 68% 62%, rgba(96,60,26,.38) 0 2.4px, transparent 3.4px),
+    radial-gradient(circle at 44% 80%, rgba(96,60,26,.30) 0 1.6px, transparent 2.6px),
+    radial-gradient(circle at 84% 22%, rgba(96,60,26,.35) 0 1.8px, transparent 2.8px),
+    linear-gradient(90deg, #8a6134 0%, #c99e63 22%, #dcb87e 50%, #c1955a 78%, #7d5730 100%);
+  box-shadow:
+    inset 0 3px 4px rgba(255,232,190,.35),
+    inset 0 -4px 6px rgba(70,42,16,.45),
+    /* 코르크를 감싼 유리 입구 링 */
+    0 0 0 7px rgba(160,220,250,.12),
+    0 0 0 9px rgba(215,245,255,.34),
+    0 6px 14px rgba(0,8,16,.5);
+}
+
+/* ============================================================
+   머릿말: 물속 찬빛 제목 + 물결 장식
+   ============================================================ */
+html[data-theme="deepsea"] .head .overline{
+  letter-spacing:.34em; text-indent:.34em;
+  color:#9fd2e6;
+}
+html[data-theme="deepsea"] .head h1{
+  text-shadow:
+    0 2px 3px rgba(0,8,16,.65),
+    0 0 20px rgba(140,220,255,.35),
+    0 0 52px rgba(90,190,240,.20);
+}
+html[data-theme="deepsea"] .head .rule span{ font-size:0; }
+html[data-theme="deepsea"] .head .rule span::before{
+  content:"≈";
+  font-size:1.35rem; font-weight:700; letter-spacing:.1em;
+  color:#9fd2e6;
+  text-shadow:0 0 10px rgba(140,220,255,.5);
+}
+html[data-theme="deepsea"] .head [data-head]:hover,
+html[data-theme="deepsea"] .foot [data-head]:hover{
+  box-shadow:inset 0 0 0 1px rgba(140,200,230,.5), 0 0 20px rgba(140,215,245,.35);
+}
+html[data-theme="deepsea"] .head [data-head]:focus-visible,
+html[data-theme="deepsea"] .foot [data-head]:focus-visible{
+  outline:2px dashed rgba(140,215,245,.85); outline-offset:3px;
+}
+
+/* ============================================================
+   엽서 = 편지(양피지)
+   · 종이 위에 위·아래로 접힌 자국(가로 접힘선 2줄)
+   · 가장자리 어둡게 + 얼룩
+   ============================================================ */
+html[data-theme="deepsea"] .postcard{
+  background-image:
+    var(--paper-tex),                                                    /* 종이 섬유 */
+    var(--foxing-card),                                                  /* 오래된 얼룩 */
+    /* 위쪽 접힘 자국: 짙은 선 + 아래 밝은 윤곽 */
+    linear-gradient(180deg, transparent 32.4%, rgba(122,96,56,.20) 33%, rgba(255,252,238,.55) 33.7%, transparent 34.6%),
+    /* 아래쪽 접힘 자국 */
+    linear-gradient(180deg, transparent 65.4%, rgba(122,96,56,.18) 66%, rgba(255,252,238,.50) 66.7%, transparent 67.6%),
+    radial-gradient(ellipse 140% 130% at 50% 50%, transparent 55%, rgba(84,60,28,.34) 100%);
+  background-size:240px 240px, 170px 170px, 100% 100%, 100% 100%, 100% 100%;
+  background-repeat:repeat, repeat, no-repeat, no-repeat, no-repeat;
+  background-blend-mode:multiply, multiply, normal, normal, multiply;
+}
+
+/* 편지 붙드는 테이프: 누래킨 종이 테이프(광택 없음) */
+html[data-theme="deepsea"] .postcard .tape{
+  background:
+    linear-gradient(180deg, rgba(238,228,198,.55), rgba(214,200,164,.42) 45%, rgba(232,222,192,.50));
+  border-top:1px solid rgba(255,250,232,.35);
+  border-bottom:1px solid rgba(150,128,88,.28);
+  box-shadow:
+    inset 0 1px 1px rgba(255,252,240,.4),
+    0 2px 4px rgba(30,20,8,.18);
+  opacity:.85;
+}
+
+/* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
+
+/* ============================================================
+   우표 → 붉은 밀봉(왁스 실)
+   ============================================================ */
+html[data-theme="deepsea"] .photo .stamp{
+  width:38px; height:38px;
+  padding:0;
+  border:none;
+  border-radius:50%;
+  transform:rotate(-8deg);
+  background:
+    radial-gradient(circle at 38% 30%, rgba(255,190,160,.35), transparent 55%),
+    radial-gradient(circle at 50% 50%, #b1402f 0 58%, #8c2c20 100%);
+  box-shadow:
+    inset 0 -2px 3px rgba(70,14,8,.55),
+    inset 0 2px 2px rgba(255,170,140,.35),
+    0 2px 5px rgba(20,8,4,.5);
+}
+html[data-theme="deepsea"] .photo .stamp::before{ background-image:none; }
+html[data-theme="deepsea"] .photo .stamp .face{
+  border:1px solid rgba(255,214,190,.45);
+  border-radius:50%;
+  color:#f7e2c8;
+  font-weight:700;
+  font-size:.86rem;
+  text-shadow:0 1px 1px rgba(70,14,8,.6);
+}
+
+/* ============================================================
+   편지글씨: 이름·한마디는 손글씨(나눔손글씨 펜)
+   ============================================================ */
+html[data-theme="deepsea"] .info .name{
+  font-family:"Nanum Pen Script", "Nanum Myeongjo", "Batang", "바탕", Georgia, serif;
+  font-weight:400;
+  font-size:2.05rem; line-height:1;
+  letter-spacing:.01em;
+  color:var(--name-ink);
+}
+html[data-theme="deepsea"] .info .name small{
+  font-family:var(--gothic);
+  color:var(--accent-red);
+}
+html[data-theme="deepsea"] .info::before{
+  /* 편지 괘선: 왼쪽 붉은 마진선 */
+  background:rgba(186,96,74,.35);
+  box-shadow:1px 0 0 rgba(255,250,235,.4);
+}
+html[data-theme="deepsea"] .info .quote{
+  font-family:"Nanum Pen Script", "Nanum Myeongjo", "Batang", "바탕", Georgia, serif;
+  font-style:normal;
+  font-size:1.55rem;
+  color:#31598a;
+  margin-top:6px;
+}
