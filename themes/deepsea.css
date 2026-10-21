@@ -79,14 +79,17 @@ html[data-theme="deepsea"] body::before{
 }
 
 /* ============================================================
-   액자 = 유리병 몸통
-   · 두꺼운 유리 테두리(창백한 테두리선 + 유리 두께) + 대각 반사광
-   · 아주 둥근 모서리(병 몸통)
+   액자 = 유리병 몸통(실루엣)
+   · 상단: 가운데 '병 입구'(평평한 240px) → 좌우로 휘어 내려오는
+     어깨선 → 옆선 → 둥근 바닥 = border-radius 로 그린 병 실루엣
+   · 밝은 외곽선(inset)이 어깨 곡선을 따라 흐르며 병 본체를 그림
+   · 물(마운트)은 같은 중심의 곡선(44px 안쪽)이라 어깨에도 유리 두께 유지
    ============================================================ */
 html[data-theme="deepsea"] .board{
-  border-radius:46px;
-  /* 위쪽 여백을 넉넉히 — 코르크 마개 + 유리 목(병 입구) 자리 */
-  padding-top:158px;
+  /* 어깨: 입구 평평 구간 240px + 좌우 757px 곡선, 깊이 300px */
+  border-radius:757px 757px 46px 46px / 300px 300px 46px 46px;
+  /* 머릿말 자리 — 코르크 아래에서 물빛이 충분히 보이게 */
+  padding-top:128px;
   background-color:rgba(10,42,62,.42);
   background-image:
     /* 유리 반사광(위왼쪽→아래오른쪽 넓은 띠) */
@@ -112,9 +115,10 @@ html[data-theme="deepsea"] .board{
     0 0 90px rgba(70,180,230,.10);
 }
 
-/* 병 안의 물: 표층에서 들어오는 빛 + 플랑크톤 입자 */
+/* 병 안의 물: 표층에서 들어오는 빛 + 플랑크톤 입자
+   · 어깨 곡선은 보드 radius에서 44px 안쪽 동심(713/256) — 유리 두께 유지 */
 html[data-theme="deepsea"] .board::before{
-  border-radius:22px;
+  border-radius:713px 713px 22px 22px / 256px 256px 22px 22px;
   background-color:var(--mount-bg);
   background-image:
     /* 표층 빛(위쪽 가운데 번짐) */
@@ -138,7 +142,7 @@ html[data-theme="deepsea"] .board::before{
 html[data-theme="deepsea"] .board::after{
   content:"";
   position:absolute; inset:44px; z-index:1; pointer-events:none;
-  border-radius:22px;
+  border-radius:713px 713px 22px 22px / 256px 256px 22px 22px;
   background-image:
     /* 속찬 큰 물방울(테두리만) */
     radial-gradient(circle at 44px 250px, transparent 0 5px, rgba(190,238,258,.28) 5px 6.2px, transparent 7px),
@@ -160,7 +164,7 @@ html[data-theme="deepsea"] .board::after{
 
 /* 물속 비네트 + 천천히 흔들리는 셰이더 빛 */
 html[data-theme="deepsea"] .patina{
-  border-radius:22px;
+  border-radius:713px 713px 22px 22px / 256px 256px 22px 22px;
   background-image:
     radial-gradient(ellipse at 50% 40%, transparent 52%, rgba(0,8,16,.55) 100%);
   background-size:100% 100%;
@@ -184,19 +188,9 @@ html[data-theme="deepsea"] .patina::before{
 }
 
 /* ============================================================
-   액자 위: 유리 목(입구) + 코르크 마개 — 위쪽 가운데
+   병 입구: 코르크 마개 — 어깨선 위 평평한 입구(가운데 240px)에 안착
+   (실루엣 자체가 목이므로 튜브는 그리지 않음)
    ============================================================ */
-html[data-theme="deepsea"] .frame::before{
-  /* 유리 목: 위로 갈수록 좁아지고 아래로 벌어지는 유리관(각진 하이라이트 포함) */
-  content:"";
-  position:absolute; left:50%; top:54px;
-  width:250px; height:90px;
-  transform:translateX(-50%);
-  pointer-events:none;
-  background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIyNTAiIGhlaWdodD0iOTAiIHZpZXdCb3g9IjAgMCAyNTAgOTAiPgo8ZGVmcz48bGluZWFyR3JhZGllbnQgaWQ9ImciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZDhmN2ZmIiBzdG9wLW9wYWNpdHk9Ii41MCIvPgo8c3RvcCBvZmZzZXQ9Ii4xMCIgc3RvcC1jb2xvcj0iI2Q4ZjdmZiIgc3RvcC1vcGFjaXR5PSIuMTIiLz4KPHN0b3Agb2Zmc2V0PSIuNTAiIHN0b3AtY29sb3I9IiNkOGY3ZmYiIHN0b3Atb3BhY2l0eT0iLjA2Ii8+CjxzdG9wIG9mZnNldD0iLjkwIiBzdG9wLWNvbG9yPSIjZDhmN2ZmIiBzdG9wLW9wYWNpdHk9Ii4xMiIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNkOGY3ZmYiIHN0b3Atb3BhY2l0eT0iLjQyIi8+CjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPgo8cGF0aCBkPSJNNjQgMyBMMTg2IDMgTDI0NCA4NyBMNiA4NyBaIiBmaWxsPSJ1cmwoI2cpIiBzdHJva2U9IiNkNmY1ZmYiIHN0cm9rZS1vcGFjaXR5PSIuNTUiIHN0cm9rZS13aWR0aD0iMyIvPgo8cGF0aCBkPSJNNzIgNyBMMjYgODQiIHN0cm9rZT0iI2VhZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4zMCIgc3Ryb2tlLXdpZHRoPSI4IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPHBhdGggZD0iTTE3OCA3IEwyMjQgODQiIHN0cm9rZT0iI2VhZmZmZiIgc3Ryb2tlLW9wYWNpdHk9Ii4xNCIgc3Ryb2tlLXdpZHRoPSI1IiBzdHJva2UtbGluZWNhcD0icm91bmQiLz4KPC9zdmc+");
-  background-size:100% 100%;
-  background-repeat:no-repeat;
-}
 html[data-theme="deepsea"] .frame::after{
   /* 코르크 마개 — 병 상단 테두리에 딱 붙음 + 마개를 감싸는 유리 입구 링 */
   content:"";
