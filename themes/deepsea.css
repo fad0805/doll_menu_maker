@@ -200,19 +200,14 @@ html[data-theme="deepsea"] .board::after{
   to  { background-position:0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px; }
 }
 
-/* 수면선 표현 - 유리병 내부 상단에 물과 공기 경계 */
 html[data-theme="deepsea"] .patina{
   inset:0;                              /* clip-path(--bottle-in)가 보드 좌표라 그대로 맞춰야 함 */
   border-radius:22px;
   clip-path:var(--bottle-in);
   background-image:
-    /* 수면선 (미묘한 굴절선) */
-    linear-gradient(180deg, transparent 0%, transparent 18%, rgba(180,235,255,.12) 19%, rgba(180,235,255,.06) 20%, transparent 21%),
-    /* 수면 위쪽 미묘한 광택 */
-    radial-gradient(ellipse 70% 15% at 50% 19%, rgba(200,245,255,.14), transparent 60%),
     radial-gradient(ellipse at 50% 40%, transparent 52%, rgba(0,8,16,.55) 100%);
-  background-size:100% 100%, 100% 100%, 100% 100%;
-  opacity:.95;
+  background-size:100% 100%;
+  opacity:.9;
 }
 html[data-theme="deepsea"] .patina::before{
   content:"";
