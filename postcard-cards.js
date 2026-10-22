@@ -30,6 +30,22 @@
       if (tape) tape.setAttribute('data-code', code);
     });
 
+    /* ============ 우편 도장 요소 보강 ============
+       도장이 들어간 뒤에 저장한 슬롯에는 .postmark 가 이미 들어 있다.
+       하지만 도장이 생기기 전에 저장한 슬롯(예전 저장물)에는 이 요소가 없어
+       심해 테마에서도 도장이 보이지 않았다 → 열 때 자동으로 채워 넣는다.
+       도장 그림은 CSS로 그려지므로(심해 테마에서만 display:block) 내용은 비어 있어도 된다.
+       다른 테마는 .postmark{display:none} 이므로 화면에 영향이 없다. */
+    (function ensurePostmarks() {
+      Array.prototype.slice.call(document.querySelectorAll('.postcard .inside')).forEach(function (inside) {
+        if (inside.querySelector('.postmark')) return;   /* 이미 있으면 그대로 둔다 */
+        var pm = document.createElement('div');
+        pm.className = 'postmark';
+        pm.setAttribute('aria-hidden', 'true');
+        inside.appendChild(pm);
+      });
+    })();
+
     function hex2(n) { return ('0' + (n | 0).toString(16)).slice(-2); }
     /* 그림칸의 현재 '단색' 값을 읽어 #rrggbb 로 돌려준다 */
     function sceneColor(c) {
