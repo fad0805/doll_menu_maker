@@ -364,14 +364,16 @@ html[data-theme="deepsea"] .inside{
 }
 
 /* 편지들 앞쪽에 얇은 유리층 — 병 안에 끼워진 것처럼, 가장자리 유리살은 살짝 어둡고 중앙은 맑게 */
+html[data-theme="deepsea"] .deck{
+  /* 유리 곡면과 어긋나는 clip-path를 deck에 걸어 우측 절단면을 정리 */
+  clip-path:var(--bottle-in);
+}
 html[data-theme="deepsea"] .deck::after{
   content:"";
   position:absolute;
-  left:4px; right:4px; top:4px; bottom:4px;
+  inset:0;
   pointer-events:none;
   z-index:6;
-  border-radius:6px;
-  clip-path:var(--bottle-in);
   background-image:
     /* 가느다란 스펙큘러(반짝임) */
     linear-gradient(116deg,
