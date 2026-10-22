@@ -622,6 +622,24 @@
       });
     }
 
+    /* ============ 우편 도장(심해 테마)에 찍힐 날짜 ============
+       머릿말 날짜('2026년 10월 15일 · 목요일')를 도장에 쓸 짧은 형식
+       (YY.MM.DD)으로 바꿔 --pm-date 로 내려앉는다. 날짜를 고쳐도 따라 바뀐다. */
+    (function syncPostmarkDate() {
+      var el = document.querySelector('.head .date');
+      if (!el) return;
+      function apply() {
+        var m = String(el.textContent || '').match(/(\d{4})\s*년\s*(\d{1,2})\s*월\s*(\d{1,2})\s*일/);
+        var v = m ? (m[1].slice(2) + '.' + pad2(m[2]) + '.' + pad2(m[3])) : '';
+        /* content 에 넣을 값이라 따옴표로 감싸야 한다(속성값은 토큰열) */
+        document.documentElement.style.setProperty('--pm-date', '"' + v + '"');
+      }
+      apply();
+      if (window.MutationObserver) {
+        new MutationObserver(apply).observe(el, { childList:true, characterData:true, subtree:true });
+      }
+    })();
+
     /* ============ 편집창: 플레이스홀더(지금 값) 복사 버튼 ============
        각 입력칸 옆의 [복사] 버튼을 누르면 플레이스홀더에 있는 지금 값을
        입력칸에 채워 넣어 바로 고칠 수 있게 한다(클립보드에도 복사). */

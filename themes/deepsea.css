@@ -9,7 +9,7 @@
    · 병 안(마운트): 짙은 심해 물빛 + 표층에서 들어오는 빛 +
      물방울이 천천히 위로 오름
    · 엽서: 병에 담긴 돌돌 말린 편지(두루마기) — 양피지 위·아래끝이
-     말린 실린더(하이라이트 + 접촉선 + 끝 단면) + 붉은 밀봉(우표) +
+     말린 실린더(하이라이트 + 접촉선 + 끝 단면) + 종이에 찍힌 우편 도장 +
      손글씨 이름
    색은 '테마 표면' 변수로, 목·어깨 유리선·기포·빛 셰이더는 선택자 규칙으로.
    ============================================================ */
@@ -356,30 +356,44 @@ html[data-theme="deepsea"] .postcard .tape{
 /* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
 
 /* ============================================================
-   우표 → 붉은 밀봉(왁스 실)
+   사진 위의 붉은 밀봉(왁스 실) → 엽서(편지) 종이에 찍힌 우편 도장
+   · 도장은 사진에 붙은 물건이 아니라 두루마기 종이에 찍어 마른 잉크 자국
+   · 자리: 위쪽 말린 끝(35px) 바로 아래, 오른쪽 모서리
+     (이름·설명 글귀와 겹치지 않는 빈자리)
    ============================================================ */
-html[data-theme="deepsea"] .photo .stamp{
-  width:38px; height:38px;
-  padding:0;
-  border:none;
+html[data-theme="deepsea"] .photo .stamp{ display:none; }
+
+html[data-theme="deepsea"] .postmark{
+  display:block;
+  position:absolute;
+  right:11px; top:24px;          /* .inside 기준 — 카드 y35px = 말린 끝 아래 */
+  width:56px; height:56px;
   border-radius:50%;
-  transform:rotate(-8deg);
+  border:1.5px solid rgba(38,60,116,.68);     /* 바깥 링 */
   background:
-    radial-gradient(circle at 38% 30%, rgba(255,190,160,.35), transparent 55%),
-    radial-gradient(circle at 50% 50%, #b1402f 0 58%, #8c2c20 100%);
-  box-shadow:
-    inset 0 -2px 3px rgba(70,14,8,.55),
-    inset 0 2px 2px rgba(255,170,140,.35),
-    0 2px 5px rgba(20,8,4,.5);
+    /* 안쪽 링(두께 1.5px) + 잉크가 고르지 않은 듯한 얼룩 */
+    radial-gradient(circle closest-side, transparent 0 19.6px, rgba(38,60,116,.55) 19.6px 21.1px, transparent 21.1px),
+    radial-gradient(circle at 36% 30%, rgba(38,60,116,.12), rgba(38,60,116,0) 60%),
+    radial-gradient(circle at 68% 74%, rgba(38,60,116,.10), rgba(38,60,116,0) 55%);
+  color:rgba(38,60,116,.80);
+  font-family:var(--gothic);
+  z-index:4; pointer-events:none;
+  transform:rotate(-7deg);
+  mix-blend-mode:multiply;         /* 종이에 배어든 잉크 */
 }
-html[data-theme="deepsea"] .photo .stamp::before{ background-image:none; }
-html[data-theme="deepsea"] .photo .stamp .face{
-  border:1px solid rgba(255,214,190,.45);
-  border-radius:50%;
-  color:#f7e2c8;
-  font-weight:700;
-  font-size:.86rem;
-  text-shadow:0 1px 1px rgba(70,14,8,.6);
+html[data-theme="deepsea"] .postmark::before{   /* 우체국 이름 */
+  content:"해양 우편";
+  position:absolute; left:0; right:0; top:6px;
+  text-align:center;
+  font-size:6.2px; line-height:1; letter-spacing:.04em;
+  padding-bottom:2.5px;
+  border-bottom:1px solid rgba(38,60,116,.6);
+}
+html[data-theme="deepsea"] .postmark::after{    /* 발신 날짜 */
+  content:var(--pm-date,"");
+  position:absolute; left:0; right:0; top:21px;
+  text-align:center;
+  font-size:10px; line-height:1; font-weight:700; letter-spacing:.02em;
 }
 
 /* ============================================================
