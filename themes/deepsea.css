@@ -363,31 +363,9 @@ html[data-theme="deepsea"] .inside{
   border-bottom-color:transparent;
 }
 
-/* 편지들 앞쪽에 얇은 유리층 — 병 안에 끼워진 것처럼, 가장자리 유리살은 살짝 어둡고 중앙은 맑게 */
-html[data-theme="deepsea"] .deck{
-  /* 유리 곡면과 어긋나는 clip-path를 deck에 걸어 우측 절단면을 정리 */
-  clip-path:var(--bottle-in);
-}
-html[data-theme="deepsea"] .deck::after{
-  content:"";
-  position:absolute;
-  inset:0;
-  pointer-events:none;
-  z-index:6;
-  background-image:
-    /* 가느다란 스펙큘러(반짝임) */
-    linear-gradient(116deg,
-      transparent 31.5%, rgba(236,252,255,.05) 34.5%, rgba(236,252,255,.014) 37.5%, transparent 42%),
-    /* 넓은 광택 띠 */
-    linear-gradient(116deg,
-      rgba(226,248,255,.035) 0%, rgba(226,248,255,.01) 12%, rgba(226,248,255,0) 29%,
-      rgba(226,248,255,0) 63%, rgba(194,236,255,.014) 78%, rgba(226,248,255,.03) 100%),
-    /* 좌우 유리살 — 가장자리만 살짝 어둡게 */
-    linear-gradient(90deg,
-      rgba(4,16,30,.09) 0%, rgba(4,16,30,.03) 10%, rgba(4,16,30,0) 22%,
-      rgba(4,16,30,0) 78%, rgba(4,16,30,.03) 90%, rgba(4,16,30,.09) 100%);
-  background-blend-mode:screen, screen, normal;
-  opacity:.55;
+/* 편지 위의 테이프는 숨김 — 말린 편지(두루마기) 위를 테이프로 붙는 건 어색함 */
+html[data-theme="deepsea"] .postcard .tape{
+  display:none;
 }
 
 /* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
