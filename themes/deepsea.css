@@ -152,7 +152,9 @@ html[data-theme="deepsea"] .board{
 
 /* 유리병 곡면 굴절 효과 — 원통형 유리병의 굴절을 표현 */
 html[data-theme="deepsea"] .board::before{
-  border-radius:22px;
+  /* --bottle-in 은 inset:44px 박스 기준 좌표 → inset은 base(44px) 그대로.
+     코너만 바깥 반경(46px) - 유리 두께(44px) = 2px 로 맞춰 유리살 폭을 일정하게 */
+  border-radius:2px;
   clip-path:var(--bottle-in);
   background-color:var(--mount-bg);
   background-image:
@@ -179,7 +181,7 @@ html[data-theme="deepsea"] .board::before{
 html[data-theme="deepsea"] .board::after{
   content:"";
   position:absolute; inset:44px; z-index:1; pointer-events:none;
-  border-radius:22px;
+  border-radius:2px;
   clip-path:var(--bottle-in);
   background-image:
     /* 속찬 큰 물방울(테두리만) */
@@ -201,8 +203,8 @@ html[data-theme="deepsea"] .board::after{
 }
 
 html[data-theme="deepsea"] .patina{
-  inset:0;                              /* clip-path(--bottle-in)가 보드 좌표라 그대로 맞춰야 함 */
-  border-radius:22px;
+  /* inset은 base(44px) 그대로 — --bottle-in 이 그 박스 기준 좌표 */
+  border-radius:2px;
   clip-path:var(--bottle-in);
   background-image:
     /* 수면 위쪽 굴곡부 광택 */
