@@ -85,10 +85,10 @@ html[data-theme="deepsea"]{
       rgba(134,108,62,.48) 60% 80%, rgba(84,64,34,.28) 84% 94%, transparent 96%);
 
   /* 병 실루엣(clip-path)
-     · 바깥: 입구 평평 200px → 목 → 어깨 S곡선 → 옆선 → 바닥(100%)
+     · 바깥: 입구 평평 200px → 완만하게 벌어지는 목 → 둥근 어깨 → 옆선(y480) → 바닥(100%)
      · 안쪽: 같은 윤곽에서 44px 안쪽 — 물·비네트·기포 레이어용(자기 상자 기준) */
-  --bottle-out:polygon(777px 0px, 977px 0px, 981px 60px, 983px 110px, 997px 144.8px, 1035.9px 179.1px, 1095px 213px, 1169.6px 246.3px, 1254.8px 279.1px, 1346px 311.2px, 1438.5px 342.8px, 1527.4px 373.7px, 1608.2px 403.9px, 1676.1px 433.4px, 1726.2px 462.1px, 1754px 490px, 1754px 100%, 0px 100%, 0px 490px, 27.8px 462.1px, 77.9px 433.4px, 145.8px 403.9px, 226.6px 373.7px, 315.5px 342.8px, 408px 311.2px, 499.2px 279.1px, 584.4px 246.3px, 659px 213px, 718.1px 179.1px, 757px 144.8px, 771px 110px, 773px 60px);
-  --bottle-in:polygon(763.1px -11.9px, 902.9px -11.9px, 893.1px 18.3px, 896px 75.2px, 917.1px 126.2px, 966.3px 170.9px, 1031.1px 208.2px, 1108.7px 242.9px, 1195.6px 276.4px, 1287.6px 308.8px, 1380.1px 340.4px, 1468.5px 371.1px, 1547.7px 400.7px, 1612.3px 428.7px, 1655.5px 453px, 1669.3px 462.8px, 1678.9px 100%, -12.9px 100%, -3.3px 462.8px, 10.5px 453px, 53.7px 428.7px, 118.3px 400.7px, 197.5px 371.1px, 285.9px 340.4px, 378.4px 308.8px, 470.4px 276.4px, 557.3px 242.9px, 634.9px 208.2px, 699.7px 170.9px, 748.9px 126.2px, 770px 75.2px, 772.9px 18.3px);
+  --bottle-out:polygon(777px 0px,977px 0px,977px 12.5px,977px 25px,977.3px 37.5px,978.1px 49.9px,979.5px 62.4px,981.8px 74.6px,985.1px 86.7px,989.7px 98.3px,995.6px 109.3px,1002.8px 119.5px,1011.1px 128.8px,1020.4px 137px,1030.7px 144.2px,1041.5px 150.5px,1052.7px 155.9px,1064.3px 160.6px,1076px 164.9px,1087.8px 169px,1099.7px 173px,1111.5px 176.9px,1123.4px 180.9px,1135.2px 184.9px,1147.1px 188.8px,1158.9px 192.8px,1170.7px 196.8px,1182.6px 200.7px,1194.4px 204.7px,1206.3px 208.7px,1218.1px 212.6px,1230px 216.6px,1241.8px 220.6px,1253.7px 224.5px,1265.5px 228.5px,1277.4px 232.5px,1289.2px 236.4px,1301.1px 240.4px,1312.9px 244.4px,1324.7px 248.3px,1336.6px 252.3px,1348.4px 256.3px,1360.3px 260.2px,1372.1px 264.2px,1384px 268.2px,1395.8px 272.1px,1407.7px 276.1px,1419.5px 280.1px,1431.4px 284px,1443.2px 288px,1455px 292px,1466.9px 295.9px,1478.7px 299.9px,1490.6px 303.9px,1502.4px 307.8px,1514.3px 311.8px,1526.1px 315.8px,1538px 319.7px,1549.8px 323.7px,1561.7px 327.7px,1573.5px 331.6px,1585.3px 335.6px,1597.2px 339.6px,1609px 343.5px,1620.9px 347.5px,1632.7px 351.5px,1644.6px 355.4px,1656.4px 359.4px,1668.3px 363.4px,1680.1px 367.3px,1691.9px 371.5px,1703.5px 376.1px,1714.7px 381.7px,1725px 388.6px,1734.1px 397.2px,1741.5px 407.2px,1747.1px 418.4px,1750.9px 430.2px,1752.9px 442.6px,1753.8px 455px,1754px 467.5px,1754px 480px,1754px 100%,0px 100%,0px 480px,-0px 467.5px,0.2px 455px,1.1px 442.6px,3.1px 430.2px,6.9px 418.4px,12.5px 407.2px,19.9px 397.2px,29px 388.6px,39.3px 381.7px,50.5px 376.1px,62.1px 371.5px,73.9px 367.3px,85.7px 363.4px,97.6px 359.4px,109.4px 355.4px,121.3px 351.5px,133.1px 347.5px,145px 343.5px,156.8px 339.6px,168.7px 335.6px,180.5px 331.6px,192.3px 327.7px,204.2px 323.7px,216px 319.7px,227.9px 315.8px,239.7px 311.8px,251.6px 307.8px,263.4px 303.9px,275.3px 299.9px,287.1px 295.9px,299px 292px,310.8px 288px,322.6px 284px,334.5px 280.1px,346.3px 276.1px,358.2px 272.1px,370px 268.2px,381.9px 264.2px,393.7px 260.2px,405.6px 256.3px,417.4px 252.3px,429.3px 248.3px,441.1px 244.4px,452.9px 240.4px,464.8px 236.4px,476.6px 232.5px,488.5px 228.5px,500.3px 224.5px,512.2px 220.6px,524px 216.6px,535.9px 212.6px,547.7px 208.7px,559.6px 204.7px,571.4px 200.7px,583.3px 196.8px,595.1px 192.8px,606.9px 188.8px,618.8px 184.9px,630.6px 180.9px,642.5px 176.9px,654.3px 173px,666.2px 169px,678px 164.9px,689.7px 160.6px,701.3px 155.9px,712.5px 150.5px,723.3px 144.2px,733.6px 137px,742.9px 128.8px,751.2px 119.5px,758.4px 109.3px,764.3px 98.3px,768.9px 86.7px,772.2px 74.6px,774.5px 62.4px,775.9px 49.9px,776.7px 37.5px,777px 25px,777px 12.5px,777px 0px);
+  --bottle-in:polygon(777px 0px,889px 0px,890.2px 9.7px,892px 24.8px,894.9px 40.5px,899.4px 56.6px,905.8px 72.8px,914.2px 88.4px,924.3px 102.9px,936.1px 116px,949.1px 127.5px,963px 137.3px,977px 145.4px,990.9px 152.1px,1004.3px 157.6px,1017.2px 162.4px,1029.7px 166.7px,1041.8px 170.7px,1053.6px 174.7px,1065.4px 178.6px,1077.2px 182.6px,1089.1px 186.5px,1100.9px 190.5px,1112.8px 194.5px,1124.6px 198.4px,1136.5px 202.4px,1148.3px 206.4px,1160.2px 210.3px,1172px 214.3px,1183.9px 218.3px,1195.7px 222.2px,1207.5px 226.2px,1219.4px 230.2px,1231.2px 234.1px,1243.1px 238.1px,1254.9px 242.1px,1266.8px 246.1px,1278.6px 250px,1290.5px 254px,1302.3px 258px,1314.2px 261.9px,1326px 265.9px,1337.8px 269.9px,1349.7px 273.8px,1361.5px 277.8px,1373.4px 281.8px,1385.2px 285.7px,1397.1px 289.7px,1408.9px 293.7px,1420.8px 297.6px,1432.6px 301.6px,1444.5px 305.6px,1456.3px 309.5px,1468.1px 313.5px,1480px 317.5px,1491.8px 321.4px,1503.7px 325.4px,1515.5px 329.4px,1527.4px 333.3px,1539.2px 337.3px,1551.1px 341.3px,1562.9px 345.2px,1574.8px 349.2px,1586.6px 353.2px,1598.5px 357.1px,1610.3px 361.1px,1621.8px 365px,1632.5px 368.7px,1641.5px 372.2px,1648.5px 375.7px,1653.6px 379px,1657.1px 382.4px,1660px 386.3px,1662.4px 391px,1664.1px 396.5px,1665.2px 403.8px,1665.9px 413px,1666px 423.8px,1666px 435.9px,1666px 100%,0px 100%,0px 436px,-0px 435.9px,-0px 423.8px,0.1px 413px,0.8px 403.8px,1.9px 396.5px,3.6px 391px,6px 386.3px,8.9px 382.4px,12.4px 379px,17.5px 375.7px,24.5px 372.2px,33.5px 368.7px,44.2px 365px,55.7px 361.1px,67.5px 357.1px,79.4px 353.2px,91.2px 349.2px,103.1px 345.2px,114.9px 341.3px,126.8px 337.3px,138.6px 333.3px,150.5px 329.4px,162.3px 325.4px,174.2px 321.4px,186px 317.5px,197.9px 313.5px,209.7px 309.5px,221.5px 305.6px,233.4px 301.6px,245.2px 297.6px,257.1px 293.7px,268.9px 289.7px,280.8px 285.7px,292.6px 281.8px,304.5px 277.8px,316.3px 273.8px,328.2px 269.9px,340px 265.9px,351.8px 261.9px,363.7px 258px,375.5px 254px,387.4px 250px,399.2px 246.1px,411.1px 242.1px,422.9px 238.1px,434.8px 234.1px,446.6px 230.2px,458.5px 226.2px,470.3px 222.2px,482.1px 218.3px,494px 214.3px,505.8px 210.3px,517.7px 206.4px,529.5px 202.4px,541.4px 198.4px,553.2px 194.5px,565.1px 190.5px,576.9px 186.5px,588.8px 182.6px,600.6px 178.6px,612.4px 174.7px,624.2px 170.7px,636.3px 166.7px,648.8px 162.4px,661.7px 157.6px,675.1px 152.1px,689px 145.4px,703px 137.3px,716.9px 127.5px,729.9px 116px,741.7px 102.9px,751.8px 88.4px,760.2px 72.8px,766.6px 56.6px,771.1px 40.5px,774px 24.8px,775.8px 9.7px);
 }
 
 /* ============================================================
@@ -115,8 +115,8 @@ html[data-theme="deepsea"] body::before{
 
 /* ============================================================
    액자 = 유리병 몸통(실루엣)
-   · clip-path: 가운데 병 입구(200px 평평) → 목(약간 벌어짐) →
-     어깨 S곡선 → 옆선(y490) → 바닥. 바닥 모서리는 border-radius 46px.
+   · clip-path: 가운데 병 입구(200px 평평) → 목(완만하게 벌어짐) →
+     둥근 어깨 → 옆선(y480) → 바닥. 바닥 모서리는 border-radius 46px.
    · 밝은 외곽선은 inset(입구·옆·바닥) + frame::before SVG(목·어깨).
    · 물(마운트)·비네트·기포는 --bottle-in(44px 안쪽)으로 유리 두께 유지
    ============================================================ */
@@ -235,7 +235,7 @@ html[data-theme="deepsea"] .frame::before{
   position:absolute; left:0; top:0;
   width:100%; height:560px;
   pointer-events:none;
-  background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzU0IDU2MCIgd2lkdGg9IjE3NTQiIGhlaWdodD0iNTYwIj48ZyBmaWxsPSJub25lIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjxwYXRoIGQ9Ik03NzcgMCBMNzcxIDExMCBDNzcxIDI1MCA2MCAzODAgMCA0OTAgTDAgNTYwIE05NzcgMCBMOTgzIDExMCBDOTgzIDI1MCAxNjk0IDM4MCAxNzU0IDQ5MCBMMTc1NCA1NjAiIHN0cm9rZT0iI2NkZjJmZiIgc3Ryb2tlLW9wYWNpdHk9Ii41NSIgc3Ryb2tlLXdpZHRoPSIzIi8+PHBhdGggZD0iTTc5MSAwIEw3ODUgMTEwIEM3ODUgMjUwIDcyIDM4NyAxMiA0OTcgTDE0IDU2MCBNOTYzIDAgTDk2OSAxMTAgQzk2OSAyNTAgMTY4MiAzODcgMTc0MiA0OTcgTDE3NDAgNTYwIiBzdHJva2U9IiNkN2Y1ZmYiIHN0cm9rZS1vcGFjaXR5PSIuMjYiIHN0cm9rZS13aWR0aD0iMi41Ii8+PC9nPjwvc3ZnPg==");
+  background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHZpZXdCb3g9IjAgMCAxNzU0IDU2MCIgd2lkdGg9IjE3NTQiIGhlaWdodD0iNTYwIj48ZyBmaWxsPSJub25lIiBzdHJva2UtbGluZWpvaW49InJvdW5kIiBzdHJva2UtbGluZWNhcD0icm91bmQiPjxwYXRoIGQ9Ik03NzcgMCBDNzc3IDE2LjcgNzc3LjMgMzMuMyA3NzUuOSA0OS45IEM3NzQuNiA2Ni41IDc3MS4zIDgzLjIgNzY0LjMgOTguMyBDNzU3LjQgMTEzLjQgNzQ2LjYgMTI2LjcgNzMzLjYgMTM3IEM3MjAuNSAxNDcuMyA3MDUuMyAxNTQuNiA2ODkuNyAxNjAuNiBDNjc0LjIgMTY2LjYgNjU4LjMgMTcxLjYgNjQyLjUgMTc2LjkgQzYyNi43IDE4Mi4yIDYxMC45IDE4Ny41IDU5NS4xIDE5Mi44IEM1NzkuMyAxOTguMSA1NjMuNSAyMDMuNCA1NDcuNyAyMDguNyBDNTMxLjkgMjEzLjkgNTE2LjEgMjE5LjIgNTAwLjMgMjI0LjUgQzQ4NC41IDIyOS44IDQ2OC43IDIzNS4xIDQ1Mi45IDI0MC40IEM0MzcuMiAyNDUuNyA0MjEuNCAyNTEgNDA1LjYgMjU2LjMgQzM4OS44IDI2MS42IDM3NCAyNjYuOCAzNTguMiAyNzIuMSBDMzQyLjQgMjc3LjQgMzI2LjYgMjgyLjcgMzEwLjggMjg4IEMyOTUgMjkzLjMgMjc5LjIgMjk4LjYgMjYzLjQgMzAzLjkgQzI0Ny42IDMwOS4yIDIzMS44IDMxNC40IDIxNiAzMTkuNyBDMjAwLjIgMzI1IDE4NC40IDMzMC4zIDE2OC43IDMzNS42IEMxNTIuOSAzNDAuOSAxMzcuMSAzNDYuMiAxMjEuMyAzNTEuNSBDMTA1LjUgMzU2LjggODkuNyAzNjIgNzMuOSAzNjcuMyBDNTguMSAzNzIuNyA0Mi4xIDM3OC4zIDI5IDM4OC42IEMxNS45IDM5OC45IDYuOSA0MTQgMy4xIDQzMC4yIEMtMC42IDQ0Ni41IDAgNDYzLjMgLTAgNDgwIEwwIDU2MCBNOTc3IDAgQzk3NyAxNi43IDk3Ni43IDMzLjMgOTc4LjEgNDkuOSBDOTc5LjQgNjYuNSA5ODIuNyA4My4yIDk4OS43IDk4LjMgQzk5Ni42IDExMy40IDEwMDcuNCAxMjYuNyAxMDIwLjQgMTM3IEMxMDMzLjUgMTQ3LjMgMTA0OC43IDE1NC42IDEwNjQuMyAxNjAuNiBDMTA3OS44IDE2Ni42IDEwOTUuNyAxNzEuNiAxMTExLjUgMTc2LjkgQzExMjcuMyAxODIuMiAxMTQzLjEgMTg3LjUgMTE1OC45IDE5Mi44IEMxMTc0LjcgMTk4LjEgMTE5MC41IDIwMy40IDEyMDYuMyAyMDguNyBDMTIyMi4xIDIxMy45IDEyMzcuOSAyMTkuMiAxMjUzLjcgMjI0LjUgQzEyNjkuNSAyMjkuOCAxMjg1LjMgMjM1LjEgMTMwMS4xIDI0MC40IEMxMzE2LjggMjQ1LjcgMTMzMi42IDI1MSAxMzQ4LjQgMjU2LjMgQzEzNjQuMiAyNjEuNiAxMzgwIDI2Ni44IDEzOTUuOCAyNzIuMSBDMTQxMS42IDI3Ny40IDE0MjcuNCAyODIuNyAxNDQzLjIgMjg4IEMxNDU5IDI5My4zIDE0NzQuOCAyOTguNiAxNDkwLjYgMzAzLjkgQzE1MDYuNCAzMDkuMiAxNTIyLjIgMzE0LjQgMTUzOCAzMTkuNyBDMTU1My44IDMyNSAxNTY5LjYgMzMwLjMgMTU4NS4zIDMzNS42IEMxNjAxLjEgMzQwLjkgMTYxNi45IDM0Ni4yIDE2MzIuNyAzNTEuNSBDMTY0OC41IDM1Ni44IDE2NjQuMyAzNjIgMTY4MC4xIDM2Ny4zIEMxNjk1LjkgMzcyLjcgMTcxMS45IDM3OC4zIDE3MjUgMzg4LjYgQzE3MzguMSAzOTguOSAxNzQ3LjEgNDE0IDE3NTAuOSA0MzAuMiBDMTc1NC42IDQ0Ni41IDE3NTQgNDYzLjMgMTc1NCA0ODAgTDE3NTQgNTYwIiBzdHJva2U9IiNjZGYyZmYiIHN0cm9rZS1vcGFjaXR5PSIuNTUiIHN0cm9rZS13aWR0aD0iMyIvPjxwYXRoIGQ9Ik03OTAgMCBDNzkwIDE2LjYgNzkwLjIgMzMuMyA3ODkgNDkuOSBDNzg3LjcgNjYuNSA3ODQuNiA4My4xIDc3OC40IDk4LjUgQzc3Mi4xIDExNCA3NjIuNSAxMjggNzUwLjUgMTM5LjUgQzczOC40IDE1MS4xIDcyNCAxNTkuOCA3MDguOCAxNjYuNyBDNjkzLjcgMTczLjYgNjc3LjggMTc4LjkgNjYyIDE4NC4xIEM2NDYuMiAxODkuNCA2MzAuNCAxOTQuNyA2MTQuNiAyMDAgQzU5OC44IDIwNS4yIDU4MyAyMTAuNSA1NjcuMiAyMTUuOCBDNTUxLjUgMjIxLjEgNTM1LjcgMjI2LjQgNTE5LjkgMjMxLjcgQzUwNC4xIDIzNyA0ODguMyAyNDIuMyA0NzIuNSAyNDcuNiBDNDU2LjcgMjUyLjggNDQwLjkgMjU4LjEgNDI1LjEgMjYzLjQgQzQwOS4zIDI2OC43IDM5My41IDI3NCAzNzcuNyAyNzkuMyBDMzYxLjkgMjg0LjYgMzQ2LjIgMjg5LjkgMzMwLjQgMjk1LjIgQzMxNC42IDMwMC40IDI5OC44IDMwNS43IDI4MyAzMTEgQzI2Ny4yIDMxNi4zIDI1MS40IDMyMS42IDIzNS42IDMyNi45IEMyMTkuOCAzMzIuMiAyMDQgMzM3LjUgMTg4LjIgMzQyLjggQzE3Mi40IDM0OCAxNTYuNiAzNTMuMyAxNDAuOCAzNTguNiBDMTI1LjEgMzYzLjkgMTA5LjMgMzY5LjIgOTMuNSAzNzQuNSBDNzcuNyAzNzkuOCA2MS40IDM4NC4zIDQ2LjkgMzkyLjQgQzMyLjMgNDAwLjUgMjEgNDE0LjIgMTYuNiA0MzAuMyBDMTIuMSA0NDYuMyAxMyA0NjMuMyAxMyA0ODAgTDE1IDU2MCBNOTY0IDAgQzk2NCAxNi42IDk2My44IDMzLjMgOTY1IDQ5LjkgQzk2Ni4zIDY2LjUgOTY5LjQgODMuMSA5NzUuNiA5OC41IEM5ODEuOSAxMTQgOTkxLjUgMTI4IDEwMDMuNSAxMzkuNSBDMTAxNS42IDE1MS4xIDEwMzAgMTU5LjggMTA0NS4yIDE2Ni43IEMxMDYwLjMgMTczLjYgMTA3Ni4yIDE3OC45IDEwOTIgMTg0LjEgQzExMDcuOCAxODkuNCAxMTIzLjYgMTk0LjcgMTEzOS40IDIwMCBDMTE1NS4yIDIwNS4yIDExNzEgMjEwLjUgMTE4Ni44IDIxNS44IEMxMjAyLjUgMjIxLjEgMTIxOC4zIDIyNi40IDEyMzQuMSAyMzEuNyBDMTI0OS45IDIzNyAxMjY1LjcgMjQyLjMgMTI4MS41IDI0Ny42IEMxMjk3LjMgMjUyLjggMTMxMy4xIDI1OC4xIDEzMjguOSAyNjMuNCBDMTM0NC43IDI2OC43IDEzNjAuNSAyNzQgMTM3Ni4zIDI3OS4zIEMxMzkyLjEgMjg0LjYgMTQwNy44IDI4OS45IDE0MjMuNiAyOTUuMiBDMTQzOS40IDMwMC40IDE0NTUuMiAzMDUuNyAxNDcxIDMxMSBDMTQ4Ni44IDMxNi4zIDE1MDIuNiAzMjEuNiAxNTE4LjQgMzI2LjkgQzE1MzQuMiAzMzIuMiAxNTUwIDMzNy41IDE1NjUuOCAzNDIuOCBDMTU4MS42IDM0OCAxNTk3LjQgMzUzLjMgMTYxMy4yIDM1OC42IEMxNjI4LjkgMzYzLjkgMTY0NC43IDM2OS4yIDE2NjAuNSAzNzQuNSBDMTY3Ni4zIDM3OS44IDE2OTIuNiAzODQuMyAxNzA3LjEgMzkyLjQgQzE3MjEuNyA0MDAuNSAxNzMzIDQxNC4yIDE3MzcuNCA0MzAuMyBDMTc0MS45IDQ0Ni4zIDE3NDEgNDYzLjMgMTc0MSA0ODAgTDE3MzkgNTYwIiBzdHJva2U9IiNkN2Y1ZmYiIHN0cm9rZS1vcGFjaXR5PSIuMjIiIHN0cm9rZS13aWR0aD0iMi41Ii8+PC9nPjwvc3ZnPg==");
   background-size:100% 560px;
   background-repeat:no-repeat;
 }
@@ -324,22 +324,33 @@ html[data-theme="deepsea"] .inside::before{
   background-position:0 -21px;
   background-repeat:no-repeat;
 }
+/* 아래쪽 말린 끝: 위쪽과 같은 처리 — 사진 아랫단 위로 접힘 그림자를
+   이어 그려야 사진이 말린 자리에 '안착'한다
+   (그림자가 카드 배경에 깔려 있어 사진에 가려지면 사진이 그림자 위에
+    얹힌 것처럼 보임 → 여기서 같은 그림자를 사진 위로 다시 그려 준다) */
+html[data-theme="deepsea"] .inside::after{
+  content:"";
+  position:absolute; left:9px; bottom:4px;   /* 사진 테두리 아랫단 = 카드 y cardH-21px */
+  width:40%; height:21px;                    /* 접힘 그림자 9px + 말린 끝 12px */
+  z-index:3; pointer-events:none;
+  background-image:var(--roll-bot);
+  background-size:100% 31px;
+  background-position:0 6px;                 /* 카드 아랫단 31px 구간에 정렬 */
+  background-repeat:no-repeat;
+}
+/* 사진은 양피지 편지에 붙인 것 → 말린 끝에 꼭 맞닿게 편지와 같은 방향(기울임 없음) */
+html[data-theme="deepsea"] .photo{
+  transform:none;
+}
 /* 카드 위·아래 1px 안쪽 선은 말린 끝에 가로로 지나가므로 감춤(좌·우선은 유지) */
 html[data-theme="deepsea"] .inside{
   border-top-color:transparent;
   border-bottom-color:transparent;
 }
 
-/* 편지 붙드는 테이프: 누래킨 종이 테이프(광택 없음) */
+/* 편지 위의 테이프는 숨김 — 말린 편지(두루마기) 위를 테이프로 붙는 건 어색함 */
 html[data-theme="deepsea"] .postcard .tape{
-  background:
-    linear-gradient(180deg, rgba(238,228,198,.55), rgba(214,200,164,.42) 45%, rgba(232,222,192,.50));
-  border-top:1px solid rgba(255,250,232,.35);
-  border-bottom:1px solid rgba(150,128,88,.28);
-  box-shadow:
-    inset 0 1px 1px rgba(255,252,240,.4),
-    0 2px 4px rgba(30,20,8,.18);
-  opacity:.85;
+  display:none;
 }
 
 /* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
