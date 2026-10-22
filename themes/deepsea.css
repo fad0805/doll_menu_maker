@@ -1,5 +1,5 @@
 /* ============================================================
-   테마: 심해 유리병   id = "deepsea"
+   테마: 해저 유리병   id = "deepsea"
    ------------------------------------------------------------
    어두운 심해 바다에 떠 있는 거대한 유리병.
    · 벽: 먹빛 심해 + 위에서 스며드는 흐린 빛기둥(물결치게 휘어짐) +
@@ -150,8 +150,7 @@ html[data-theme="deepsea"] .board{
      병 아래 외부 그림자는 넣지 않는다(벽 비네트가 대신한다). */
 }
 
-/* 병 안의 물: 표층에서 들어오는 빛 + 플랑크톤 입자
-   · clip-path는 --bottle-in(외곽선에서 44px 안쪽) — 어깨에도 유리 두께 유지 */
+/* 유리병 곡면 굴절 효과 — 원통형 유리병의 굴절을 표현 */
 html[data-theme="deepsea"] .board::before{
   border-radius:22px;
   clip-path:var(--bottle-in);
@@ -159,14 +158,16 @@ html[data-theme="deepsea"] .board::before{
   background-image:
     /* 표층 빛(위쪽 가운데 번짐) */
     radial-gradient(ellipse 60% 34% at 50% -4%, rgba(150,225,255,.26), transparent 70%),
+    /* 원통형 굴절 — 수평으로 누르는 듯한 곡면 효과 */
+    radial-gradient(ellipse 120% 90% at 50% 30%, transparent 65%, rgba(100,190,240,.08) 100%),
     /* 플랑크톤 입자 */
     radial-gradient(circle at 60px 90px,  rgba(190,235,255,.12) 0 1.4px, transparent 2.4px),
     radial-gradient(circle at 240px 200px, rgba(190,235,255,.08) 0 1.1px, transparent 2.1px),
     radial-gradient(circle at 150px 340px, rgba(190,235,255,.13) 0 1.7px, transparent 2.7px),
     var(--grain),
     linear-gradient(180deg, #0c425e 0%, #063049 42%, #02141f 100%);
-  background-size:100% 100%, 380px 300px, 320px 260px, 400px 420px, 220px 220px, 100% 100%;
-  background-blend-mode:screen, screen, screen, screen, overlay, normal;
+  background-size:100% 100%, 100% 100%, 380px 300px, 320px 260px, 400px 420px, 220px 220px, 100% 100%;
+  background-blend-mode:screen, screen, screen, screen, screen, overlay, normal;
   box-shadow:
     inset 0 0 0 1px rgba(170,225,250,.22),
     inset 0 16px 26px -12px rgba(0,8,16,.75),
@@ -199,15 +200,19 @@ html[data-theme="deepsea"] .board::after{
   to  { background-position:0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px, 0 -700px; }
 }
 
-/* 물속 비네트 + 천천히 흔들리는 셰이더 빛 */
+/* 수면선 표현 - 유리병 내부 상단에 물과 공기 경계 */
 html[data-theme="deepsea"] .patina{
   inset:0;                              /* clip-path(--bottle-in)가 보드 좌표라 그대로 맞춰야 함 */
   border-radius:22px;
   clip-path:var(--bottle-in);
   background-image:
+    /* 수면선 (미묘한 굴절선) */
+    linear-gradient(180deg, transparent 0%, transparent 18%, rgba(180,235,255,.12) 19%, rgba(180,235,255,.06) 20%, transparent 21%),
+    /* 수면 위쪽 미묘한 광택 */
+    radial-gradient(ellipse 70% 15% at 50% 19%, rgba(200,245,255,.14), transparent 60%),
     radial-gradient(ellipse at 50% 40%, transparent 52%, rgba(0,8,16,.55) 100%);
-  background-size:100% 100%;
-  opacity:.9;
+  background-size:100% 100%, 100% 100%, 100% 100%;
+  opacity:.95;
 }
 html[data-theme="deepsea"] .patina::before{
   content:"";
@@ -245,6 +250,34 @@ html[data-theme="deepsea"] .frame::before{
 }
 /* 코르크 마개는 .frame::before 의 SVG 안에 그려진다
    (위쪽 머리가 넓고 아래로 갈수록 좁아지는 코르크 — 병목 안으로 들어감) */
+
+/* ============================================================
+   병 앞 유리 — 편지들 위에 끼어있는 유리면
+   · 넓고 부드러운 광택 띠 + 가느다란 밝은 줄(스펙큘러)
+   · 좌우 끝은 유리 살이 두꺼워 어두워짐 → 글자가 있는 중앙은 맑게
+   · 아주 옅은 청록 기운(유리 색조)
+   · 알파를 낮게 잡아 편지 글자 가독성은 그대로
+   ============================================================ */
+html[data-theme="deepsea"] .frame::after{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none;
+  background-image:
+    /* 가느다란 밝은 줄 — 유리 표면 반짝임 */
+    linear-gradient(117deg,
+      transparent 26.5%, rgba(240,252,255,.20) 30%, rgba(240,252,255,.05) 34%, transparent 38.5%),
+    /* 넓고 부드러운 광택 띠 */
+    linear-gradient(117deg,
+      rgba(228,248,255,.11) 0%, rgba(228,248,255,.045) 13%, rgba(228,248,255,0) 31%,
+      rgba(228,248,255,0) 57%, rgba(196,236,255,.05) 73%, rgba(228,248,255,.10) 100%),
+    /* 좌우 끝 = 두꺼운 유리살 → 어둡게(가장자리 편지만 살짝 어두워짐) */
+    linear-gradient(90deg,
+      rgba(3,18,32,.30) 0%, rgba(3,18,32,.10) 6%, rgba(3,18,32,0) 16%,
+      rgba(3,18,32,0) 84%, rgba(3,18,32,.10) 94%, rgba(3,18,32,.30) 100%),
+    /* 유리 색조 */
+    linear-gradient(180deg, rgba(186,238,255,.055), rgba(140,214,255,.02));
+  background-blend-mode:screen, screen, normal, normal;
+}
 
 /* ============================================================
    머릿말: 물속 찬빛 제목 + 물결 장식
@@ -332,9 +365,29 @@ html[data-theme="deepsea"] .inside{
   border-bottom-color:transparent;
 }
 
-/* 편지 위의 테이프는 숨김 — 말린 편지(두루마기) 위를 테이프로 붙는 건 어색함 */
-html[data-theme="deepsea"] .postcard .tape{
-  display:none;
+/* 편지들 앞쪽에 얇은 유리층 — 병 안에 끼워진 것처럼, 가장자리 유리살은 살짝 어둡고 중앙은 맑게 */
+html[data-theme="deepsea"] .deck::after{
+  content:"";
+  position:absolute; inset:0;
+  pointer-events:none;
+  z-index:6;
+  border-radius:4px;
+  background-image:
+    /* 가느다란 스펙큘러(반짝임) */
+    linear-gradient(116deg,
+      transparent 31.5%, rgba(236,252,255,.07) 34.5%, rgba(236,252,255,.018) 37.5%, transparent 42%),
+    /* 넓은 광택 띠 */
+    linear-gradient(116deg,
+      rgba(226,248,255,.045) 0%, rgba(226,248,255,.014) 12%, rgba(226,248,255,0) 29%,
+      rgba(226,248,255,0) 63%, rgba(194,236,255,.018) 78%, rgba(226,248,255,.04) 100%),
+    /* 좌우 유리살 — 가장자리만 살짝 어둡게 */
+    linear-gradient(90deg,
+      rgba(4,16,30,.12) 0%, rgba(4,16,30,.04) 8%, rgba(4,16,30,0) 18%,
+      rgba(4,16,30,0) 82%, rgba(4,16,30,.04) 92%, rgba(4,16,30,.12) 100%),
+    /* 위쪽에서 스미는 옅은 유리 색조 */
+    radial-gradient(ellipse 88% 28% at 50% -6%, rgba(190,238,255,.026), transparent 72%);
+  background-blend-mode:screen, screen, normal, screen;
+  opacity:.7;
 }
 
 /* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
