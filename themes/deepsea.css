@@ -366,26 +366,26 @@ html[data-theme="deepsea"] .inside{
 /* 편지들 앞쪽에 얇은 유리층 — 병 안에 끼워진 것처럼, 가장자리 유리살은 살짝 어둡고 중앙은 맑게 */
 html[data-theme="deepsea"] .deck::after{
   content:"";
-  position:absolute; inset:0;
+  position:absolute;
+  left:4px; right:4px; top:4px; bottom:4px;
   pointer-events:none;
   z-index:6;
-  border-radius:4px;
+  border-radius:6px;
+  clip-path:var(--bottle-in);
   background-image:
     /* 가느다란 스펙큘러(반짝임) */
     linear-gradient(116deg,
-      transparent 31.5%, rgba(236,252,255,.07) 34.5%, rgba(236,252,255,.018) 37.5%, transparent 42%),
+      transparent 31.5%, rgba(236,252,255,.05) 34.5%, rgba(236,252,255,.014) 37.5%, transparent 42%),
     /* 넓은 광택 띠 */
     linear-gradient(116deg,
-      rgba(226,248,255,.045) 0%, rgba(226,248,255,.014) 12%, rgba(226,248,255,0) 29%,
-      rgba(226,248,255,0) 63%, rgba(194,236,255,.018) 78%, rgba(226,248,255,.04) 100%),
+      rgba(226,248,255,.035) 0%, rgba(226,248,255,.01) 12%, rgba(226,248,255,0) 29%,
+      rgba(226,248,255,0) 63%, rgba(194,236,255,.014) 78%, rgba(226,248,255,.03) 100%),
     /* 좌우 유리살 — 가장자리만 살짝 어둡게 */
     linear-gradient(90deg,
-      rgba(4,16,30,.12) 0%, rgba(4,16,30,.04) 8%, rgba(4,16,30,0) 18%,
-      rgba(4,16,30,0) 82%, rgba(4,16,30,.04) 92%, rgba(4,16,30,.12) 100%),
-    /* 위쪽에서 스미는 옅은 유리 색조 */
-    radial-gradient(ellipse 88% 28% at 50% -6%, rgba(190,238,255,.026), transparent 72%);
-  background-blend-mode:screen, screen, normal, screen;
-  opacity:.7;
+      rgba(4,16,30,.09) 0%, rgba(4,16,30,.03) 10%, rgba(4,16,30,0) 22%,
+      rgba(4,16,30,0) 78%, rgba(4,16,30,.03) 90%, rgba(4,16,30,.09) 100%);
+  background-blend-mode:screen, screen, normal;
+  opacity:.55;
 }
 
 /* 사진 아래쪽: 편지에 붙인 오래된 인화지 느낌 유지 */
