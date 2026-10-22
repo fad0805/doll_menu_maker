@@ -2,12 +2,13 @@
    테마: 심해 유리병   id = "deepsea"
    ------------------------------------------------------------
    어두운 심해 바다에 떠 있는 거대한 유리병.
-   · 벽: 먹빛 심해 + 위에서 스며드는 빛기둥 + 천천히 내려오는 해양 눈
+   · 벽: 먹빛 심해 + 위에서 스며드는 흐린 빛기둥(물결치게 휘어짐) +
+      천천히 내려오는 해양 눈
    · 액자: 유리병 실루엣(clip-path) — 병 입구(200px) → 목 → 어깨
      곡선 → 몸통 → 둥근 바닥, 가장자리를 밝은 유리선이 감싸고
      위쪽 입구에 코르크 마개
    · 병 안(마운트): 짙은 심해 물빛 + 표층에서 들어오는 빛 +
-     물방울이 천천히 위로 오름
+     물방울이 천천히 위로 오름 + 표면 셰이더(물빛 얼룩망)
    · 엽서: 병에 담긴 돌돌 말린 편지(두루마기) — 양피지 위·아래끝이
      말린 실린더(하이라이트 + 접촉선 + 끝 단면) + 종이에 찍힌 우편 도장 +
      손글씨 이름
@@ -18,9 +19,9 @@ html[data-theme="deepsea"]{
   /* 벽: 먹빛 심해 + 위쪽 빛기둥 + 해양 눈(플랑크톤) */
   --wall-base:#02111d;
   --wall-image:
-    /* 위에서 내려오는 비스듬한 빛기둥 */
-    repeating-linear-gradient(102deg,
-      rgba(140,215,245,.055) 0 26px, rgba(140,215,245,0) 26px 190px),
+    /* 위에서 스며드는 빛기둥 — 각직한 대각선 줄무늬가 아니라
+       물결치게 휘고 흐린 빛줄기 (SVG feTurbulence + feDisplacementMap + blur) */
+    url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjkwMCIgdmlld0JveD0iMCAwIDEyMDAgOTAwIj4KPGRlZnM+CjxsaW5lYXJHcmFkaWVudCBpZD0ic2giIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjYjhlNGY5IiBzdG9wLW9wYWNpdHk9Ii40MCIvPgo8c3RvcCBvZmZzZXQ9Ii40MiIgc3RvcC1jb2xvcj0iIzhmZDJmMCIgc3RvcC1vcGFjaXR5PSIuMTQiLz4KPHN0b3Agb2Zmc2V0PSIxIiBzdG9wLWNvbG9yPSIjN2NjMmU2IiBzdG9wLW9wYWNpdHk9IjAiLz4KPC9saW5lYXJHcmFkaWVudD4KPGZpbHRlciBpZD0id2FycCIgeD0iLTQwJSIgeT0iLTMwJSIgd2lkdGg9IjE4MCUiIGhlaWdodD0iMTYwJSIgY29sb3ItaW50ZXJwb2xhdGlvbi1maWx0ZXJzPSJzUkdCIj4KPGZlVHVyYnVsZW5jZSB0eXBlPSJmcmFjdGFsTm9pc2UiIGJhc2VGcmVxdWVuY3k9IjAuMDAxOCAwLjAwNjIiIG51bU9jdGF2ZXM9IjMiIHNlZWQ9IjIzIiByZXN1bHQ9Im4iLz4KPGZlRGlzcGxhY2VtZW50TWFwIGluPSJTb3VyY2VHcmFwaGljIiBpbjI9Im4iIHNjYWxlPSIyNDAiIHhDaGFubmVsU2VsZWN0b3I9IlIiIHlDaGFubmVsU2VsZWN0b3I9IkciIHJlc3VsdD0iZCIvPgo8ZmVHYXVzc2lhbkJsdXIgaW49ImQiIHN0ZERldmlhdGlvbj0iNDAiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0iZWciIHgxPSIwIiB5MT0iMCIgeDI9IjEiIHkyPSIwIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjMDAwIi8+PHN0b3Agb2Zmc2V0PSIuMTYiIHN0b3AtY29sb3I9IiNmZmYiLz4KPHN0b3Agb2Zmc2V0PSIuODQiIHN0b3AtY29sb3I9IiNmZmYiLz48c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiMwMDAiLz4KPC9saW5lYXJHcmFkaWVudD4KPG1hc2sgaWQ9ImVkZ2UiPjxyZWN0IHdpZHRoPSIxMjAwIiBoZWlnaHQ9IjkwMCIgZmlsbD0idXJsKCNlZykiLz48L21hc2s+CjwvZGVmcz4KPGcgZmlsdGVyPSJ1cmwoI3dhcnApIiBmaWxsPSJ1cmwoI3NoKSIgbWFzaz0idXJsKCNlZGdlKSI+PHJlY3QgeD0iNzAiIHk9Ii05MCIgd2lkdGg9IjE5MCIgaGVpZ2h0PSI1MjAiIHJ4PSI5NSIvPjxyZWN0IHg9IjI5MCIgeT0iLTkwIiB3aWR0aD0iMTIwIiBoZWlnaHQ9IjQ0MCIgcng9IjYwIi8+PHJlY3QgeD0iNDcwIiB5PSItOTAiIHdpZHRoPSIyMzAiIGhlaWdodD0iNTYwIiByeD0iMTE1Ii8+PHJlY3QgeD0iNzQwIiB5PSItOTAiIHdpZHRoPSIxNDAiIGhlaWdodD0iNDUwIiByeD0iNzAiLz48cmVjdCB4PSI5MDAiIHk9Ii05MCIgd2lkdGg9IjE3MCIgaGVpZ2h0PSI1MDAiIHJ4PSI4NSIvPjwvZz4KPC9zdmc+"),
     radial-gradient(ellipse at 50% -10%, rgba(120,205,240,.20), transparent 58%),
     radial-gradient(ellipse at 50% 118%, rgba(0,0,0,.75), transparent 70%),
     var(--grain-2),
@@ -200,6 +201,7 @@ html[data-theme="deepsea"] .board::after{
 
 /* 물속 비네트 + 천천히 흔들리는 셰이더 빛 */
 html[data-theme="deepsea"] .patina{
+  inset:0;                              /* clip-path(--bottle-in)가 보드 좌표라 그대로 맞춰야 함 */
   border-radius:22px;
   clip-path:var(--bottle-in);
   background-image:
@@ -210,18 +212,19 @@ html[data-theme="deepsea"] .patina{
 html[data-theme="deepsea"] .patina::before{
   content:"";
   position:absolute; inset:0; pointer-events:none;
-  background-image:
-    repeating-linear-gradient(104deg, rgba(170,230,255,.055) 0 24px, transparent 24px 96px),
-    repeating-linear-gradient(76deg,  rgba(170,230,255,.040) 0 18px, transparent 18px 112px);
-  background-size:420px 100%, 380px 100%;
+  /* 물 표면에서 퍼지는 빛 얼룩(셰이더) — 대각선 줄무늬 대신
+     물결치게 흐르는 유기적인 빛 무늬(SVG fractalNoise 등고선 → 가로로 이어 붙임) */
+  background-image:url("data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI2NDAiIGhlaWdodD0iNDIwIiB2aWV3Qm94PSIwIDAgNjQwIDQyMCI+CjxkZWZzPgo8ZmlsdGVyIGlkPSJjIiB4PSIwIiB5PSIwIiB3aWR0aD0iMTAwJSIgaGVpZ2h0PSIxMDAlIiBjb2xvci1pbnRlcnBvbGF0aW9uLWZpbHRlcnM9InNSR0IiPgo8ZmVUdXJidWxlbmNlIHR5cGU9ImZyYWN0YWxOb2lzZSIgYmFzZUZyZXF1ZW5jeT0iMC4wMTA1IDAuMDE2IiBudW1PY3RhdmVzPSIyIiBzZWVkPSI1IiBzdGl0Y2hUaWxlcz0ic3RpdGNoIiByZXN1bHQ9Im4iLz4KPGZlQ29sb3JNYXRyaXggaW49Im4iIHR5cGU9Im1hdHJpeCIgdmFsdWVzPSIwIDAgMCAwIC43MCAgMCAwIDAgMCAuOTAgIDAgMCAwIDAgMSAgMSAwIDAgMCAwIiByZXN1bHQ9ImMiLz4KPGZlQ29tcG9uZW50VHJhbnNmZXIgaW49ImMiIHJlc3VsdD0iciI+CjxmZUZ1bmNBIHR5cGU9InRhYmxlIiB0YWJsZVZhbHVlcz0iMCAwIDAgMCAuMjUgMSAuMjUgMCAwIDAgMCIvPgo8L2ZlQ29tcG9uZW50VHJhbnNmZXI+CjxmZUdhdXNzaWFuQmx1ciBpbj0iciIgc3RkRGV2aWF0aW9uPSIxLjUiLz4KPC9maWx0ZXI+CjxsaW5lYXJHcmFkaWVudCBpZD0iZmQiIHgxPSIwIiB5MT0iMCIgeDI9IjAiIHkyPSIxIj4KPHN0b3Agb2Zmc2V0PSIwIiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii45Ii8+CjxzdG9wIG9mZnNldD0iLjQ1IiBzdG9wLWNvbG9yPSIjZmZmIiBzdG9wLW9wYWNpdHk9Ii4zOCIvPgo8c3RvcCBvZmZzZXQ9IjEiIHN0b3AtY29sb3I9IiNmZmYiIHN0b3Atb3BhY2l0eT0iMCIvPgo8L2xpbmVhckdyYWRpZW50Pgo8bWFzayBpZD0ibSI+PHJlY3Qgd2lkdGg9IjY0MCIgaGVpZ2h0PSI0MjAiIGZpbGw9InVybCgjZmQpIi8+PC9tYXNrPgo8L2RlZnM+CjxnIG1hc2s9InVybCgjbSkiPjxyZWN0IHdpZHRoPSI2NDAiIGhlaWdodD0iNDIwIiBmaWx0ZXI9InVybCgjYykiLz48L2c+Cjwvc3ZnPg==");
+  background-size:640px 420px;
+  background-repeat:repeat-x;
   mix-blend-mode:screen;
-  opacity:.75;
-  animation:deepsea-caustic 26s linear infinite alternate;
+  opacity:.7;
+  animation:deepsea-caustic 42s linear infinite;
   will-change:background-position;
 }
 @keyframes deepsea-caustic{
-  from{ background-position:0 0, 0 0; }
-  to  { background-position:360px 0, -300px 0; }
+  from{ background-position:0 0; }
+  to  { background-position:640px 0; }   /* 타일 한 장 = 끊김없이 이어지도록 */
 }
 
 /* ============================================================
