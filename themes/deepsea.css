@@ -416,6 +416,11 @@ html[data-theme="deepsea"] .postmark::after{    /* 발신 날짜 */
 /* ============================================================
    편지글씨: 이름·한마디는 손글씨(나눔손글씨 펜)
    ============================================================ */
+html[data-theme="deepsea"] .info{
+  /* 위쪽 말린 끝(카드 상단 35px 밴드)이 이름을 덮지 않도록 윗여백 확보.
+     .desc 가 flex:1 1 auto 라 줄어든 만큼 본문에서 빠지고 아래 요소는 그대로 */
+  padding-top:25px;
+}
 html[data-theme="deepsea"] .info .name{
   font-family:"Nanum Pen Script", "Nanum Myeongjo", "Batang", "바탕", Georgia, serif;
   font-weight:400;
