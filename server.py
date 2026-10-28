@@ -535,7 +535,7 @@ class Handler(SimpleHTTPRequestHandler):
         return json.loads(raw.decode("utf-8"))
 
     def end_headers(self):
-        if self.path.split("?")[0].endswith((".html", ".htm", ".css", ".js", ".csv")):
+        if self.path.split("?")[0].endswith((".html", ".htm", ".css", ".js", ".csv", ".jpg", ".jpeg", ".png", ".gif", ".webp", ".bmp", ".svg", ".ico")):
             self.send_header("Cache-Control", "no-store")
         super().end_headers()
 

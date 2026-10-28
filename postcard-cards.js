@@ -1969,7 +1969,8 @@
         if (isObjectUrl) { try { URL.revokeObjectURL(src); } catch (e) {} cropState.url = null; }
         alert('이미지를 읽지 못했어요. 다른 파일로 시도해 주세요.');
       };
-      cropImg.src = src;
+      var bust = (src && src.indexOf('data:') !== 0 && src.indexOf('blob:') !== 0) ? ((src.indexOf('?') >= 0) ? '&' : '?') + '_t=' + Date.now() : '';
+      cropImg.src = src + bust;
     }
     function openCropEditor(file) {
       if (!cropModal || !cropFrame || !cropImg) { legacyCompress(file); return; }
@@ -1980,7 +1981,8 @@
     function openCropFromSrc(src) {
       if (!cropModal || !cropFrame || !cropImg || !src) return;
       prepareCropFrame();
-      loadCropSource(src, false);
+      var bust = (src && src.indexOf('data:') !== 0 && src.indexOf('blob:') !== 0) ? ((src.indexOf('?') >= 0) ? '&' : '?') + '_t=' + Date.now() : '';
+      loadCropSource(src + bust, false);
     }
     /* 엽서 편집창에서 지금 보이는 그림을 클릭하면 자르기 창을 연다 */
     if (f.preview) {
