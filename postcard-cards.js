@@ -379,7 +379,8 @@
       cancel: document.getElementById('fCancel'),
       reset: document.getElementById('fReset'),
       delImg: document.getElementById('fDelImg'),
-      color: document.getElementById('fColor')
+      color: document.getElementById('fColor'),
+      delCard: document.getElementById('fDelete')
     };
     var cur = -1, pendingImg = null, curData = null;
 
@@ -482,6 +483,41 @@
       /* 비우기는 실수로 누를 수 있으니 서버에는 자동 저장하지 않는다 */
       screenOnly('🗑 이 카드를 비웠어요. 저장하려면 💾 저장(Ctrl+S)을 누르세요.');
     });
+
+    if (f.delCard) {
+      f.delCard.addEventListener('click', function () {
+        if (cur < 0) return;
+        if (!window.confirm('이 카드를 완전히 삭제할까요?\n\n삭제하면 순서에서 제거되고, 서버에 저장된 그림도 함께 지워져요.\n되돌릴 수 없어요.')) return;
+        var idx = cur;
+        var card = cards[idx];
+        if (!card) { close(); return; }
+        deleteServerImage(card);
+        if (card.parentNode) card.parentNode.removeChild(card);
+        cards.splice(idx, 1);
+        close();
+        frameBoards.slice(1).forEach(function (b) { if (b.parentNode) b.parentNode.removeChild(b); });
+        frameBoards = [baseBoard];
+        var frameCount = Math.max(1, Math.ceil(cards.length / PER_FRAME));
+        for (var k = 1; k < frameCount; k++) {
+          var b = baseBoard.cloneNode(true);
+          b.removeAttribute('id');
+          var d = b.querySelector('.deck');
+          Array.prototype.slice.call(d.querySelectorAll('.postcard')).forEach(function (c2) { c2.parentNode.removeChild(c2); });
+          sheetsEl.appendChild(b);
+          frameBoards.push(b);
+        }
+        frameDecks = frameBoards.map(function (b2) { return b2.querySelector('.deck'); });
+        distributeCards();
+        if (currentN > cards.length) currentN = cards.length;
+        if (currentN < 1 && cards.length >= 1) currentN = 1;
+        setCount(currentN, true);
+        fitNames();
+        scheduleFit();
+        notifyApplied();
+        setStatus('🗑 카드를 삭제했어요. 저장 중…', false);
+      });
+    }
+
     f.cancel.addEventListener('click', close);
     modal.querySelector('.editor-backdrop').addEventListener('click', close);
     document.addEventListener('keydown', function (e) {
