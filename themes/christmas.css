@@ -46,7 +46,7 @@ html[data-theme="christmas"]{
   --card-edge:rgba(146,118,58,.62);  /* 엽서 바깥 테두리: 명도 낮춘 금색 */
   --photo-border:#dcd7ca;            /* 사진(인화지) 테두리: 명도 낮춘 톤 */
 
-  --name-ink:#941a1a;               /* 엽서 이름: 명도 낮춘 딥 레드 */
+  --name-ink:#ad3535;               /* 엽서 이름: 명도 낮춘 딥 레드 */
   --desc-ink:#d9ded7;               /* 엽서 소개 본문: 흰색에서 살짝 낮춘 톤 */
   --accent-red:#c6a24e;             /* 영문 부제·한마디: 명도 낮춘 금색 */
   --xmas-red:#8f1f24;               /* 공통 붉은색 (우표·특징 버블) */
